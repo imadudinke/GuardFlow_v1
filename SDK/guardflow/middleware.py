@@ -40,21 +40,40 @@ class GuardFlowMiddleware(BaseHTTPMiddleware):
             
             print(f"🛡️ [GuardFlow] DNA: {dna[:12]}... | Trace: {trace_id}")
             
-            # 3. Check rate limiting if Redis is configured
-            if self.limiter and self.limiter.is_rate_limited(dna, limit=10, window=60):
-                return JSONResponse(
-                    status_code=429,
-                    content={
-                        "error": "Too Many Requests",
-                        "message": "Rate limit exceeded. Please try again later.",
-                        "trace_id": trace_id
-                    },
-                    headers={"X-GuardFlow-Trace": trace_id}
-                )
+            # 3. Check rate limiting and ban status if Redis is configured
+            if self.limiter:
+                status = self.limiter.check_and_ban(dna, limit=10, ban_threshold=50)
+                
+                if status == "BANNED":
+                    # Hard Block - Total Restriction
+                    print(f"🚫 [GuardFlow] BANNED: {dna[:12]}... | Trace: {trace_id}")
+                    return JSONResponse(
+                        status_code=403,
+                        content={
+                            "error": "Access Denied",
+                            "message": "Your identity has been banned for 1 hour.",
+                            "trace_id": trace_id
+                        },
+                        headers={"X-GuardFlow-Trace": trace_id, "X-GuardFlow-Status": "BANNED"}
+                    )
+                
+                if status == "LIMIT":
+                    # Soft Block - Rate Limited
+                    print(f"⚠️  [GuardFlow] RATE LIMITED: {dna[:12]}... | Trace: {trace_id}")
+                    return JSONResponse(
+                        status_code=429,
+                        content={
+                            "error": "Too Many Requests",
+                            "message": "Rate limit exceeded. Please slow down.",
+                            "trace_id": trace_id
+                        },
+                        headers={"X-GuardFlow-Trace": trace_id, "X-GuardFlow-Status": "LIMIT"}
+                    )
                 
             # 4. Process request and add Trace ID to response
             response = await call_next(request)
             response.headers["X-GuardFlow-Trace"] = trace_id
+            response.headers["X-GuardFlow-Status"] = "OK"
             return response
             
         except Exception as e:
