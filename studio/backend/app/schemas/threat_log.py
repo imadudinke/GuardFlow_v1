@@ -1,0 +1,22 @@
+from datetime import datetime
+from typing import Optional
+from app.schemas.base import BaseSchema, BaseDBSchema
+
+class ThreatLogBase(BaseSchema):
+    project_id: int
+    ip_address: str
+    dna_id: str
+    path: str
+    risk_score: int
+
+
+class ThreatLogCreate(ThreatLogBase):
+    pass
+
+
+class ThreatLogUpdate(BaseSchema):
+    risk_score: Optional[int] = None
+
+
+class ThreatLog(BaseDBSchema, ThreatLogBase):
+    pass
