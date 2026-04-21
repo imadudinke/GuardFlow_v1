@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
 from app.schemas.base import BaseSchema, BaseDBSchema
 
 class ThreatLogBase(BaseSchema):
-    project_id: int
+    project_id: UUID
     ip_address: str
     dna_id: str
     path: str

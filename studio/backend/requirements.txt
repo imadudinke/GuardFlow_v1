@@ -1,8 +1,8 @@
-fastapi
-uvicorn[standard]
-sqlalchemy
-psycopg2-binary
-pydantic-settings
-alembic             # For Database Migrations (The professional way)
-python-jose[cryptography] # For generating secure tokens later
-passlib[bcrypt]     # For hashing user passwords
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9
+alembic==1.13.1
+pydantic[email]==2.5.3
+bcrypt==4.0.1
+python-multipart==0.0.6

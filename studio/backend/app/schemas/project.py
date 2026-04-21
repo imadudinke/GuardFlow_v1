@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import UUID
 from app.schemas.base import BaseSchema, BaseDBSchema
 
 
@@ -7,7 +8,7 @@ class ProjectBase(BaseSchema):
 
 
 class ProjectCreate(ProjectBase):
-    user_id: int
+    user_id: UUID
 
 
 class ProjectUpdate(BaseSchema):
@@ -16,4 +17,4 @@ class ProjectUpdate(BaseSchema):
 
 class Project(BaseDBSchema, ProjectBase):
     api_key: str
-    user_id: int
+    user_id: UUID

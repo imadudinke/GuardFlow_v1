@@ -1,20 +1,32 @@
 from fastapi import FastAPI
-# from app.api.v1 import projects, telemetry  # We will build these next
-from app.core.db import engine, Base
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="GuardFlow Studio API")
+from app.api import api_router
 
-# app.include_router(projects.router, prefix="/api/v1/projects", tags=["Projects"])
-# app.include_router(telemetry.router, prefix="/api/v1/telemetry", tags=["Security"])
+app = FastAPI(
+    title="GuardFlow Studio API",
+    description="API for GuardFlow threat monitoring platform",
+    version="1.0.0"
+)
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include API routes
+app.include_router(api_router, prefix="/api/v1")
+
 
 @app.get("/")
-async def root():
-    return {
-        "status": "online",
-        "service": "GuardFlow Studio",
-        "version": "0.1.0"
-    }
+def root():
+    return {"message": "GuardFlow Studio API", "version": "1.0.0"}
 
-@app.on_event("startup")
-def startup():
-    Base.metadata.create_all(bind=engine)
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
