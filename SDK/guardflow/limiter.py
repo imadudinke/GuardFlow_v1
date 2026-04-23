@@ -15,7 +15,6 @@ class RateLimiter:
     async def is_rate_limited(self, dna: str, limit: int = 10, window: int = 60) -> bool:
         key = f"gf:rate:{dna}"
         
-        # Use a Pipeline to ensure INCR and EXPIRE happen together (Atomic-ish)
         async with self.r.pipeline(transaction=True) as pipe:
             pipe.incr(key)
             pipe.expire(key, window, nx=True) # nx=True only sets expire if not set

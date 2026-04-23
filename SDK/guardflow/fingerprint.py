@@ -5,23 +5,26 @@ Generates unique identifiers for devices/browsers
 
 import hashlib
 
+IGNORE_HEADERS = {
+    "authorization", "cookie", "x-guardflow-trace", 
+    "host", "content-length", "x-request-id"
+}
 
 def create_fingerprint(headers: dict) -> str:
-    """
-    Generate a unique fingerprint hash from request headers
     
-    Args:
-        headers: Request headers dictionary
-        
-    Returns:
-        Unique fingerprint hash (DNA ID)
-    """
-    # We pick parts that stay the same even if IP changes
+    header_keys = [ 
+        k.lower() for k in headers.keys() 
+        if k.lower() not in IGNORE_HEADERS
+    ]
+
+    header_keys.sort()
+
     user_agent = headers.get("user-agent", "")
     accept_lang = headers.get("accept-language", "")
     
-    # The "Senior" Secret: The sequence of header keys
+   
     header_sequence = "-".join(headers.keys())
     
-    dna_string = f"{user_agent}|{accept_lang}|{header_sequence}"
-    return hashlib.sha256(dna_string.encode()).hexdigest()
+    dna_blueprint = f"{user_agent}|{accept_lang}|{','.join(header_keys)}"
+    
+    return hashlib.sha256(dna_blueprint.encode()).hexdigest()

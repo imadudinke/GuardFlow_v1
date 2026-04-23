@@ -1,66 +1,32 @@
-"""
-Threat Reporter - The "Telemetry" logic
-Reports threat data to GuardFlow API
-"""
-
 import httpx
-from typing import Optional
 import asyncio
+import logging
 
+logger = logging.getLogger("guardflow")
 
-class ThreatReporter:
-    """
-    Report threat events to GuardFlow Studio API
-    """
-    
-    def __init__(self, api_key: str, api_url: str = "http://localhost:8001"):
+class TelemetryReporter:
+    def __init__(self, api_key: str, studio_url: str):
         self.api_key = api_key
-        self.api_url = api_url.rstrip("/")
-    
-    async def report_threat(
-        self,
-        ip_address: str,
-        dna_id: str,
-        path: str,
-        risk_score: int,
-        metadata: Optional[dict] = None
-    ) -> bool:
+        # Ensure we point to the correct internal Docker or Local URL
+        self.studio_url = f"{studio_url.rstrip('/')}/api/v1/telemetry"
+
+    async def send_report(self, payload: dict):
         """
-        Report a threat event to GuardFlow API
-        
-        Args:
-            ip_address: Client IP address
-            dna_id: Device fingerprint
-            path: Requested path
-            risk_score: Calculated risk score (0-100)
-            metadata: Additional threat metadata
-            
-        Returns:
-            True if reported successfully
+        Background task to ship threat data to the Studio.
         """
-        # TODO: Implement API reporting
-        # POST to /api/v1/threats with threat data
-        
-        payload = {
-            "ip_address": ip_address,
-            "dna_id": dna_id,
-            "path": path,
-            "risk_score": risk_score,
-        }
-        
-        if metadata:
-            payload["metadata"] = metadata
-        
-        try:
-            async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient() as client:
+            try:
                 response = await client.post(
-                    f"{self.api_url}/api/v1/threats",
+                    self.studio_url,
                     json=payload,
-                    headers={"X-API-Key": self.api_key},
-                    timeout=5.0
+                    headers={
+                        "X-GuardFlow-Key": self.api_key,
+                        "Content-Type": "application/json"
+                    },
+                    timeout=2.0 # Don't hang the app if Studio is slow
                 )
-                return response.status_code == 201
-        except Exception as e:
-            # Log error but don't break the application
-            print(f"Failed to report threat: {e}")
-            return False
+                if response.status_code != 201:
+                    logger.warning(f"📡 [GuardFlow] Dashboard rejected telemetry: {response.status_code}")
+            except Exception as e:
+                # Silent failure - The User App stays online no matter what
+                logger.error(f"📡 [GuardFlow] Telemetry Transport Error: {e}")
