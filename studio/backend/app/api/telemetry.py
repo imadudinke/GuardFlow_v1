@@ -24,22 +24,60 @@ class TelemetrySchema(BaseModel):
 
 async def get_country_from_ip(ip: str) -> str:
     """
-    Looks up the country of an IP address using ipapi.co (free, reliable service)
+    Looks up the country of an IP address using ipinfo.io (reliable, production-ready service)
     """
+    # Check if it's a private/local IP
+    if ip.startswith(("127.", "10.", "192.168.", "172.")) or ip in ["localhost", "::1"]:
+        return "Local"
+    
+    # Try ipinfo.io - most reliable service (50k requests/month free)
     try:
         async with httpx.AsyncClient() as client:
-            # Using ipapi.co - free tier allows 1000 requests/day
             response = await client.get(
-                f"https://ipapi.co/{ip}/country_name/",
-                timeout=3.0,
-                headers={"User-Agent": "GuardFlow/1.0"}
+                f"https://ipinfo.io/{ip}/json",
+                timeout=5.0,
+                headers={"Accept": "application/json"}
             )
             if response.status_code == 200:
-                country = response.text.strip()
-                if country and country != "Undefined":
-                    return country
+                data = response.json()
+                country = data.get("country")  # Returns country code like "US"
+                
+                # Convert country code to full name
+                country_names = {
+                    "US": "United States", "GB": "United Kingdom", "CA": "Canada",
+                    "AU": "Australia", "DE": "Germany", "FR": "France", "IT": "Italy",
+                    "ES": "Spain", "NL": "Netherlands", "SE": "Sweden", "NO": "Norway",
+                    "DK": "Denmark", "FI": "Finland", "PL": "Poland", "RU": "Russia",
+                    "CN": "China", "JP": "Japan", "KR": "South Korea", "IN": "India",
+                    "BR": "Brazil", "MX": "Mexico", "AR": "Argentina", "CL": "Chile",
+                    "ZA": "South Africa", "EG": "Egypt", "NG": "Nigeria", "KE": "Kenya",
+                    "SG": "Singapore", "MY": "Malaysia", "TH": "Thailand", "ID": "Indonesia",
+                    "PH": "Philippines", "VN": "Vietnam", "NZ": "New Zealand", "IE": "Ireland",
+                    "CH": "Switzerland", "AT": "Austria", "BE": "Belgium", "PT": "Portugal",
+                    "GR": "Greece", "TR": "Turkey", "IL": "Israel", "SA": "Saudi Arabia",
+                    "AE": "United Arab Emirates", "PK": "Pakistan", "BD": "Bangladesh"
+                }
+                
+                if country:
+                    return country_names.get(country, country)  # Return full name or code
     except Exception as e:
-        print(f"⚠️  [GuardFlow] IP lookup failed: {e}")
+        print(f"⚠️  [GuardFlow] ipinfo.io failed: {e}")
+    
+    # Fallback to ip-api.com
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"http://ip-api.com/json/{ip}?fields=status,country",
+                timeout=3.0
+            )
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("status") == "success":
+                    country = data.get("country")
+                    if country:
+                        return country
+    except Exception as e:
+        print(f"⚠️  [GuardFlow] ip-api.com failed: {e}")
     
     return "Unknown"
 
