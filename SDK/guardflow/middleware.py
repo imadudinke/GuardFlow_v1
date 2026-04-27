@@ -6,6 +6,7 @@ import asyncio
 import traceback
 from .reporter import TelemetryReporter
 from .fingerprint import create_fingerprint
+from .scrubber import scrub_metadata
 
 class GuardFlowMiddleware(BaseHTTPMiddleware):
     def __init__(self, app, api_key: str, redis_url: str, studio_url: str):
@@ -36,10 +37,13 @@ class GuardFlowMiddleware(BaseHTTPMiddleware):
                     "path": request.url.path,
                     "status": status,
                     "agent": request.headers.get("user-agent"),
-                    "trace_id": trace_id
+                    "trace_id": trace_id,
+                    "headers": dict(request.headers)
                 }
+                # Scrub sensitive data before sending
+                clean_data = scrub_metadata(telemetry_data)
                 # asyncio.create_task makes this non-blocking
-                asyncio.create_task(self.reporter.send_report(telemetry_data))
+                asyncio.create_task(self.reporter.send_report(clean_data))
 
             # 4. Handle Decisions
             if status == "BANNED":
@@ -66,5 +70,13 @@ class GuardFlowMiddleware(BaseHTTPMiddleware):
             return response
             
         except Exception as e:
-            print(f"❌ [GuardFlow Fail-Open] Error: {str(e)}")
-            return await call_next(request)
+            # FAIL-OPEN: If GuardFlow crashes, let the request through
+            # This ensures the business stays online even if security fails
+            print(f"⚠️ [GuardFlow] SDK Error: {e}. Falling open for safety.")
+            print(f"⚠️ [GuardFlow] Trace: {trace_id} | Error Details: {traceback.format_exc()}")
+            
+            # Let the request through so the business doesn't stop
+            response = await call_next(request)
+            response.headers["X-GuardFlow-Trace"] = trace_id
+            response.headers["X-GuardFlow-Status"] = "FAIL-OPEN"
+            return response

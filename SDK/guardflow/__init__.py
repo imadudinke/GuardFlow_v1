@@ -7,5 +7,6 @@ __version__ = "0.1.0"
 from guardflow.middleware import GuardFlowMiddleware
 from guardflow.fingerprint import create_fingerprint
 from guardflow.reporter import TelemetryReporter
+from guardflow.scrubber import scrub_metadata
 
-__all__ = ["GuardFlowMiddleware", "create_fingerprint", "TelemetryReporter"]
+__all__ = ["GuardFlowMiddleware", "create_fingerprint", "TelemetryReporter", "scrub_metadata"]
