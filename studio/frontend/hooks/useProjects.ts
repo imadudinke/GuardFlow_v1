@@ -18,6 +18,7 @@ interface UseProjectsReturn {
   createProject: (name: string) => Promise<Project>;
   rotateApiKey: (projectId: string) => Promise<Project>;
   setHardBanEnabled: (projectId: string, enabled: boolean) => Promise<Project>;
+  deleteProject: (projectId: string) => Promise<void>;
 }
 
 export function useProjects({ userId }: UseProjectsOptions): UseProjectsReturn {
@@ -115,6 +116,31 @@ export function useProjects({ userId }: UseProjectsOptions): UseProjectsReturn {
     return updatedProject;
   };
 
+  const deleteProject = async (projectId: string) => {
+    try {
+      const url = getApiUrl(`/api/v1/projects/${projectId}`);
+      console.log('Attempting to delete project at URL:', url);
+      
+      const response = await fetch(url, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.detail || `Failed to delete project: ${response.status} ${response.statusText}`);
+      }
+
+      // Remove project from local state
+      setProjects((currentProjects) =>
+        currentProjects.filter((project) => project.id !== projectId)
+      );
+    } catch (error) {
+      console.error('Delete project error:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
       void fetchProjects();
@@ -133,5 +159,6 @@ export function useProjects({ userId }: UseProjectsOptions): UseProjectsReturn {
     createProject,
     rotateApiKey,
     setHardBanEnabled,
+    deleteProject,
   };
 }

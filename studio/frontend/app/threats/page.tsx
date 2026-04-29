@@ -212,8 +212,11 @@ export default function ThreatFeed() {
                 </label>
 
                 {authLoading || projectsLoading ? (
-                  <div className="retro-card bg-gray-100 px-4 py-2 text-sm text-gray-600 retro-mono">
-                    Loading projects...
+                  <div className="retro-card bg-gray-100 px-4 py-2 text-sm text-gray-600 retro-mono min-w-[220px]">
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-gray-300 rounded animate-pulse"></div>
+                      Loading projects...
+                    </div>
                   </div>
                 ) : projectsError ? (
                   <div className="retro-card bg-red-100 px-4 py-2 text-sm font-semibold text-red-800 retro-mono">
@@ -278,7 +281,8 @@ export default function ThreatFeed() {
               </div>
             )}
 
-            {threats.map((threat, index) => {
+            <div className={`transition-opacity duration-300 ${threatsLoading ? 'opacity-60' : 'opacity-100'} space-y-5`}>
+              {threats.map((threat, index) => {
               const tone = getRiskTone(threat.risk_score);
               const factorCount = threat.risk_factors?.length ?? 0;
               const knownAttacker = isKnownAttackerThreat(threat);
@@ -286,7 +290,7 @@ export default function ThreatFeed() {
               return (
                 <article
                   key={threat.id}
-                  className="group relative overflow-hidden retro-card bg-white p-5 hover:-translate-y-1"
+                  className="group relative overflow-hidden retro-card bg-white p-5 hover:-translate-y-1 transition-all duration-200"
                 >
                   <div className="absolute inset-0 halftone-subtle"></div>
                   <div
@@ -355,6 +359,7 @@ export default function ThreatFeed() {
                 </article>
               );
             })}
+            </div>
           </div>
 
           {/* Pagination Controls */}

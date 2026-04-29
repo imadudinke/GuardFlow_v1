@@ -9,8 +9,8 @@ import {
   AlertTriangle,
   BarChart3,
   Settings,
-  Users,
-  FileText,
+  Ban,
+  Code,
 } from "lucide-react";
 
 const navigation = [
@@ -18,8 +18,8 @@ const navigation = [
   { name: "Projects", href: "/projects", icon: Shield },
   { name: "Threats", href: "/threats", icon: AlertTriangle },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
-  { name: "Reports", href: "/reports", icon: FileText },
-  { name: "Team", href: "/team", icon: Users },
+  { name: "Blacklist", href: "/blacklist", icon: Ban },
+  { name: "SDK Guide", href: "/sdk-guide", icon: Code },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 

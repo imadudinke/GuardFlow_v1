@@ -179,6 +179,31 @@ input.retro-card:focus {
   background-color: #f9f9f9;
 }
 
+/* Select Fields */
+select.retro-card-static {
+  pointer-events: auto;
+  position: relative;
+  z-index: 20;
+  cursor: pointer;
+}
+
+select.retro-card-static:hover {
+  transform: none !important;
+  box-shadow: 4px 4px 0px #000 !important;
+}
+
+select.retro-card-static:focus {
+  transform: none !important;
+  box-shadow: 4px 4px 0px #000 !important;
+  background-color: #f9f9f9;
+}
+
+select.retro-card-static:disabled {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Animations */
 @keyframes halftone-pulse {
   0%, 100% { opacity: 0.02; }
@@ -187,4 +212,36 @@ input.retro-card:focus {
 
 .halftone-animated {
   animation: halftone-pulse 4s ease-in-out infinite;
+}
+
+/* Skeleton Loading Animation */
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Gradient backgrounds for 404 page */
+.bg-gradient-to-r {
+  background: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.from-red-500 {
+  --tw-gradient-from: #ef4444;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(239, 68, 68, 0));
+}
+
+.via-yellow-500 {
+  --tw-gradient-stops: var(--tw-gradient-from), #eab308, var(--tw-gradient-to, rgba(234, 179, 8, 0));
+}
+
+.to-blue-500 {
+  --tw-gradient-to: #3b82f6;
 }

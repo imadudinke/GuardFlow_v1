@@ -110,6 +110,27 @@ def delete_project(db: Session, project_id: UUID) -> bool:
     db_project = get_project(db, project_id)
     if not db_project:
         return False
+    
+    # Import models to avoid circular imports
+    from app.models.threat_log import ThreatLog
+    from app.models.global_blacklist import GlobalBlacklist
+    
+    # First, delete global blacklist entries that reference threat logs from this project
+    # We need to get the threat log IDs first
+    threat_log_ids = db.query(ThreatLog.id).filter(ThreatLog.project_id == project_id).all()
+    threat_log_ids = [row[0] for row in threat_log_ids]
+    
+    if threat_log_ids:
+        # Delete global blacklist entries that reference these threat logs
+        db.query(GlobalBlacklist).filter(GlobalBlacklist.source_threat_log_id.in_(threat_log_ids)).delete(synchronize_session=False)
+    
+    # Delete global blacklist entries where this project is the source
+    db.query(GlobalBlacklist).filter(GlobalBlacklist.source_project_id == project_id).delete(synchronize_session=False)
+    
+    # Now delete threat logs for this project
+    db.query(ThreatLog).filter(ThreatLog.project_id == project_id).delete(synchronize_session=False)
+    
+    # Finally delete the project
     db.delete(db_project)
     db.commit()
     return True

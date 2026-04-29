@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { FolderKanban } from "lucide-react"
+import { FolderKanban, Trash2 } from "lucide-react"
 import { ProtectedDashboardPage } from "@/components/dashboard/protected-dashboard-page"
 import { ProjectCreateForm } from "@/components/dashboard/project-create-form"
 import { Button } from "@/components/ui/button"
@@ -22,8 +22,10 @@ export default function ProjectsPage() {
     createProject,
     rotateApiKey,
     setHardBanEnabled,
+    deleteProject,
   } = useProjects({ userId: user?.id ?? null })
   const [actionProjectId, setActionProjectId] = useState<string | null>(null)
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
 
   const handleCreateProject = async (name: string) => {
     await createProject(name)
@@ -42,6 +44,20 @@ export default function ProjectsPage() {
     try {
       setActionProjectId(projectId)
       await setHardBanEnabled(projectId, enabled)
+    } finally {
+      setActionProjectId(null)
+    }
+  }
+
+  const handleDeleteProject = async (projectId: string) => {
+    try {
+      setActionProjectId(projectId)
+      await deleteProject(projectId)
+      setDeleteConfirm(null)
+    } catch (error) {
+      console.error('Failed to delete project:', error)
+      // You could add a toast notification here or set an error state
+      alert(`Failed to delete project: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setActionProjectId(null)
     }
@@ -85,11 +101,18 @@ export default function ProjectsPage() {
                   </div>
                 )}
 
-                {loading ? (
-                  <p className="text-sm font-medium uppercase tracking-[0.12em] text-gray-700 retro-mono">
-                    Loading your projects...
-                  </p>
-                ) : projects.length === 0 ? (
+                <div className={`transition-opacity duration-300 ${loading ? 'opacity-50' : 'opacity-100'}`}>
+                  {loading ? (
+                    <div className="retro-card-static bg-gray-50 p-8 text-center">
+                      <div className="absolute inset-0 halftone-subtle"></div>
+                      <div className="relative z-10">
+                        <div className="h-3 w-3 animate-pulse rounded-full bg-black mx-auto mb-4" />
+                        <p className="text-sm font-medium uppercase tracking-[0.12em] text-gray-700 retro-mono">
+                          Loading your projects...
+                        </p>
+                      </div>
+                    </div>
+                  ) : projects.length === 0 ? (
                   <div className="retro-card-static bg-gray-50 p-8 text-center border-dashed">
                     <div className="absolute inset-0 halftone-subtle"></div>
                     <div className="relative z-10">
@@ -105,7 +128,7 @@ export default function ProjectsPage() {
                     {projects.map((project) => (
                       <div
                         key={project.id}
-                        className="retro-card bg-white p-4"
+                        className="retro-card bg-white p-4 transition-all duration-200"
                       >
                         <div className="flex flex-col gap-4">
                           <div className="space-y-2">
@@ -162,12 +185,23 @@ export default function ProjectsPage() {
                                 ? "Hard Ban Active"
                                 : "Log Only Active"}
                             </Button>
+                            <Button
+                              onClick={() => setDeleteConfirm(project.id)}
+                              type="button"
+                              variant="destructive"
+                              disabled={actionProjectId === project.id}
+                              className="retro-button bg-red-100 text-red-800 border-red-800 hover:bg-red-200 flex items-center gap-2"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                              Delete
+                            </Button>
                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 )}
+                </div>
               </div>
             </div>
           </div>
@@ -182,6 +216,55 @@ export default function ProjectsPage() {
         </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      {deleteConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          onClick={() => setDeleteConfirm(null)}
+        >
+          <div
+            className="relative max-w-md w-full retro-card-static bg-white p-6 text-black"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute inset-0 halftone-subtle"></div>
+            <div className="relative z-10">
+              <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
+                Delete Project
+              </h3>
+              <p className="text-sm retro-mono text-gray-700 mb-6">
+                Are you sure you want to delete this project? This action cannot be undone and will permanently remove:
+              </p>
+              <div className="bg-yellow-50 border-2 border-yellow-200 p-4 mb-6 retro-card-static">
+                <ul className="text-sm retro-mono text-yellow-800 space-y-1">
+                  <li>• All threat logs and security data</li>
+                  <li>• Associated blacklist entries</li>
+                  <li>• Project configuration and API keys</li>
+                  <li>• Historical analytics and reports</li>
+                </ul>
+              </div>
+              <div className="flex gap-3 justify-end">
+                <Button
+                  onClick={() => setDeleteConfirm(null)}
+                  type="button"
+                  variant="outline"
+                  className="retro-button"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => handleDeleteProject(deleteConfirm)}
+                  type="button"
+                  disabled={actionProjectId === deleteConfirm}
+                  className="retro-button bg-red-100 text-red-800 border-red-800 hover:bg-red-200"
+                >
+                  {actionProjectId === deleteConfirm ? "Deleting..." : "Delete Project"}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </ProtectedDashboardPage>
   )
 }
