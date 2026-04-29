@@ -1,11 +1,12 @@
 "use client"
 
+import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { FolderKanban, KeyRound } from "lucide-react"
+import { FolderKanban } from "lucide-react"
 import { ProtectedDashboardPage } from "@/components/dashboard/protected-dashboard-page"
 import { ProjectCreateForm } from "@/components/dashboard/project-create-form"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ApiKeyDisplay } from "@/components/ui/api-key-display"
 import { useAuth } from "@/contexts/AuthContext"
 import { useProjects } from "@/hooks/useProjects"
 
@@ -19,87 +20,157 @@ export default function ProjectsPage() {
     creating,
     createError,
     createProject,
+    rotateApiKey,
+    setHardBanEnabled,
   } = useProjects({ userId: user?.id ?? null })
+  const [actionProjectId, setActionProjectId] = useState<string | null>(null)
 
   const handleCreateProject = async (name: string) => {
     await createProject(name)
   }
 
+  const handleRotateKey = async (projectId: string) => {
+    try {
+      setActionProjectId(projectId)
+      await rotateApiKey(projectId)
+    } finally {
+      setActionProjectId(null)
+    }
+  }
+
+  const handleToggleHardBan = async (projectId: string, enabled: boolean) => {
+    try {
+      setActionProjectId(projectId)
+      await setHardBanEnabled(projectId, enabled)
+    } finally {
+      setActionProjectId(null)
+    }
+  }
+
   return (
     <ProtectedDashboardPage>
-      <div className="space-y-6">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-3xl font-bold tracking-tight">Projects</h2>
-          <p className="text-zinc-500 dark:text-zinc-400">
-            Only your projects appear here, and each one keeps its own GuardFlow API key.
-          </p>
-        </div>
+      <div className="relative min-h-full overflow-hidden bg-white p-8 text-black">
+        <div className="absolute inset-0 halftone-bg"></div>
+        <div className="absolute inset-0 retro-grid"></div>
+        
+        <div className="relative z-10 space-y-8">
+          <header className="retro-card-static p-6 bg-white">
+            <div className="absolute inset-0 halftone-accent"></div>
+            <div className="relative z-10">
+              <p className="mb-2 inline-block retro-card-static bg-black text-white px-3 py-1 text-xs font-black uppercase tracking-[0.35em] retro-mono">
+                Project Vault
+              </p>
+              <h1 className="text-4xl font-black uppercase tracking-[0.08em] text-black retro-title sm:text-5xl">
+                Projects
+              </h1>
+              <p className="mt-3 max-w-2xl retro-mono text-sm text-gray-600">
+                Only your projects appear here, and each one keeps its own GuardFlow API key.
+              </p>
+            </div>
+          </header>
 
         <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          <Card>
-            <CardHeader>
-              <CardTitle>Your projects</CardTitle>
-              <CardDescription>
+          <div className="retro-card-static bg-white p-6">
+            <div className="absolute inset-0 halftone-subtle"></div>
+            <div className="relative z-10">
+              <h3 className="text-xl font-black uppercase tracking-[0.08em] retro-title">Your projects</h3>
+              <p className="mt-2 text-sm text-gray-600 retro-mono">
                 Manage the projects attached to your account.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {error && (
-                <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600 dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-400">
-                  {error}
-                </div>
-              )}
+              </p>
+              
+              <div className="mt-6 space-y-4">
+                {error && (
+                  <div className="retro-card-static bg-red-100 px-3 py-2 text-sm font-semibold text-red-800 retro-mono">
+                    {error}
+                  </div>
+                )}
 
-              {loading ? (
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Loading your projects...
-                </p>
-              ) : projects.length === 0 ? (
-                <div className="rounded-lg border border-dashed border-zinc-300 p-8 text-center dark:border-zinc-700">
-                  <FolderKanban className="mx-auto h-10 w-10 text-zinc-400" />
-                  <h3 className="mt-4 text-lg font-semibold">No projects yet</h3>
-                  <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-                    Create your first project to start ingesting telemetry and viewing threats.
+                {loading ? (
+                  <p className="text-sm font-medium uppercase tracking-[0.12em] text-gray-700 retro-mono">
+                    Loading your projects...
                   </p>
-                </div>
-              ) : (
-                <div className="grid gap-4">
-                  {projects.map((project) => (
-                    <div
-                      key={project.id}
-                      className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
-                    >
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                        <div className="space-y-2">
-                          <div>
-                            <h3 className="font-semibold">{project.name}</h3>
-                            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                              Project ID: {project.id}
-                            </p>
-                          </div>
-                          <div className="rounded-md bg-zinc-100 px-3 py-2 text-sm dark:bg-zinc-950">
-                            <div className="mb-1 flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
-                              <KeyRound className="h-3.5 w-3.5" />
-                              API key
+                ) : projects.length === 0 ? (
+                  <div className="retro-card-static bg-gray-50 p-8 text-center border-dashed">
+                    <div className="absolute inset-0 halftone-subtle"></div>
+                    <div className="relative z-10">
+                      <FolderKanban className="mx-auto h-10 w-10 text-gray-800" />
+                      <h4 className="mt-4 text-lg font-black uppercase tracking-[0.08em] retro-title">No projects yet</h4>
+                      <p className="mt-2 text-sm text-gray-600 retro-mono">
+                        Create your first project to start ingesting telemetry and viewing threats.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid gap-4">
+                    {projects.map((project) => (
+                      <div
+                        key={project.id}
+                        className="retro-card bg-white p-4"
+                      >
+                        <div className="flex flex-col gap-4">
+                          <div className="space-y-2">
+                            <div>
+                              <h4 className="font-black uppercase tracking-[0.08em] retro-title">{project.name}</h4>
+                              <p className="text-xs font-medium text-gray-600 retro-mono">
+                                Project ID: {project.id}
+                              </p>
                             </div>
-                            <code className="break-all text-xs">{project.api_key}</code>
+                            <div className="flex flex-wrap gap-2">
+                              <span className="retro-card-static bg-gray-100 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] retro-mono text-gray-700">
+                                {project.blocked_today} blocked today
+                              </span>
+                              <span className={`retro-card-static px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] retro-mono ${
+                                project.hard_ban_enabled ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"
+                              }`}>
+                                {project.hard_ban_enabled ? "Hard Ban Active" : "Log Only"}
+                              </span>
+                            </div>
+                            <ApiKeyDisplay 
+                              apiKey={project.api_key} 
+                              label="API Key"
+                              className="text-sm"
+                            />
+                          </div>
+
+                          <div className="flex flex-wrap gap-3">
+                            <Button
+                              onClick={() => router.push(`/threats?project=${project.id}`)}
+                              type="button"
+                              variant="outline"
+                              className="retro-button"
+                            >
+                              View threats
+                            </Button>
+                            <Button
+                              onClick={() => handleRotateKey(project.id)}
+                              type="button"
+                              disabled={actionProjectId === project.id}
+                              className="retro-button"
+                            >
+                              {actionProjectId === project.id ? "Rotating..." : "Generate New Key"}
+                            </Button>
+                            <Button
+                              onClick={() => handleToggleHardBan(project.id, !project.hard_ban_enabled)}
+                              type="button"
+                              variant={project.hard_ban_enabled ? "secondary" : "destructive"}
+                              disabled={actionProjectId === project.id}
+                              className="retro-button"
+                            >
+                              {actionProjectId === project.id
+                                ? "Updating..."
+                                : project.hard_ban_enabled
+                                ? "Hard Ban Active"
+                                : "Log Only Active"}
+                            </Button>
                           </div>
                         </div>
-
-                        <Button
-                          onClick={() => router.push(`/threats?project=${project.id}`)}
-                          type="button"
-                          variant="outline"
-                        >
-                          View threats
-                        </Button>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
           <ProjectCreateForm
             onCreate={handleCreateProject}
@@ -108,6 +179,7 @@ export default function ProjectsPage() {
             title="Create a project"
             description="Project ownership is tied to your account automatically."
           />
+        </div>
         </div>
       </div>
     </ProtectedDashboardPage>

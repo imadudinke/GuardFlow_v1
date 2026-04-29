@@ -4,5 +4,6 @@
 /* eslint-disable */
 export type ProjectUpdate = {
     name?: (string | null);
+    hard_ban_enabled?: (boolean | null);
 };
 

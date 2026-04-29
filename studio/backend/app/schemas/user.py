@@ -5,6 +5,7 @@ from app.schemas.base import BaseSchema, BaseDBSchema
 
 class UserBase(BaseSchema):
     email: EmailStr
+    full_name: Optional[str] = None
     is_active: Optional[bool] = True
 
 
@@ -23,6 +24,7 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseSchema):
     email: Optional[EmailStr] = None
+    full_name: Optional[str] = None
     password: Optional[str] = None
     is_active: Optional[bool] = None
 
@@ -32,4 +34,4 @@ class UserInDB(BaseDBSchema, UserBase):
 
 
 class User(BaseDBSchema, UserBase):
-    pass
+    plan_tier: str

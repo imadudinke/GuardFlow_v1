@@ -10,8 +10,12 @@ export type TelemetrySchema = {
     dna: string;
     path: string;
     status: string;
+    factors?: Array<string>;
+    metadata?: Record<string, any>;
+    headers?: (Record<string, any> | null);
     agent?: (string | null);
     trace_id?: (string | null);
     country?: (string | null);
+    reason?: (string | null);
 };
 

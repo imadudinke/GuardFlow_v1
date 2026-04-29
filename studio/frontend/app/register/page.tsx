@@ -63,10 +63,10 @@ export default function RegisterPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-zinc-900 dark:border-zinc-50"></div>
-          <p className="mt-4 text-zinc-500 dark:text-zinc-400">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center p-6">
+        <div className="border-4 border-black bg-yellow-300 px-8 py-8 text-center text-black shadow-[12px_12px_0_#000]">
+          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-4 border-black"></div>
+          <p className="mt-4 text-sm font-black uppercase tracking-[0.28em]">Loading registration gate...</p>
         </div>
       </div>
     );
@@ -77,21 +77,25 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black px-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800 p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
+      <div className="pointer-events-none absolute -left-10 top-12 h-36 w-36 rounded-full border-[6px] border-black bg-cyan-300/80" />
+      <div className="pointer-events-none absolute right-[-2rem] top-20 h-44 w-44 -rotate-12 border-[6px] border-black bg-pink-400/70" />
+      <div className="pointer-events-none absolute bottom-10 left-16 h-20 w-56 -skew-x-12 border-[5px] border-black bg-yellow-300/80" />
+
+      <div className="relative z-10 grid w-full max-w-5xl gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="border-4 border-black bg-[#fff8dc] p-8 text-black shadow-[14px_14px_0_#000]">
+          <div className="mb-8">
+            <h1 className="text-3xl font-black uppercase tracking-[0.08em]">
               Create Account
             </h1>
-            <p className="text-zinc-600 dark:text-zinc-400">
+            <p className="mt-2 text-sm text-zinc-700">
               Join GuardFlow to start monitoring threats
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
+              <div className="border-4 border-black bg-pink-300 px-4 py-3 text-sm font-semibold text-black shadow-[6px_6px_0_#000]">
                 {error}
               </div>
             )}
@@ -99,7 +103,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
+                className="mb-2 block text-sm font-black uppercase tracking-[0.16em] text-zinc-800"
               >
                 Email Address
               </label>
@@ -109,7 +113,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-transparent transition"
+                className="w-full border-4 border-black bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 outline-none transition focus:bg-yellow-100"
                 placeholder="you@example.com"
               />
             </div>
@@ -117,7 +121,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
+                className="mb-2 block text-sm font-black uppercase tracking-[0.16em] text-zinc-800"
               >
                 Password
               </label>
@@ -127,10 +131,10 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-transparent transition"
+                className="w-full border-4 border-black bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 outline-none transition focus:bg-yellow-100"
                 placeholder="••••••••"
               />
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-500">
+              <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-zinc-700">
                 Must be at least 8 characters
               </p>
             </div>
@@ -138,7 +142,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
+                className="mb-2 block text-sm font-black uppercase tracking-[0.16em] text-zinc-800"
               >
                 Confirm Password
               </label>
@@ -148,7 +152,7 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-transparent transition"
+                className="w-full border-4 border-black bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 outline-none transition focus:bg-yellow-100"
                 placeholder="••••••••"
               />
             </div>
@@ -156,18 +160,18 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-900"
+              className="w-full border-4 border-black bg-cyan-300 px-4 py-3 text-sm font-black uppercase tracking-[0.18em] text-black shadow-[8px_8px_0_#000] transition-transform hover:-translate-y-0.5 disabled:opacity-50"
             >
               {loading ? "Creating account..." : "Create Account"}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="text-sm text-zinc-700">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition"
+                className="font-black uppercase tracking-[0.12em] text-black underline-offset-4 transition hover:underline"
               >
                 Sign in
               </Link>
@@ -175,9 +179,26 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-zinc-500 dark:text-zinc-500 mt-8">
-          By signing up, you agree to our Terms of Service and Privacy Policy
-        </p>
+        <div className="border-4 border-black bg-[#14071f] p-8 text-white shadow-[14px_14px_0_#22d3ee]">
+          <p className="text-[11px] font-black uppercase tracking-[0.35em] text-yellow-200">
+            New Operator Intake
+          </p>
+          <h2 className="mt-3 text-5xl font-black uppercase tracking-[0.08em]">Join The Grid</h2>
+          <p className="mt-4 max-w-md font-mono text-sm text-pink-100/85">
+            Build projects, mint API keys, and watch GuardFlow translate noisy traffic into weird,
+            readable threat intelligence.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            <div className="border-4 border-black bg-yellow-300 p-4 text-black shadow-[8px_8px_0_#000]">
+              <div className="text-[10px] font-black uppercase tracking-[0.28em]">Rules</div>
+              <div className="mt-1 text-2xl font-black uppercase">8+ chars</div>
+            </div>
+            <div className="border-4 border-black bg-pink-300 p-4 text-black shadow-[8px_8px_0_#000]">
+              <div className="text-[10px] font-black uppercase tracking-[0.28em]">Access</div>
+              <div className="mt-1 text-2xl font-black uppercase">Instant</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -23,10 +23,10 @@ export function ProtectedDashboardPage({
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-zinc-900 dark:border-zinc-50"></div>
-          <p className="mt-4 text-zinc-500 dark:text-zinc-400">Loading...</p>
+      <div className="flex h-screen items-center justify-center bg-transparent p-6">
+        <div className="border-4 border-black bg-yellow-300 px-8 py-8 text-center text-black shadow-[12px_12px_0_#000]">
+          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-4 border-black"></div>
+          <p className="mt-4 text-sm font-black uppercase tracking-[0.28em]">Loading control room...</p>
         </div>
       </div>
     )

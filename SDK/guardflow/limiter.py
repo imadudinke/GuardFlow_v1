@@ -23,6 +23,19 @@ class RateLimiter:
             
         return current_hits > limit
 
+    async def get_hits(self, dna: str) -> int:
+        key = f"gf:rate:{dna}"
+        hits = await self.r.get(key)
+        return int(hits or 0)
+
+    async def is_globally_blacklisted(self, dna: str) -> bool:
+        key = f"gf:blacklist:{dna}"
+        return bool(await self.r.exists(key))
+
+    async def cache_global_blacklist(self, dna: str, ttl_seconds: int = 3600) -> None:
+        key = f"gf:blacklist:{dna}"
+        await self.r.setex(key, ttl_seconds, "1")
+
     async def check_and_ban(self, dna: str, limit: int = 10, ban_threshold: int = 50) -> str:
         key = f"gf:rate:{dna}"
         ban_key = f"gf:ban:{dna}"

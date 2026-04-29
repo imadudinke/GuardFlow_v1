@@ -1,48 +1,176 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: 0 0% 100%;
-  --color-foreground: 240 10% 3.9%;
-  --color-card: 0 0% 100%;
-  --color-card-foreground: 240 10% 3.9%;
-  --color-popover: 0 0% 100%;
-  --color-popover-foreground: 240 10% 3.9%;
-  --color-primary: 240 5.9% 10%;
-  --color-primary-foreground: 0 0% 98%;
-  --color-secondary: 240 4.8% 95.9%;
-  --color-secondary-foreground: 240 5.9% 10%;
-  --color-muted: 240 4.8% 95.9%;
-  --color-muted-foreground: 240 3.8% 46.1%;
-  --color-accent: 240 4.8% 95.9%;
-  --color-accent-foreground: 240 5.9% 10%;
-  --color-destructive: 0 84.2% 60.2%;
-  --color-destructive-foreground: 0 0% 98%;
-  --color-border: 240 5.9% 90%;
-  --color-input: 240 5.9% 90%;
-  --color-ring: 240 5.9% 10%;
+  --color-background: 255 255 255;
+  --color-foreground: 20 20 20;
+  --color-card: 255 255 255;
+  --color-card-foreground: 20 20 20;
+  --color-popover: 255 255 255;
+  --color-popover-foreground: 20 20 20;
+  --color-primary: 20 20 20;
+  --color-primary-foreground: 255 255 255;
+  --color-secondary: 245 245 245;
+  --color-secondary-foreground: 20 20 20;
+  --color-muted: 250 250 250;
+  --color-muted-foreground: 115 115 115;
+  --color-accent: 245 245 245;
+  --color-accent-foreground: 20 20 20;
+  --color-destructive: 220 38 38;
+  --color-destructive-foreground: 255 255 255;
+  --color-border: 229 229 229;
+  --color-input: 245 245 245;
+  --color-ring: 20 20 20;
   --radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   @theme {
-    --color-background: 240 10% 3.9%;
-    --color-foreground: 0 0% 98%;
-    --color-card: 240 10% 3.9%;
-    --color-card-foreground: 0 0% 98%;
-    --color-popover: 240 10% 3.9%;
-    --color-popover-foreground: 0 0% 98%;
-    --color-primary: 0 0% 98%;
-    --color-primary-foreground: 240 5.9% 10%;
-    --color-secondary: 240 3.7% 15.9%;
-    --color-secondary-foreground: 0 0% 98%;
-    --color-muted: 240 3.7% 15.9%;
-    --color-muted-foreground: 240 5% 64.9%;
-    --color-accent: 240 3.7% 15.9%;
-    --color-accent-foreground: 0 0% 98%;
-    --color-destructive: 0 62.8% 30.6%;
-    --color-destructive-foreground: 0 0% 98%;
-    --color-border: 240 3.7% 15.9%;
-    --color-input: 240 3.7% 15.9%;
-    --color-ring: 240 4.9% 83.9%;
+    --color-background: 255 255 255;
+    --color-foreground: 20 20 20;
+    --color-card: 255 255 255;
+    --color-card-foreground: 20 20 20;
+    --color-popover: 255 255 255;
+    --color-popover-foreground: 20 20 20;
+    --color-primary: 20 20 20;
+    --color-primary-foreground: 255 255 255;
+    --color-secondary: 245 245 245;
+    --color-secondary-foreground: 20 20 20;
+    --color-muted: 250 250 250;
+    --color-muted-foreground: 115 115 115;
+    --color-accent: 245 245 245;
+    --color-accent-foreground: 20 20 20;
+    --color-destructive: 220 38 38;
+    --color-destructive-foreground: 255 255 255;
+    --color-border: 229 229 229;
+    --color-input: 245 245 245;
+    --color-ring: 20 20 20;
   }
+}
+
+/* Halftone Pattern Backgrounds */
+.halftone-bg {
+  background-image: radial-gradient(circle, #000 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.03;
+}
+
+.halftone-accent {
+  background-image: radial-gradient(circle, #000 0.5px, transparent 0.5px);
+  background-size: 10px 10px;
+  opacity: 0.05;
+}
+
+.halftone-subtle {
+  background-image: radial-gradient(circle, #000 0.3px, transparent 0.3px);
+  background-size: 15px 15px;
+  opacity: 0.02;
+}
+
+/* Retro Grid Pattern */
+.retro-grid {
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Retro Card Styles */
+.retro-card {
+  background: white;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  transition: all 0.15s ease-out;
+}
+
+.retro-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px #000;
+}
+
+/* Static cards for nested elements and text containers */
+.retro-card-static {
+  background: white;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0px #000;
+}
+
+.retro-card-static:hover {
+  transform: none;
+  box-shadow: 4px 4px 0px #000;
+}
+
+/* Retro Button */
+.retro-button {
+  background: white;
+  border: 2px solid #000;
+  box-shadow: 3px 3px 0px #000;
+  transition: all 0.1s ease-out;
+}
+
+.retro-button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #000;
+}
+
+.retro-button:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px #000;
+}
+
+/* Small retro buttons for icons */
+.retro-button-sm {
+  background: white;
+  border: 1px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  transition: all 0.1s ease-out;
+  border-radius: 2px;
+}
+
+.retro-button-sm:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #000;
+}
+
+.retro-button-sm:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px #000;
+}
+
+/* Typography */
+.retro-title {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  letter-spacing: -0.02em;
+  color: #000;
+}
+
+.retro-mono {
+  font-family: 'Courier New', monospace;
+  color: #000;
+}
+
+/* Input Fields */
+input.retro-card {
+  transition: background-color 0.15s ease-out;
+}
+
+input.retro-card:hover {
+  transform: none !important;
+  box-shadow: 4px 4px 0px #000 !important;
+}
+
+input.retro-card:focus {
+  transform: none !important;
+  box-shadow: 4px 4px 0px #000 !important;
+  background-color: #f9f9f9;
+}
+
+/* Animations */
+@keyframes halftone-pulse {
+  0%, 100% { opacity: 0.02; }
+  50% { opacity: 0.05; }
+}
+
+.halftone-animated {
+  animation: halftone-pulse 4s ease-in-out infinite;
 }

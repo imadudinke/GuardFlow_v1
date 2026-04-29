@@ -93,6 +93,7 @@ async def read_project(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Project not found"
         )
+    project_service.attach_project_stats(db, [db_project])
     return db_project
 
 
@@ -121,6 +122,33 @@ async def update_project(
             detail="Project not found"
         )
     return db_project
+
+
+@router.post("/{project_id}/rotate-key", response_model=Project)
+async def rotate_project_key(
+    project_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Rotate a project's live API key"""
+    db_project = project_service.get_user_project(
+        db,
+        project_id=project_id,
+        user_id=current_user.id,
+    )
+    if db_project is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Project not found"
+        )
+
+    rotated_project = project_service.rotate_api_key(db, project_id=project_id)
+    if rotated_project is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Project not found"
+        )
+    return rotated_project
 
 
 @router.delete("/{project_id}", status_code=status.HTTP_204_NO_CONTENT)

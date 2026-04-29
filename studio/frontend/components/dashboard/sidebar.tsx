@@ -27,12 +27,21 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-full w-64 flex-col border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="flex h-16 items-center border-b border-zinc-200 px-6 dark:border-zinc-800">
-        <Shield className="h-6 w-6 text-zinc-900 dark:text-zinc-50" />
-        <span className="ml-2 text-lg font-semibold">GuardFlow</span>
+    <div className="flex h-full w-64 flex-col bg-white relative z-20">
+      <div className="absolute inset-0 halftone-subtle"></div>
+      
+      {/* Header */}
+      <div className="flex h-16 items-center px-6 border-b-2 border-black relative z-10">
+        <div className="flex items-center gap-3">
+          <div className="retro-card p-2">
+            <Shield className="h-6 w-6 text-black" />
+          </div>
+          <span className="text-xl font-bold retro-title">GuardFlow</span>
+        </div>
       </div>
-      <nav className="flex-1 space-y-1 px-3 py-4">
+      
+      {/* Navigation */}
+      <nav className="flex-1 space-y-2 px-4 py-6 relative z-10">
         {navigation.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -40,10 +49,10 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all retro-mono",
                 isActive
-                  ? "bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-900"
-                  : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                  ? "retro-card bg-black text-white"
+                  : "hover:bg-gray-50 text-black border-2 border-transparent hover:border-gray-200"
               )}
             >
               <item.icon className="h-5 w-5" />
@@ -52,6 +61,13 @@ export function Sidebar() {
           );
         })}
       </nav>
+      
+      {/* Footer */}
+      <div className="p-4 border-t-2 border-black relative z-10">
+        <div className="text-xs text-gray-500 retro-mono text-center">
+          v1.0.0 • Retro Mode
+        </div>
+      </div>
     </div>
   );
 }

@@ -4,7 +4,9 @@
 /* eslint-disable */
 export type User = {
     email: string;
+    full_name?: (string | null);
     is_active?: (boolean | null);
     id: string;
+    plan_tier: string;
 };
 

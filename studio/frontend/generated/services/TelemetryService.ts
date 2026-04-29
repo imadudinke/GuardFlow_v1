@@ -2,6 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { BlacklistCheckResponse } from '../models/BlacklistCheckResponse';
+import type { BlacklistCheckSchema } from '../models/BlacklistCheckSchema';
+import type { RuntimeConfigResponse } from '../models/RuntimeConfigResponse';
 import type { TelemetrySchema } from '../models/TelemetrySchema';
 import type { ThreatLog } from '../models/ThreatLog';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -36,6 +39,52 @@ export class TelemetryService {
         });
     }
     /**
+     * Check Blacklist
+     * Check whether a DNA fingerprint is globally blacklisted.
+     * @param requestBody
+     * @param xGuardFlowKey
+     * @returns BlacklistCheckResponse Successful Response
+     * @throws ApiError
+     */
+    public static checkBlacklistApiV1TelemetryBlacklistCheckPost(
+        requestBody: BlacklistCheckSchema,
+        xGuardFlowKey?: string,
+    ): CancelablePromise<BlacklistCheckResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/telemetry/blacklist-check',
+            headers: {
+                'X-GuardFlow-Key': xGuardFlowKey,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get Runtime Config
+     * Return project-level control-plane configuration for the SDK.
+     * @param xGuardFlowKey
+     * @returns RuntimeConfigResponse Successful Response
+     * @throws ApiError
+     */
+    public static getRuntimeConfigApiV1TelemetryRuntimeConfigGet(
+        xGuardFlowKey?: string,
+    ): CancelablePromise<RuntimeConfigResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/telemetry/runtime-config',
+            headers: {
+                'X-GuardFlow-Key': xGuardFlowKey,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
      * Get Threats
      * Get threat logs for a specific project
      *
@@ -50,6 +99,7 @@ export class TelemetryService {
      * @param projectId
      * @param limit
      * @param skip
+     * @param accessToken
      * @returns ThreatLog Successful Response
      * @throws ApiError
      */
@@ -57,10 +107,14 @@ export class TelemetryService {
         projectId?: string,
         limit: number = 100,
         skip?: number,
+        accessToken?: (string | null),
     ): CancelablePromise<Array<ThreatLog>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/threats',
+            cookies: {
+                'access_token': accessToken,
+            },
             query: {
                 'project_id': projectId,
                 'limit': limit,

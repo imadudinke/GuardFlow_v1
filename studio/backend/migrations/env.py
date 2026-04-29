@@ -15,6 +15,7 @@ from app.core.db import Base
 from app.models.user import User
 from app.models.project import Project
 from app.models.threat_log import ThreatLog
+from app.models.global_blacklist import GlobalBlacklist
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

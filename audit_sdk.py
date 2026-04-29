@@ -1,87 +1,183 @@
 import requests
 import time
+import random
 import concurrent.futures
+from typing import Dict
 
-# Configuration - Adjust these to match your FastAPI routes
+# ====================== CONFIG ======================
 BASE_URL = "http://127.0.0.1:8000"
-LOGIN_URL = f"{BASE_URL}/login"
-DATA_URL = f"{BASE_URL}/items"  # A route that might contain sensitive data
-PROTECTED_URL = f"{BASE_URL}/admin"
 
-def run_test(name, func):
-    print(f"\n--- Starting Test: {name} ---")
+LOGIN_URL = f"{BASE_URL}/auth/login"
+PROTECTED_URL = f"{BASE_URL}/admin/dashboard"
+SENSITIVE_URL = f"{BASE_URL}/api/users"
+
+# Realistic browser fingerprints pool
+BROWSER_FINGERPRINTS = [
+    {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Referer": "https://www.google.com/",
+    },
+    {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-GB,en;q=0.8",
+        "Referer": "https://github.com/",
+    },
+    {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Referer": "https://stackoverflow.com/",
+    },
+]
+
+def get_random_fingerprint() -> Dict:
+    """Return a random realistic browser fingerprint"""
+    fp = random.choice(BROWSER_FINGERPRINTS).copy()
+    fp["Connection"] = random.choice(["keep-alive", "close"])
+    fp["Cache-Control"] = random.choice(["no-cache", "max-age=0"])
+    return fp
+
+
+def run_test(name: str, func):
+    print(f"\n{'='*75}")
+    print(f"   [ATTACK TEST] {name.upper()}")
+    print(f"{'='*75}")
     try:
         func()
     except Exception as e:
-        print(f"Test Error: {e}")
+        print(f"    [!] Test crashed: {e}")
 
+
+# ====================== TEST 1: Advanced Brute Force with Fingerprint Rotation ======================
 def test_brute_force():
-    """Simulates a dictionary attack on the login endpoint."""
-    print(f"[*] Sending 15 rapid login attempts to {LOGIN_URL}...")
-    for i in range(1, 16):
-        data = {"username": "admin", "password": f"pass{i}"}
-        response = requests.post(LOGIN_URL, data=data)
-        print(f"Attempt {i}: Status {response.status_code}")
-        if response.status_code == 429:
-            print("[+] GuardFlow SUCCESS: Brute force blocked (Rate Limit).")
-            return
-    print("[-] GuardFlow NOTIFY: No rate limiting detected.")
+    print("[*] Starting advanced brute force with rotating fingerprints...")
 
+    for i in range(1, 100):
+        if i % 15 == 0:
+            print(f"    --- Changing DNA fingerprint (request {i}) ---")
+
+        fingerprint = get_random_fingerprint()
+        
+        payload = {
+            "username": "admin",
+            "password": f"password{random.randint(100,999)}"
+        }
+
+        try:
+            response = requests.post(
+                LOGIN_URL, 
+                json=payload, 
+                headers=fingerprint,
+                timeout=6
+            )
+
+            print(f"    Attempt {i:3d} | Status: {response.status_code} | UA: {fingerprint['User-Agent'][:40]}...")
+
+            if response.status_code == 429:
+                print("    [+] SUCCESS: Rate limiting triggered!")
+                return
+            if response.status_code in [200, 201]:
+                print("    [!] CRITICAL: Weak credentials allowed!")
+                break
+
+        except Exception as e:
+            print(f"    [!] Request failed: {e}")
+
+        # Random delay between 0.1 - 0.8 seconds (human-like)
+        time.sleep(random.uniform(0.1, 0.8))
+
+
+# ====================== TEST 2: Advanced Scraping with Fingerprint Rotation ======================
 def test_scraping():
-    """Simulates a bot crawling for sensitive data."""
-    print(f"[*] Simulating high-frequency data scraping on {DATA_URL}...")
-    def fetch():
-        return requests.get(DATA_URL, headers={"User-Agent": "ScraperBot/1.0"})
+    print("[*] Starting concurrent scraping with frequent fingerprint changes...")
 
-    # Using a thread pool to simulate concurrent requests
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        futures = [executor.submit(fetch) for _ in range(30)]
+    def make_request():
+        fingerprint = get_random_fingerprint()
+        # Occasionally change path slightly to look more natural
+        path = random.choice(["", "/profile", "/data", "/users"])
+        url = f"{SENSITIVE_URL}{path}"
         
-        blocked = False
-        for f in concurrent.futures.as_completed(futures):
-            res = f.result()
-            if res.status_code in [403, 429]:
-                blocked = True
-        
-        if blocked:
-            print("[+] GuardFlow SUCCESS: Scraping pattern detected and blocked.")
-        else:
-            print("[-] GuardFlow NOTIFY: Bot allowed to complete all requests.")
+        return requests.get(url, headers=fingerprint, timeout=8)
 
-def test_auth_bypass():
-    """Probes protected routes without credentials."""
-    print(f"[*] Probing {PROTECTED_URL} without authentication...")
-    
-    # 1. No Header
-    res1 = requests.get(PROTECTED_URL)
-    # 2. Malformed Header
-    res2 = requests.get(PROTECTED_URL, headers={"Authorization": "Bearer invalid_token"})
-    
-    print(f"No Token: {res1.status_code} | Invalid Token: {res2.status_code}")
-    
-    if res1.status_code in [401, 403] and res2.status_code in [401, 403]:
-        print("[+] GuardFlow SUCCESS: Authentication enforcement verified.")
+    blocked = 0
+    total = 60
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        futures = [executor.submit(make_request) for _ in range(total)]
+        
+        for i, future in enumerate(concurrent.futures.as_completed(futures), 1):
+            try:
+                resp = future.result()
+                if resp.status_code in [403, 429]:
+                    blocked += 1
+                
+                if i % 15 == 0:
+                    print(f"    --- Rotating fingerprint at request {i} ---")
+            except:
+                pass
+
+    print(f"    [+] Scraping Test Complete: {blocked}/{total} requests blocked")
+    if blocked > 25:
+        print("    [+] Strong bot protection detected")
     else:
-        print("[!] GuardFlow WARNING: Protected route is accessible!")
+        print("    [!] Bot protection appears weak")
+
+
+# ====================== TEST 3: Authorization Bypass Attempts ======================
+def test_auth_bypass():
+    print("[*] Testing multiple authorization bypass techniques...")
+
+    tests = [
+        ("No auth", {}),
+        ("Invalid Bearer", {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.invalid.token"}),
+        ("Fake JWT", {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"}),
+        ("Basic Auth fake", {"Authorization": "Basic YWRtaW46YWRtaW4="}),
+    ]
+
+    for name, extra_headers in tests:
+        fingerprint = get_random_fingerprint()
+        headers = {**fingerprint, **extra_headers}
+
+        try:
+            resp = requests.get(PROTECTED_URL, headers=headers, timeout=5)
+            print(f"    {name:25} → Status: {resp.status_code}")
+            
+            if resp.status_code in [401, 403]:
+                print("        [+] Access correctly denied")
+            else:
+                print("        [!] WARNING: Access granted!")
+        except Exception as e:
+            print(f"        [!] Request error: {e}")
+
 
 def main():
-    print("====================================================")
-    print("   GuardFlow_V1 SDK - Automated Security Auditor    ")
-    print("====================================================")
-    
-    # Check if server is up
+    print("\n" + "="*80)
+    print("          ADVANCED GUARDFLOW SECURITY AUDITOR")
+    print("          Real Attacker Simulation with Fingerprint Rotation")
+    print("="*80)
+
     try:
-        requests.get(BASE_URL)
-    except requests.exceptions.ConnectionError:
-        print(f"ERROR: Could not connect to {BASE_URL}. Make sure your Uvicorn server is running!")
+        requests.get(BASE_URL, timeout=3)
+    except:
+        print(f"❌ Cannot connect to {BASE_URL}. Start your FastAPI server first!")
         return
 
-    run_test("BRUTE FORCE PROTECTION", test_brute_force)
-    run_test("SCRAPING DETECTION", test_scraping)
-    run_test("AUTH ENFORCEMENT", test_auth_bypass)
+    run_test("BRUTE FORCE WITH FINGERPRINT ROTATION", test_brute_force)
+    time.sleep(1.5)
+    
+    run_test("AGGRESSIVE SCRAPING WITH DNA CHANGES", test_scraping)
+    time.sleep(1.5)
+    
+    run_test("AUTHENTICATION BYPASS ATTEMPTS", test_auth_bypass)
 
-    print("\n====================================================")
-    print("Audit Complete. Check your Uvicorn logs for SDK triggers.")
+    print("\n" + "="*80)
+    print("Audit completed. Check your GuardFlow logs for detection patterns.")
+    print("="*80)
+
 
 if __name__ == "__main__":
     main()

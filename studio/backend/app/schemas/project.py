@@ -13,8 +13,11 @@ class ProjectCreate(ProjectBase):
 
 class ProjectUpdate(BaseSchema):
     name: Optional[str] = None
+    hard_ban_enabled: Optional[bool] = None
 
 
 class Project(BaseDBSchema, ProjectBase):
     api_key: str
+    hard_ban_enabled: bool
+    blocked_today: int = 0
     user_id: UUID

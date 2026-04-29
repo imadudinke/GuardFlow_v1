@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LucideIcon } from "lucide-react";
 
 interface StatsCardProps {
@@ -20,27 +19,38 @@ export function StatsCard({
   trend,
 }: StatsCardProps) {
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
-        {description && (
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">{description}</p>
-        )}
-        {trend && (
-          <p
-            className={`text-xs ${
-              trend.isPositive ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {trend.isPositive ? "+" : ""}
-            {trend.value}% from last month
-          </p>
-        )}
-      </CardContent>
-    </Card>
+    <div className="retro-card p-6 bg-white relative overflow-hidden">
+      <div className="absolute inset-0 halftone-subtle"></div>
+      
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-medium retro-mono text-gray-600">{title}</h3>
+          <div className="retro-card p-2 bg-gray-50">
+            <Icon className="h-4 w-4 text-black" />
+          </div>
+        </div>
+        
+        <div className="space-y-2">
+          <div className="text-3xl font-bold retro-title">{value}</div>
+          
+          {description && (
+            <p className="text-xs text-gray-500 retro-mono">{description}</p>
+          )}
+          
+          {trend && (
+            <div className="flex items-center gap-1">
+              <span
+                className={`text-xs font-medium retro-mono ${
+                  trend.isPositive ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {trend.isPositive ? "↗" : "↘"} {Math.abs(trend.value)}%
+              </span>
+              <span className="text-xs text-gray-400 retro-mono">vs last month</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

@@ -9,7 +9,11 @@ const pageTitles: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/projects": "Projects",
   "/threats": "Threats",
-}
+  "/analytics": "Analytics",
+  "/reports": "Reports",
+  "/team": "Team",
+  "/settings": "Settings",
+};
 
 export function Header() {
   const { user, logout } = useAuth();
@@ -17,26 +21,34 @@ export function Header() {
   const title = pageTitles[pathname] ?? "GuardFlow";
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-zinc-200 bg-white px-6 dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="flex items-center gap-4">
-        <h1 className="text-xl font-semibold">{title}</h1>
+    <header className="flex h-16 items-center justify-between bg-white px-6 border-b-2 border-black relative z-20">
+      <div className="absolute inset-0 halftone-accent"></div>
+      
+      <div className="flex items-center gap-4 relative z-10">
+        <h1 className="text-2xl font-bold retro-title">{title}</h1>
       </div>
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon">
+      
+      <div className="flex items-center gap-4 relative z-10">
+        <button className="retro-button p-2 retro-mono">
           <Bell className="h-5 w-5" />
-        </Button>
-        <div className="flex items-center gap-3 border-l border-zinc-200 pl-4 dark:border-zinc-800">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-900">
+        </button>
+        
+        <div className="flex items-center gap-3 border-l-2 border-black pl-4">
+          <div className="flex items-center gap-3">
+            <div className="retro-card p-2">
               <User className="h-4 w-4" />
             </div>
-            <div className="text-sm">
+            <div className="text-sm retro-mono">
               <p className="font-medium">{user?.email}</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={logout}>
+          
+          <button 
+            onClick={logout}
+            className="retro-button p-2 retro-mono hover:bg-red-50"
+          >
             <LogOut className="h-5 w-5" />
-          </Button>
+          </button>
         </div>
       </div>
     </header>

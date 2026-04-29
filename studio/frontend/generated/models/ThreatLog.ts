@@ -9,6 +9,8 @@ export type ThreatLog = {
     path: string;
     country: string;
     risk_score: number;
+    risk_factors?: Array<string>;
+    metadata?: Record<string, any>;
     id: string;
     created_at: string;
 };

@@ -2,6 +2,7 @@ import '@/lib/api/config';
 import { useCallback, useEffect, useState } from 'react';
 import { ProjectsService } from '@/generated/services/ProjectsService';
 import type { Project } from '@/generated/models/Project';
+import { getApiUrl } from '@/lib/api/url';
 
 interface UseProjectsOptions {
   userId: string | null;
@@ -15,6 +16,8 @@ interface UseProjectsReturn {
   createError: string | null;
   refetch: () => Promise<void>;
   createProject: (name: string) => Promise<Project>;
+  rotateApiKey: (projectId: string) => Promise<Project>;
+  setHardBanEnabled: (projectId: string, enabled: boolean) => Promise<Project>;
 }
 
 export function useProjects({ userId }: UseProjectsOptions): UseProjectsReturn {
@@ -72,6 +75,46 @@ export function useProjects({ userId }: UseProjectsOptions): UseProjectsReturn {
     }
   };
 
+  const rotateApiKey = async (projectId: string) => {
+    const response = await fetch(getApiUrl(`/api/v1/projects/${projectId}/rotate-key`), {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.detail || 'Failed to rotate API key');
+    }
+
+    const updatedProject = (await response.json()) as Project;
+    setProjects((currentProjects) =>
+      currentProjects.map((project) => (project.id === projectId ? updatedProject : project)),
+    );
+    return updatedProject;
+  };
+
+  const setHardBanEnabled = async (projectId: string, enabled: boolean) => {
+    const response = await fetch(getApiUrl(`/api/v1/projects/${projectId}`), {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ hard_ban_enabled: enabled }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.detail || 'Failed to update project control');
+    }
+
+    const updatedProject = (await response.json()) as Project;
+    setProjects((currentProjects) =>
+      currentProjects.map((project) => (project.id === projectId ? updatedProject : project)),
+    );
+    return updatedProject;
+  };
+
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
       void fetchProjects();
@@ -88,5 +131,7 @@ export function useProjects({ userId }: UseProjectsOptions): UseProjectsReturn {
     createError,
     refetch: fetchProjects,
     createProject,
+    rotateApiKey,
+    setHardBanEnabled,
   };
 }

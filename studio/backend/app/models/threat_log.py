@@ -1,5 +1,5 @@
-from sqlalchemy import Column, String, Boolean, ForeignKey, DateTime, Integer
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, ForeignKey, DateTime, Integer
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.sql import func
 import uuid
 from app.core.db import Base
@@ -13,4 +13,6 @@ class ThreatLog(Base):
     path = Column(String)   
     country = Column(String, nullable=False, default="Unknown")  
     risk_score = Column(Integer)
+    risk_factors = Column(JSONB, nullable=False, default=list)
+    request_metadata = Column("metadata", JSONB, nullable=False, default=dict)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())

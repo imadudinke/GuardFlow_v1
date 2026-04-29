@@ -46,6 +46,8 @@ def create_user(db: Session, user: UserCreate) -> User:
     hashed_password = get_password_hash(user.password)
     db_user = User(
         email=user.email,
+        full_name=user.full_name,
+        plan_tier="Free",
         hashed_password=hashed_password,
         is_active=user.is_active
     )

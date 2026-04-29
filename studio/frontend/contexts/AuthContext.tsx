@@ -7,6 +7,8 @@ import { getApiUrl } from '@/lib/api/url';
 interface User {
   id: string;
   email: string;
+  full_name?: string | null;
+  plan_tier?: string | null;
   is_active: boolean;
 }
 

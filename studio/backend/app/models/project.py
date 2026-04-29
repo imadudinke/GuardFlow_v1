@@ -8,4 +8,5 @@ class Project(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String)
     api_key = Column(String, unique=True, index=True) # The "gf_live_..." key
+    hard_ban_enabled = Column(Boolean, nullable=False, default=True, server_default="true")
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))

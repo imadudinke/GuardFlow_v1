@@ -1,9 +1,12 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import Optional, List
 from uuid import UUID
 import secrets
+from datetime import datetime, timezone
 
 from app.models.project import Project
+from app.models.threat_log import ThreatLog
 from app.schemas.project import ProjectCreate, ProjectUpdate
 
 
@@ -34,7 +37,32 @@ def get_projects(db: Session, skip: int = 0, limit: int = 100) -> List[Project]:
 
 
 def get_user_projects(db: Session, user_id: UUID, skip: int = 0, limit: int = 100) -> List[Project]:
-    return db.query(Project).filter(Project.user_id == user_id).offset(skip).limit(limit).all()
+    projects = db.query(Project).filter(Project.user_id == user_id).offset(skip).limit(limit).all()
+    attach_project_stats(db, projects)
+    return projects
+
+
+def attach_project_stats(db: Session, projects: List[Project]) -> List[Project]:
+    if not projects:
+        return projects
+
+    start_of_day = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+    project_ids = [project.id for project in projects]
+    blocked_counts = dict(
+        db.query(ThreatLog.project_id, func.count(ThreatLog.id))
+        .filter(
+            ThreatLog.project_id.in_(project_ids),
+            ThreatLog.created_at >= start_of_day,
+            ThreatLog.risk_score >= 75,
+        )
+        .group_by(ThreatLog.project_id)
+        .all()
+    )
+
+    for project in projects:
+        setattr(project, "blocked_today", blocked_counts.get(project.id, 0))
+
+    return projects
 
 
 def create_project(db: Session, project: ProjectCreate) -> Project:
@@ -47,6 +75,7 @@ def create_project(db: Session, project: ProjectCreate) -> Project:
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
+    setattr(db_project, "blocked_today", 0)
     return db_project
 
 
@@ -61,6 +90,19 @@ def update_project(db: Session, project_id: UUID, project: ProjectUpdate) -> Opt
     
     db.commit()
     db.refresh(db_project)
+    attach_project_stats(db, [db_project])
+    return db_project
+
+
+def rotate_api_key(db: Session, project_id: UUID) -> Optional[Project]:
+    db_project = get_project(db, project_id)
+    if not db_project:
+        return None
+
+    db_project.api_key = generate_api_key()
+    db.commit()
+    db.refresh(db_project)
+    attach_project_stats(db, [db_project])
     return db_project
 
 

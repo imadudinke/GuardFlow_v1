@@ -4,7 +4,7 @@ from pydantic import BaseModel, EmailStr
 
 from app.core.db import get_db
 from app.core.security import create_access_token
-from app.schemas.user import UserCreate, User
+from app.schemas.user import UserCreate, User, UserUpdate
 from app.services import user as user_service
 from app.core.auth import get_current_user
 
@@ -19,6 +19,16 @@ class LoginRequest(BaseModel):
 class AuthResponse(BaseModel):
     user: User
     message: str
+
+
+class ProfileUpdateRequest(BaseModel):
+    email: EmailStr
+    full_name: str | None = None
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
 
 
 @router.post("/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
@@ -93,3 +103,57 @@ def logout(response: Response):
 def get_me(current_user = Depends(get_current_user)):
     """Get current authenticated user"""
     return current_user
+
+
+@router.patch("/me", response_model=User)
+def update_me(
+    payload: ProfileUpdateRequest,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user),
+):
+    """Update the current user's basic profile"""
+    existing_user = user_service.get_user_by_email(db, email=payload.email)
+    if existing_user and existing_user.id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email already registered",
+        )
+
+    updated_user = user_service.update_user(
+        db,
+        user_id=current_user.id,
+        user=UserUpdate(email=payload.email, full_name=payload.full_name),
+    )
+    if updated_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+    return updated_user
+
+
+@router.post("/change-password")
+def change_password(
+    payload: ChangePasswordRequest,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user),
+):
+    """Change the current user's password"""
+    if len(payload.new_password) < 8:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must be at least 8 characters long",
+        )
+
+    if not user_service.verify_password(payload.current_password, current_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Current password is incorrect",
+        )
+
+    user_service.update_user(
+        db,
+        user_id=current_user.id,
+        user=UserUpdate(password=payload.new_password),
+    )
+    return {"message": "Password updated successfully"}
