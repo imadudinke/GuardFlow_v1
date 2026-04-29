@@ -12,6 +12,7 @@ export type { Project } from './models/Project';
 export type { ProjectCreate } from './models/ProjectCreate';
 export type { ProjectUpdate } from './models/ProjectUpdate';
 export type { TelemetrySchema } from './models/TelemetrySchema';
+export type { ThreatLog } from './models/ThreatLog';
 export type { User } from './models/User';
 export type { UserCreate } from './models/UserCreate';
 export type { UserUpdate } from './models/UserUpdate';

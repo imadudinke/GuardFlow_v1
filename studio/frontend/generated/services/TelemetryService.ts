@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { TelemetrySchema } from '../models/TelemetrySchema';
+import type { ThreatLog } from '../models/ThreatLog';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -29,6 +30,42 @@ export class TelemetryService {
             },
             body: requestBody,
             mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get Threats
+     * Get threat logs for a specific project
+     *
+     * Required:
+     * - project_id: The project to get threats for
+     *
+     * Optional:
+     * - limit: Maximum number of results (default 100)
+     * - skip: Number of results to skip for pagination (default 0)
+     *
+     * Returns threats ordered by most recent first
+     * @param projectId
+     * @param limit
+     * @param skip
+     * @returns ThreatLog Successful Response
+     * @throws ApiError
+     */
+    public static getThreatsApiV1ThreatsGet(
+        projectId?: string,
+        limit: number = 100,
+        skip?: number,
+    ): CancelablePromise<Array<ThreatLog>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/threats',
+            query: {
+                'project_id': projectId,
+                'limit': limit,
+                'skip': skip,
+            },
             errors: {
                 422: `Validation Error`,
             },

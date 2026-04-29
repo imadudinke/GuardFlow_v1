@@ -1,10 +1,11 @@
+# syntax=docker/dockerfile:1.7
 FROM node:20-alpine
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm install
+RUN --mount=type=cache,target=/root/.npm npm ci
 
 COPY . .
 
-CMD ["npm", "run", "dev"]
+CMD ["sh", "./dev-entrypoint.sh"]

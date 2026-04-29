@@ -8,6 +8,7 @@ class ThreatLogBase(BaseSchema):
     ip_address: str
     dna_id: str
     path: str
+    country: str
     risk_score: int
 
 
@@ -20,4 +21,4 @@ class ThreatLogUpdate(BaseSchema):
 
 
 class ThreatLog(BaseDBSchema, ThreatLogBase):
-    pass
+    created_at: datetime

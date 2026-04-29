@@ -1,12 +1,17 @@
 from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
+from uuid import UUID
 import httpx
 
+from app.core.auth import get_current_user
 from app.core.db import get_db
 from app.models.threat_log import ThreatLog
+from app.models.project import Project
+from app.models.user import User
 from app.services import project as project_service
+from app.schemas.threat_log import ThreatLog as ThreatLogSchema
 
 router = APIRouter()
 
@@ -141,3 +146,57 @@ async def receive_telemetry(
         "project_id": str(project.id),
         "country": country
     }
+
+
+@router.get("/threats", response_model=List[ThreatLogSchema])
+async def get_threats(
+    db: Session = Depends(get_db),
+    project_id: UUID = None,
+    limit: int = 100,
+    skip: int = 0,
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Get threat logs for a specific project
+    
+    Required:
+    - project_id: The project to get threats for
+    
+    Optional:
+    - limit: Maximum number of results (default 100)
+    - skip: Number of results to skip for pagination (default 0)
+    
+    Returns threats ordered by most recent first
+    """
+    
+    if not project_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="project_id is required"
+        )
+    
+    # Verify project exists
+    project = db.query(Project).filter(Project.id == project_id).first()
+    if not project:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Project not found"
+        )
+
+    if project.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You can only access threats for your own projects"
+        )
+    
+    # Get threats for this project
+    threats = (
+        db.query(ThreatLog)
+        .filter(ThreatLog.project_id == project_id)
+        .order_by(ThreatLog.created_at.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+    
+    return threats

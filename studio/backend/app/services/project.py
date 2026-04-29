@@ -17,6 +17,14 @@ def get_project(db: Session, project_id: UUID) -> Optional[Project]:
     return db.query(Project).filter(Project.id == project_id).first()
 
 
+def get_user_project(db: Session, project_id: UUID, user_id: UUID) -> Optional[Project]:
+    return (
+        db.query(Project)
+        .filter(Project.id == project_id, Project.user_id == user_id)
+        .first()
+    )
+
+
 def get_project_by_api_key(db: Session, api_key: str) -> Optional[Project]:
     return db.query(Project).filter(Project.api_key == api_key).first()
 
