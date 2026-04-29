@@ -60,16 +60,16 @@ export function Pagination({
   const visiblePages = getVisiblePages();
 
   return (
-    <div className={cn("flex items-center justify-center gap-2", className)}>
+    <div className={cn("flex items-center justify-center gap-2 relative z-20", className)}>
       {/* Previous button */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={!hasPrev}
         className={cn(
-          "retro-button-sm p-2 bg-white transition-colors",
+          "retro-button p-2 bg-white transition-colors relative z-10",
           !hasPrev
             ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-gray-100"
+            : "hover:bg-gray-100 cursor-pointer"
         )}
         title="Previous page"
       >
@@ -77,7 +77,7 @@ export function Pagination({
       </button>
 
       {/* Page numbers */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 relative z-10">
         {visiblePages.map((page, index) => {
           if (page === "...") {
             return (
@@ -98,7 +98,7 @@ export function Pagination({
               key={pageNumber}
               onClick={() => onPageChange(pageNumber)}
               className={cn(
-                "retro-button-sm px-3 py-2 text-sm retro-mono transition-colors",
+                "retro-button px-3 py-2 text-sm retro-mono transition-colors cursor-pointer relative z-10",
                 isActive
                   ? "bg-black text-white border-black"
                   : "bg-white text-gray-700 hover:bg-gray-100"
@@ -115,10 +115,10 @@ export function Pagination({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={!hasNext}
         className={cn(
-          "retro-button-sm p-2 bg-white transition-colors",
+          "retro-button p-2 bg-white transition-colors relative z-10",
           !hasNext
             ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-gray-100"
+            : "hover:bg-gray-100 cursor-pointer"
         )}
         title="Next page"
       >

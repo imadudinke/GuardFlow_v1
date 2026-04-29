@@ -397,6 +397,7 @@ export default function ThreatFeed() {
               </div>
             </div>
           )}
+
         </div>
 
         {selectedThreat && (

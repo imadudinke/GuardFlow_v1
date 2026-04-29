@@ -46,16 +46,37 @@ export function useThreats({
       setLoading(true);
       setError(null);
       
-      const data: PaginatedThreatsResponse = await ThreatsAPI.getThreatsForProject(projectId, limit, skip);
-      setThreats(data.threats);
-      setPagination({
-        total: data.total,
-        page: data.page,
-        pageSize: data.page_size,
-        totalPages: data.total_pages,
-        hasNext: data.has_next,
-        hasPrev: data.has_prev,
-      });
+      console.log('Fetching threats with params:', { projectId, limit, skip });
+      const response = await ThreatsAPI.getThreatsForProject(projectId, limit, skip);
+      console.log('Received threats response:', response);
+      
+      // Handle both old array format and new paginated format
+      if (Array.isArray(response)) {
+        // Old format - just an array of threats
+        console.log('Received old format (array)');
+        setThreats(response);
+        setPagination({
+          total: response.length,
+          page: 1,
+          pageSize: response.length,
+          totalPages: 1,
+          hasNext: false,
+          hasPrev: false,
+        });
+      } else {
+        // New paginated format
+        console.log('Received new paginated format');
+        const data = response as PaginatedThreatsResponse;
+        setThreats(data.threats);
+        setPagination({
+          total: data.total,
+          page: data.page,
+          pageSize: data.page_size,
+          totalPages: data.total_pages,
+          hasNext: data.has_next,
+          hasPrev: data.has_prev,
+        });
+      }
     } catch (err) {
       console.error('Failed to fetch threats:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch threats');

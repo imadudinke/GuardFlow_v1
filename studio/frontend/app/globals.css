@@ -105,6 +105,9 @@
   border: 2px solid #000;
   box-shadow: 3px 3px 0px #000;
   transition: all 0.1s ease-out;
+  pointer-events: auto;
+  position: relative;
+  z-index: 10;
 }
 
 .retro-button:hover {
@@ -117,6 +120,10 @@
   box-shadow: 1px 1px 0px #000;
 }
 
+.retro-button:disabled {
+  pointer-events: none;
+}
+
 /* Small retro buttons for icons */
 .retro-button-sm {
   background: white;
@@ -124,6 +131,9 @@
   box-shadow: 2px 2px 0px #000;
   transition: all 0.1s ease-out;
   border-radius: 2px;
+  pointer-events: auto;
+  position: relative;
+  z-index: 10;
 }
 
 .retro-button-sm:hover {
@@ -134,6 +144,10 @@
 .retro-button-sm:active {
   transform: translate(1px, 1px);
   box-shadow: 1px 1px 0px #000;
+}
+
+.retro-button-sm:disabled {
+  pointer-events: none;
 }
 
 /* Typography */
