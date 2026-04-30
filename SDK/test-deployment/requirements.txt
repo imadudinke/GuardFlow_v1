@@ -1,0 +1,3 @@
+# Test deployment requirements
+guardflow-fastapi
+uvicorn[standard]

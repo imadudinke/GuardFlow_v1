@@ -1,0 +1,38 @@
+services:
+  # Redis for GuardFlow SDK
+  redis:
+    image: redis:7-alpine
+    container_name: guardflow_test_redis
+    ports:
+      - "6380:6379"  # Different port to avoid conflicts
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Test application with GuardFlow SDK
+  test-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: guardflow_test_app
+    ports:
+      - "8080:8000"  # Different port to avoid conflicts
+    environment:
+      - GUARDFLOW_API_KEY=test_key_123
+      - GUARDFLOW_STUDIO_URL=https://test.guardflow.dev
+      - GUARDFLOW_REDIS_URL=redis://redis:6379
+      - GUARDFLOW_BLOCK_THRESHOLD=80
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  test_data:

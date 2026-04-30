@@ -1,0 +1,20 @@
+# Include the README and license files
+include README.md
+include LICENSE
+include CHANGELOG.md
+
+# Include the package marker for type hints
+include guardflow/py.typed
+
+# Include all Python files
+recursive-include guardflow *.py
+
+# Exclude development and build files
+exclude .gitignore
+exclude .pre-commit-config.yaml
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
+exclude build/
+exclude dist/
+exclude *.egg-info/

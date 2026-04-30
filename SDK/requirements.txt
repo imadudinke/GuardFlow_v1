@@ -1,2 +1,7 @@
-httpx>=0.25.0
-starlette>=0.27.0
+# Runtime dependencies for GuardFlow SDK
+# These are what users need when they install the package
+httpx>=0.24.0
+redis>=4.5.0
+fastapi>=0.95.0
+pydantic>=2.0.0
+python-multipart>=0.0.6
