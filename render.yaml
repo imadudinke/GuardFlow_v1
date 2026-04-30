@@ -1,0 +1,60 @@
+# Render Blueprint for GuardFlow Studio
+# This file configures all services for Render deployment
+
+services:
+  # Backend API Service
+  - type: web
+    name: guardflow-backend
+    runtime: docker
+    rootDir: studio/backend
+    dockerfilePath: studio/backend/Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: guardflow-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: guardflow-redis
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ORIGINS
+        sync: false  # Set this in Render dashboard
+    healthCheckPath: /health
+    autoDeploy: true
+
+  # Frontend Service
+  - type: web
+    name: guardflow-frontend
+    runtime: docker
+    rootDir: studio/frontend
+    dockerfilePath: studio/frontend/Dockerfile
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: guardflow-backend
+          envVarKey: RENDER_EXTERNAL_URL
+    autoDeploy: true
+
+  # Redis Cache
+  - type: redis
+    name: guardflow-redis
+    plan: starter
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
+
+# Database
+databases:
+  - name: guardflow-db
+    databaseName: guardflow_db
+    user: guardflow
+    plan: starter

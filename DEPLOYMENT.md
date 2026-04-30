@@ -296,6 +296,58 @@ vercel --prod
 # NEXT_PUBLIC_API_URL=https://api.yourdomain.com
 ```
 
+### Render.com Deployment
+
+#### Option 1: Using Blueprint (Automatic)
+
+1. **Push to GitHub**
+   ```bash
+   git remote add origin https://github.com/yourusername/guardflow.git
+   git push -u origin main
+   ```
+
+2. **Deploy via Render Dashboard**
+   - Go to [Render Dashboard](https://dashboard.render.com)
+   - Click "New" → "Blueprint"
+   - Connect your GitHub repository
+   - Render will detect `render.yaml` and create all services
+   - Update `CORS_ORIGINS` in backend settings with your frontend URL
+
+#### Option 2: Manual Setup
+
+**Backend Service:**
+1. New → Web Service
+2. Connect GitHub repo
+3. Settings:
+   - **Root Directory**: `studio/backend`
+   - **Runtime**: Docker
+   - **Dockerfile Path**: `studio/backend/Dockerfile`
+4. Environment Variables:
+   ```
+   DATABASE_URL=<from Render PostgreSQL>
+   REDIS_URL=<from Render Redis>
+   SECRET_KEY=<generate: openssl rand -hex 32>
+   CORS_ORIGINS=https://your-frontend.onrender.com
+   ENVIRONMENT=production
+   ```
+
+**Frontend Service:**
+1. New → Web Service
+2. Connect GitHub repo
+3. Settings:
+   - **Root Directory**: `studio/frontend`
+   - **Runtime**: Docker
+   - **Dockerfile Path**: `studio/frontend/Dockerfile`
+4. Environment Variables:
+   ```
+   NEXT_PUBLIC_API_URL=https://your-backend.onrender.com
+   ```
+
+**Database & Redis:**
+- Create PostgreSQL database (Starter plan)
+- Create Redis instance (Starter plan)
+- Use Internal URLs for backend connections
+
 ---
 
 ## 📊 Monitoring & Maintenance
