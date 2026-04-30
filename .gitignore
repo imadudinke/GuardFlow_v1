@@ -2,24 +2,13 @@
 .env
 .env.local
 .env.*.local
-.env.production
-.env.development
 
-# Python virtual environments
-.venv
-venv/
-ENV/
-env/
-.virtualenv
-
-# Python cache
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-
-# Distribution / packaging
 build/
 develop-eggs/
 dist/
@@ -35,25 +24,21 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
+venv/
+ENV/
+env/
+sdk-env/
 
-# PyInstaller
-*.manifest
-*.spec
-
-# Unit test / coverage
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
-
-# Jupyter Notebook
-.ipynb_checkpoints
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.next/
+out/
+.vercel
 
 # IDEs
 .vscode/
@@ -71,35 +56,27 @@ coverage.xml
 # Logs
 *.log
 logs/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # Docker
 docker-compose.override.yml
 
-# Node modules (if frontend uses npm/yarn)
-node_modules/
-.npm
-.yarn
+# Backups
+*.backup
+*.bak
+backup_*.sql
 
-# Build outputs
-*.pyc
-*.pyo
-*.pyd
-.Python
-pip-log.txt
-pip-delete-this-directory.txt
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
 
-# Alembic
-alembic/versions/__pycache__/
+# Secrets
+*.pem
+*.key
+*.crt
+secrets/
 
 # OS
 Thumbs.db
 .DS_Store
-
-# Temporary files
-*.tmp
-*.bak
-*.swp
-.~lock.*

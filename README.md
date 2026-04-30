@@ -332,6 +332,33 @@ app.add_middleware(
 
 ## 🚢 Deployment
 
+### Quick Deploy (Development)
+```bash
+# 1. Clone and configure
+git clone https://github.com/guardflow/guardflow.git
+cd guardflow
+cp .env.example .env
+
+# 2. Edit .env with your settings
+nano .env
+
+# 3. Deploy
+./deploy.sh development
+```
+
+### Production Deployment
+See our comprehensive deployment guides:
+- **[Quick Start Guide](QUICKSTART.md)** - Get running in 5 minutes
+- **[Deployment Guide](DEPLOYMENT.md)** - Complete production setup
+- **[Deployment Checklist](DEPLOYMENT_CHECKLIST.md)** - Pre-flight checklist
+
+### Deployment Options
+- **Docker Compose**: Complete stack with one command
+- **Kubernetes**: Production-grade orchestration
+- **AWS ECS**: Elastic Container Service
+- **DigitalOcean**: Droplet deployment
+- **Vercel**: Frontend-only deployment
+
 ### Docker Deployment
 ```dockerfile
 FROM python:3.11-slim
