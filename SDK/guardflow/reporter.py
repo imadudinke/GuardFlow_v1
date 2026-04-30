@@ -2,7 +2,11 @@ import httpx
 import asyncio
 import logging
 
+# Set logger to WARNING by default (only show important messages)
 logger = logging.getLogger("guardflow")
+logger.setLevel(logging.WARNING)
+
+# To enable debug logs, set: logging.getLogger("guardflow").setLevel(logging.DEBUG)
 
 class TelemetryReporter:
     def __init__(self, api_key: str, studio_url: str):
@@ -26,13 +30,19 @@ class TelemetryReporter:
                         "X-GuardFlow-Key": self.api_key,
                         "Content-Type": "application/json"
                     },
-                    timeout=2.0 # Don't hang the app if Studio is slow
+                    timeout=5.0 # Increased timeout for cloud deployments
                 )
                 if response.status_code != 201:
-                    logger.warning(f"📡 [GuardFlow] Dashboard rejected telemetry: {response.status_code}")
+                    logger.debug(f"📡 [GuardFlow] Dashboard rejected telemetry: {response.status_code} - {response.text[:100]}")
+            except httpx.TimeoutException:
+                # Timeout is expected sometimes - don't spam logs
+                logger.debug(f"📡 [GuardFlow] Telemetry timeout (Studio may be slow)")
+            except httpx.ConnectError:
+                # Connection error - Studio might be down
+                logger.debug(f"📡 [GuardFlow] Cannot connect to Studio at {self.studio_url}")
             except Exception as e:
                 # Silent failure - The User App stays online no matter what
-                logger.error(f"📡 [GuardFlow] Telemetry Transport Error: {e}")
+                logger.debug(f"📡 [GuardFlow] Telemetry error: {type(e).__name__}")
 
     async def check_blacklist(self, dna: str) -> dict | None:
         """
@@ -47,14 +57,20 @@ class TelemetryReporter:
                         "X-GuardFlow-Key": self.api_key,
                         "Content-Type": "application/json",
                     },
-                    timeout=1.0,
+                    timeout=3.0,  # Increased timeout for cloud deployments
                 )
                 if response.status_code != 200:
-                    logger.warning(f"📡 [GuardFlow] Blacklist check failed: {response.status_code}")
+                    logger.debug(f"📡 [GuardFlow] Blacklist check failed: {response.status_code}")
                     return None
                 return response.json()
+            except httpx.TimeoutException:
+                # Timeout is expected - don't spam logs
+                return None
+            except httpx.ConnectError:
+                # Connection error - Studio might be down
+                return None
             except Exception as e:
-                logger.error(f"📡 [GuardFlow] Blacklist Lookup Error: {e}")
+                logger.debug(f"📡 [GuardFlow] Blacklist lookup error: {type(e).__name__}")
                 return None
 
     async def get_runtime_config(self) -> dict | None:
@@ -69,12 +85,18 @@ class TelemetryReporter:
                         "X-GuardFlow-Key": self.api_key,
                         "Content-Type": "application/json",
                     },
-                    timeout=1.0,
+                    timeout=3.0,  # Increased timeout for cloud deployments
                 )
                 if response.status_code != 200:
-                    logger.warning(f"📡 [GuardFlow] Runtime config fetch failed: {response.status_code}")
+                    logger.debug(f"📡 [GuardFlow] Runtime config fetch failed: {response.status_code}")
                     return None
                 return response.json()
+            except httpx.TimeoutException:
+                # Timeout is expected - don't spam logs
+                return None
+            except httpx.ConnectError:
+                # Connection error - Studio might be down
+                return None
             except Exception as e:
-                logger.error(f"📡 [GuardFlow] Runtime Config Error: {e}")
+                logger.debug(f"📡 [GuardFlow] Runtime config error: {type(e).__name__}")
                 return None
