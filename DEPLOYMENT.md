@@ -283,6 +283,37 @@ docker-compose -f docker-compose.prod.yml up -d
 
 ### Vercel (Frontend Only)
 
+**Prerequisites:**
+- Backend deployed elsewhere (e.g., Render)
+- GitHub repository
+
+**Deployment Steps:**
+
+1. **Import Project to Vercel**
+   - Go to [vercel.com](https://vercel.com) and sign in
+   - Click "Add New..." → "Project"
+   - Import your GitHub repository
+   - Configure:
+     - **Framework Preset**: Next.js
+     - **Root Directory**: `studio/frontend`
+     - **Build Command**: `npm run build`
+     - **Install Command**: `npm install --legacy-peer-deps`
+
+2. **Set Environment Variables**
+   - Go to Project Settings → Environment Variables
+   - Add: `NEXT_PUBLIC_API_URL` = `https://your-backend.onrender.com`
+   - Apply to all environments (Production, Preview, Development)
+
+3. **Deploy**
+   - Click "Deploy"
+   - Your app will be live at `https://your-project.vercel.app`
+
+**Troubleshooting:**
+- If build fails with module errors, clear Vercel cache and redeploy
+- Ensure `--legacy-peer-deps` is in install command (required for React 19)
+- Check `studio/frontend/VERCEL_DEPLOYMENT.md` for detailed guide
+
+**CLI Deployment (Alternative):**
 ```bash
 cd studio/frontend
 

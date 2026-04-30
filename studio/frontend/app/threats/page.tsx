@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { ThreatLog } from "@/generated/models/ThreatLog";
 import { ProtectedDashboardPage } from "@/components/dashboard/protected-dashboard-page";
@@ -88,7 +88,7 @@ function stringifyMetadataValue(value: unknown): string {
   return JSON.stringify(value, null, 2);
 }
 
-export default function ThreatFeed() {
+function ThreatFeed() {
   const searchParams = useSearchParams();
   const projectFromQuery = searchParams.get("project");
   const { user, isLoading: authLoading } = useAuth();
@@ -569,5 +569,27 @@ export default function ThreatFeed() {
         )}
       </div>
     </ProtectedDashboardPage>
+  );
+}
+
+export default function ThreatsPage() {
+  return (
+    <Suspense
+      fallback={
+        <ProtectedDashboardPage>
+          <div className="relative min-h-full overflow-hidden bg-white p-8 text-black">
+            <div className="absolute inset-0 halftone-bg"></div>
+            <div className="absolute inset-0 retro-grid"></div>
+            <div className="relative z-10 retro-card bg-white px-6 py-12 text-center">
+              <p className="retro-mono text-sm uppercase tracking-[0.25em] text-gray-600">
+                Loading threat feed...
+              </p>
+            </div>
+          </div>
+        </ProtectedDashboardPage>
+      }
+    >
+      <ThreatFeed />
+    </Suspense>
   );
 }

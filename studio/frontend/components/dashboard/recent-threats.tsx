@@ -6,7 +6,7 @@ interface Threat {
   ip_address: string;
   path: string;
   risk_score: number;
-  risk_factors: string[];
+  risk_factors?: string[];
   country?: string;
   created_at: string;
 }

@@ -41,8 +41,11 @@ export function useUserThreats({
         ),
       );
 
+      // Handle both response types: PaginatedThreatsResponse or ThreatLog[]
       const combinedThreats = threatGroups
-        .flat()
+        .flatMap((response) => 
+          Array.isArray(response) ? response : response.threats
+        )
         .sort(
           (left, right) =>
             new Date(right.created_at).getTime() -

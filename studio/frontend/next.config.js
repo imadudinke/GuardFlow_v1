@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable standalone output for Docker
-  output: 'standalone',
-  
-  // Disable image optimization for static export
+  // Image optimization
   images: {
     unoptimized: true,
   },
@@ -17,6 +14,12 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+
+  // Transpile packages if needed
+  transpilePackages: ['lucide-react'],
+
+  // Turbopack configuration (Next.js 16+)
+  turbopack: {},
 
   // Headers for security
   async headers() {
