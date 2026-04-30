@@ -6,7 +6,23 @@ from app.api import api_router
 
 # Environment configuration
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+
+
+def _parse_cors_origins(raw_origins: str | None) -> list[str]:
+    if not raw_origins:
+        return []
+
+    return [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
+
+
+CORS_ORIGINS = _parse_cors_origins(os.getenv("CORS_ORIGINS"))
+
+# Credentials-based auth requires explicit origins (not "*").
+if not CORS_ORIGINS:
+    CORS_ORIGINS = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
 
 app = FastAPI(
     title="GuardFlow Studio API",
@@ -19,7 +35,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS if ENVIRONMENT == "production" else ["*"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
