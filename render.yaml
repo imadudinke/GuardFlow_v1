@@ -28,6 +28,8 @@ services:
         value: production
       - key: CORS_ORIGINS
         sync: false  # Set this in Render dashboard
+      - key: RENDER_EXTERNAL_URL
+        value: https://guardflow-v1.onrender.com  # Your Render service URL
     healthCheckPath: /health
     autoDeploy: true
 
