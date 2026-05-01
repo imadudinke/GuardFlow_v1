@@ -48,11 +48,11 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://guardflow.dev"
-Documentation = "https://docs.guardflow.dev"
-Repository = "https://github.com/guardflow/guardflow-sdk"
-Issues = "https://github.com/guardflow/guardflow-sdk/issues"
-Changelog = "https://github.com/guardflow/guardflow-sdk/blob/main/CHANGELOG.md"
+Homepage = "https://guard-flow-v1.vercel.app"
+Documentation = "https://guard-flow-v1.vercel.app/docs"
+Repository = "https://github.com/imadudinke/GuardFlow_v1"
+Issues = "https://github.com/imadudinke/GuardFlow_v1/issues"
+Changelog = "https://github.com/imadudinke/GuardFlow_v1/blob/main/SDK/CHANGELOG.md"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]

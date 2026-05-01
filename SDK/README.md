@@ -16,7 +16,7 @@
 pip install guardflow-fastapi
 ```
 
-[📖 Documentation](https://docs.guardflow.dev) • [🚀 Quick Start](#-quick-start) • [🏗️ Architecture](#-architecture) • [🔒 Security Features](#-security-features)
+[📖 Documentation](https://guard-flow-v1.vercel.app/docs) • [🚀 Quick Start](#-quick-start) • [🏗️ Architecture](#-architecture) • [🔒 Security Features](#-security-features)
 
 </div>
 
@@ -97,7 +97,7 @@ app = FastAPI()
 app.add_middleware(
     GuardFlowMiddleware,
     api_key="gf_live_your_api_key",
-    studio_url="https://studio.guardflow.dev",
+    studio_url="https://guardflow-v1.onrender.com",
     redis_url="redis://localhost:6379",
     
     # Security Configuration
@@ -124,7 +124,7 @@ async def protected_endpoint():
 ```bash
 # .env file
 GUARDFLOW_API_KEY=gf_live_your_api_key
-GUARDFLOW_STUDIO_URL=https://studio.guardflow.dev
+GUARDFLOW_STUDIO_URL=https://guardflow-v1.onrender.com
 GUARDFLOW_REDIS_URL=redis://localhost:6379
 GUARDFLOW_BLOCK_THRESHOLD=80
 ```
@@ -311,7 +311,7 @@ safety check
 ### Security Disclosure
 Found a security vulnerability? Please report it responsibly:
 - 📧 **Email**: security@guardflow.dev
-- 🔐 **PGP Key**: [Download Public Key](https://guardflow.dev/pgp)
+- 🔐 **GitHub Security**: [Report a vulnerability](https://github.com/imadudinke/GuardFlow_v1/security/advisories/new)
 - ⏱️ **Response Time**: < 24 hours
 - 🏆 **Bug Bounty**: Available for qualifying discoveries
 
@@ -319,7 +319,7 @@ Found a security vulnerability? Please report it responsibly:
 
 GuardFlow is released under the [MIT License](LICENSE). 
 
-**Commercial Support**: Enterprise licenses and support contracts available at [guardflow.dev/enterprise](https://guardflow.dev/enterprise).
+**Commercial Support**: Enterprise licenses and support contracts available - contact us via GitHub.
 
 ---
 
@@ -327,7 +327,7 @@ GuardFlow is released under the [MIT License](LICENSE).
 
 **Built with ❤️ by the GuardFlow Security Team**
 
-[🌐 Website](https://guardflow.dev) • [📚 Documentation](https://docs.guardflow.dev) • [💬 Discord](https://discord.gg/guardflow) • [🐦 Twitter](https://twitter.com/guardflow_dev)
+[🌐 Studio Dashboard](https://guard-flow-v1.vercel.app) • [📚 Documentation](https://guard-flow-v1.vercel.app/docs) • [💻 GitHub](https://github.com/imadudinke/GuardFlow_v1)
 
 *Protecting applications, one request at a time.*
 
