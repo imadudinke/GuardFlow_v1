@@ -1,10 +1,11 @@
 import { LucideIcon } from "lucide-react";
+import { ComponentType } from "react";
 
 interface StatsCardProps {
   title: string;
   value: string | number;
   description?: string;
-  icon: LucideIcon;
+  icon: LucideIcon | ComponentType;
   trend?: {
     value: number;
     isPositive: boolean;

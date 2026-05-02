@@ -60,7 +60,7 @@ export function Pagination({
   const visiblePages = getVisiblePages();
 
   return (
-    <div className={cn("flex items-center justify-center gap-2 relative z-20", className)}>
+    <div className={cn("relative z-20 flex flex-wrap items-center justify-center gap-2", className)}>
       {/* Previous button */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
@@ -77,7 +77,7 @@ export function Pagination({
       </button>
 
       {/* Page numbers */}
-      <div className="flex items-center gap-1 relative z-10">
+      <div className="relative z-10 flex max-w-full items-center gap-1 overflow-x-auto pb-1">
         {visiblePages.map((page, index) => {
           if (page === "...") {
             return (

@@ -78,8 +78,8 @@ export default function Home() {
       <div className="relative z-10">
         {/* Header */}
         <header className="p-6 md:p-8 lg:p-12">
-          <nav className="flex items-center justify-between max-w-8xl mx-auto">
-            <div className="flex items-center gap-4">
+          <nav className="mx-auto flex max-w-8xl flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
               <div className="retro-card-static p-3 bg-black">
                 {/* Custom shield visual */}
                 <div className="w-8 h-8 relative">
@@ -89,10 +89,10 @@ export default function Home() {
                   <div className="absolute top-1/2 left-1/2 w-0.5 h-4 bg-white transform -translate-x-1/2 -translate-y-1/2"></div>
                 </div>
               </div>
-              <span className="text-3xl lg:text-4xl font-black retro-title text-black">GuardFlow</span>
+              <span className="text-2xl font-black retro-title text-black sm:text-3xl lg:text-4xl">GuardFlow</span>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Link
                 href="/docs"
                 className="retro-button bg-white text-black border-black px-6 py-3 hover:bg-gray-50 hidden sm:block"
@@ -111,7 +111,7 @@ export default function Home() {
               </Link>
               <Link
                 href={isAuthenticated ? "/dashboard" : "/register"}
-                className="retro-button bg-black text-white border-black px-6 py-3 hover:bg-gray-800"
+                className="retro-button bg-black text-white border-black px-4 py-3 sm:px-6 hover:bg-gray-800"
               >
                 <span className="font-black retro-mono text-sm">
                   {isAuthenticated ? "Enter Studio" : "Get Started"}
@@ -126,15 +126,15 @@ export default function Home() {
           <div className="max-w-8xl mx-auto text-center">
             {/* Main headline with colorful styling */}
             <div className="mb-12 lg:mb-16">
-              <div className="retro-card-static bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 p-8 lg:p-12 mb-8 inline-block">
-                <h1 className="text-6xl md:text-8xl lg:text-9xl font-black retro-title text-white drop-shadow-lg">
+              <div className="retro-card-static mb-8 inline-block bg-linear-to-r from-purple-500 via-pink-500 to-red-500 p-5 sm:p-8 lg:p-12">
+                <h1 className="text-4xl font-black retro-title text-white drop-shadow-lg sm:text-6xl md:text-8xl lg:text-9xl">
                   ULTIMATE
                 </h1>
               </div>
-              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black retro-title text-black mb-6">
+              <h2 className="mb-6 text-3xl font-black retro-title text-black sm:text-5xl md:text-7xl lg:text-8xl">
                 Python SDK
               </h2>
-              <div className="retro-card-static bg-yellow-100 text-yellow-800 px-8 py-4 inline-block">
+              <div className="retro-card-static inline-block bg-yellow-100 px-5 py-4 text-yellow-800 sm:px-8">
                 <div className="flex items-center gap-3">
                   {/* Custom sparkles visual */}
                   <div className="w-6 h-6 relative">
@@ -145,7 +145,7 @@ export default function Home() {
                     <div className="absolute top-1 right-1 w-1 h-1 bg-yellow-800 transform rotate-45"></div>
                     <div className="absolute bottom-1 left-1 w-1 h-1 bg-yellow-800 transform rotate-45"></div>
                   </div>
-                  <span className="text-xl lg:text-2xl font-black uppercase tracking-[0.2em] retro-mono">
+                  <span className="text-sm font-black uppercase tracking-[0.12em] retro-mono sm:text-xl lg:text-2xl">
                     FastAPI + Studio
                   </span>
                 </div>
@@ -349,7 +349,7 @@ export default function Home() {
         {/* Stats Section */}
         <section className="px-6 md:px-8 lg:px-12 py-16 md:py-24">
           <div className="max-w-8xl mx-auto">
-            <div className="retro-card-static bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-12 lg:p-20 text-center">
+            <div className="retro-card-static bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 p-12 lg:p-20 text-center">
               <h3 className="text-4xl md:text-5xl lg:text-6xl font-black retro-title text-white mb-12 lg:mb-16">
                 Security by the Numbers
               </h3>

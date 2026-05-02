@@ -65,12 +65,12 @@ export default function ProjectsPage() {
 
   return (
     <ProtectedDashboardPage>
-      <div className="relative min-h-full overflow-hidden bg-white p-8 text-black">
+      <div className="relative min-h-full overflow-hidden bg-white p-4 text-black sm:p-6 lg:p-8">
         <div className="absolute inset-0 halftone-bg"></div>
         <div className="absolute inset-0 retro-grid"></div>
         
         <div className="relative z-10 space-y-8">
-          <header className="retro-card-static p-6 bg-white">
+          <header className="retro-card-static bg-white p-4 sm:p-6">
             <div className="absolute inset-0 halftone-accent"></div>
             <div className="relative z-10">
               <p className="mb-2 inline-block retro-card-static bg-black text-white px-3 py-1 text-xs font-black uppercase tracking-[0.35em] retro-mono">
@@ -155,7 +155,7 @@ export default function ProjectsPage() {
                             />
                           </div>
 
-                          <div className="flex flex-wrap gap-3">
+                          <div className="flex flex-wrap gap-2 sm:gap-3">
                             <Button
                               onClick={() => router.push(`/threats?project=${project.id}`)}
                               type="button"
@@ -220,11 +220,11 @@ export default function ProjectsPage() {
       {/* Delete Confirmation Dialog */}
       {deleteConfirm && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-black/50 p-2 backdrop-blur-sm sm:items-center sm:p-4"
           onClick={() => setDeleteConfirm(null)}
         >
           <div
-            className="relative max-w-md w-full retro-card-static bg-white p-6 text-black"
+            className="relative w-full max-w-md max-h-[calc(100vh-1rem)] overflow-y-auto retro-card-static bg-white p-4 text-black sm:max-h-[85vh] sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="absolute inset-0 halftone-subtle"></div>
@@ -243,7 +243,7 @@ export default function ProjectsPage() {
                   <li>• Historical analytics and reports</li>
                 </ul>
               </div>
-              <div className="flex gap-3 justify-end">
+              <div className="flex flex-col-reverse justify-end gap-3 sm:flex-row">
                 <Button
                   onClick={() => setDeleteConfirm(null)}
                   type="button"

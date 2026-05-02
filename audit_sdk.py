@@ -160,11 +160,24 @@ def main():
     print("          Real Attacker Simulation with Fingerprint Rotation")
     print("="*80)
 
-    try:
-        requests.get(BASE_URL, timeout=3)
-    except:
-        print(f"❌ Cannot connect to {BASE_URL}. Start your FastAPI server first!")
-        return
+    # Better connection check with retries
+    print(f"\n[*] Checking connection to {BASE_URL}...")
+    for attempt in range(3):
+        try:
+            resp = requests.get(BASE_URL, timeout=5)
+            print(f"[✓] Server is running (Status: {resp.status_code})")
+            break
+        except requests.exceptions.ConnectionError:
+            if attempt < 2:
+                print(f"[!] Connection attempt {attempt + 1} failed, retrying...")
+                time.sleep(1)
+            else:
+                print(f"❌ Cannot connect to {BASE_URL}. Make sure your FastAPI server is running!")
+                print(f"   Start it with: cd test_app && uvicorn main:app --reload")
+                return
+        except Exception as e:
+            print(f"❌ Connection error: {e}")
+            return
 
     run_test("BRUTE FORCE WITH FINGERPRINT ROTATION", test_brute_force)
     time.sleep(1.5)

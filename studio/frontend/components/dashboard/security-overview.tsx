@@ -51,12 +51,12 @@ export function SecurityOverview({
   const StatusIcon = statusConfig.icon;
 
   return (
-    <div className="col-span-4 retro-card-static p-6 bg-white relative overflow-hidden">
+    <div className="retro-card-static bg-white p-4 relative overflow-hidden sm:p-6 md:col-span-4">
       <div className="absolute inset-0 halftone-subtle"></div>
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
           <div className="flex items-center gap-3">
             <Shield className="h-5 w-5 text-gray-600" />
             <div>
@@ -66,7 +66,7 @@ export function SecurityOverview({
           </div>
           
           {/* System Status */}
-          <div className={`retro-card-static px-4 py-2 ${statusConfig.bg}`}>
+          <div className={`retro-card-static px-3 py-2 sm:px-4 ${statusConfig.bg}`}>
             <div className="flex items-center gap-2">
               <StatusIcon className={`h-4 w-4 ${statusConfig.color}`} />
               <span className={`text-xs font-black uppercase tracking-[0.2em] retro-mono ${statusConfig.color}`}>
@@ -93,7 +93,7 @@ export function SecurityOverview({
         ) : (
           <div className="space-y-6">
             {/* Key Metrics Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <div className="retro-card-static bg-gray-50 p-4 text-center">
                 <AlertTriangle className="h-6 w-6 text-red-600 mx-auto mb-2" />
                 <div className="text-2xl font-black retro-title text-red-600">{data.totalThreats}</div>
@@ -176,7 +176,7 @@ export function SecurityOverview({
             )}
 
             {/* Recent Activity Summary */}
-            <div className="flex items-center justify-between retro-card-static bg-blue-50 p-4">
+            <div className="retro-card-static bg-blue-50 p-4 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
               <div className="flex items-center gap-3">
                 <Clock className="h-5 w-5 text-blue-600" />
                 <div>

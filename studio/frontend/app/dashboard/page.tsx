@@ -4,20 +4,68 @@ import { useMemo } from "react";
 import { StatsCard } from "@/components/dashboard/stats-card";
 import { RecentThreats } from "@/components/dashboard/recent-threats";
 import { SecurityOverview } from "@/components/dashboard/security-overview";
-import { AnalyticsCardSkeleton, ChartCardSkeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjects } from "@/hooks/useProjects";
 import { useThreats } from "@/hooks/useThreats";
-import {
-  Shield,
-  AlertTriangle,
-  Activity,
-  TrendingUp,
-  Globe,
-  Clock,
-  Ban,
-  Zap,
-} from "lucide-react";
+
+// Retro-style icon components
+const RetroShield = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4zm0 2.2l6 3v5.3c0 4.4-3 8.6-6 9.8-3-1.2-6-5.4-6-9.8V7.2l6-3z"/>
+  </svg>
+);
+
+const RetroAlert = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2L2 20h20L12 2zm0 4l7 12H5l7-12zm-1 5v4h2v-4h-2zm0 5v2h2v-2h-2z"/>
+  </svg>
+);
+
+const RetroActivity = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M3 12h4l3-9 4 18 3-9h4"/>
+    <rect x="2" y="11" width="2" height="2"/>
+    <rect x="6" y="8" width="2" height="6"/>
+    <rect x="10" y="4" width="2" height="14"/>
+    <rect x="14" y="6" width="2" height="12"/>
+    <rect x="18" y="9" width="2" height="8"/>
+    <rect x="22" y="11" width="2" height="2"/>
+  </svg>
+);
+
+const RetroTrend = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M16 6l6 0 0 6-2 0 0-2.6-4.3 4.3-4-4-6.7 6.7-1.4-1.4 8-8 4 4 3-3 0-2.6z"/>
+  </svg>
+);
+
+const RetroGlobe = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2"/>
+    <path d="M12 3c-2.5 0-4.5 4-4.5 9s2 9 4.5 9 4.5-4 4.5-9-2-9-4.5-9z" fill="none" stroke="currentColor" strokeWidth="2"/>
+    <path d="M3 12h18M5 7h14M5 17h14" stroke="currentColor" strokeWidth="2"/>
+  </svg>
+);
+
+const RetroClock = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2"/>
+    <path d="M12 6v6l4 4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square"/>
+  </svg>
+);
+
+const RetroBan = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2"/>
+    <path d="M5 5l14 14" stroke="currentColor" strokeWidth="2" strokeLinecap="square"/>
+  </svg>
+);
+
+const RetroZap = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+  </svg>
+);
 
 // Helper functions
 function groupThreatsByDate(threats: any[]) {
@@ -135,25 +183,21 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight retro-title">Dashboard</h2>
+        <h2 className="text-2xl font-bold tracking-tight retro-title sm:text-3xl">Dashboard</h2>
         <p className="text-gray-500 retro-mono">
           {user ? `Welcome back, ${user.email}` : 'Welcome to your GuardFlow security dashboard'}
         </p>
       </div>
 
-      {/* Main Stats */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {isLoading ? (
-          Array.from({ length: 4 }).map((_, i) => (
-            <AnalyticsCardSkeleton key={i} />
-          ))
-        ) : dashboardData ? (
+      {/* Main Stats - Smooth opacity transition instead of skeleton */}
+      <div className={`grid gap-4 md:grid-cols-2 lg:grid-cols-4 transition-opacity duration-300 ${isLoading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+        {dashboardData ? (
           <>
             <StatsCard
               title="Total Threats"
               value={dashboardData.totalThreats.toLocaleString()}
               description="All detected threats"
-              icon={AlertTriangle}
+              icon={RetroAlert}
               trend={{ 
                 value: Math.abs(dashboardData.trends.threats), 
                 isPositive: dashboardData.trends.threats >= 0 
@@ -163,7 +207,7 @@ export default function DashboardPage() {
               title="Active Projects"
               value={dashboardData.activeProjects}
               description="Projects being monitored"
-              icon={Shield}
+              icon={RetroShield}
               trend={{ 
                 value: dashboardData.trends.projects, 
                 isPositive: true 
@@ -173,7 +217,7 @@ export default function DashboardPage() {
               title="Blocked Attacks"
               value={dashboardData.blockedAttacks.toLocaleString()}
               description="High-risk threats blocked"
-              icon={Ban}
+              icon={RetroBan}
               trend={{ 
                 value: dashboardData.trends.blocks, 
                 isPositive: true 
@@ -183,7 +227,7 @@ export default function DashboardPage() {
               title="Block Rate"
               value={`${dashboardData.blockRate}%`}
               description="Threat detection accuracy"
-              icon={TrendingUp}
+              icon={RetroTrend}
               trend={{ 
                 value: dashboardData.trends.rate, 
                 isPositive: true 
@@ -196,41 +240,37 @@ export default function DashboardPage() {
               title="Total Threats"
               value="0"
               description="No threats detected yet"
-              icon={AlertTriangle}
+              icon={RetroAlert}
             />
             <StatsCard
               title="Active Projects"
               value={projects.length}
               description="Projects being monitored"
-              icon={Shield}
+              icon={RetroShield}
             />
             <StatsCard
               title="Blocked Attacks"
               value="0"
               description="No attacks blocked yet"
-              icon={Ban}
+              icon={RetroBan}
             />
             <StatsCard
               title="Block Rate"
               value="0%"
               description="Start monitoring to see data"
-              icon={TrendingUp}
+              icon={RetroTrend}
             />
           </>
         )}
       </div>
 
-      {/* Secondary Stats */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {isLoading ? (
-          Array.from({ length: 4 }).map((_, i) => (
-            <AnalyticsCardSkeleton key={`secondary-${i}`} />
-          ))
-        ) : dashboardData ? (
+      {/* Secondary Stats - Smooth opacity transition */}
+      <div className={`grid gap-4 md:grid-cols-2 lg:grid-cols-4 transition-opacity duration-300 ${isLoading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+        {dashboardData ? (
           <>
             <div className="retro-card-static bg-white p-4">
               <div className="flex items-center gap-3">
-                <Globe className="h-5 w-5 text-blue-600" />
+                <RetroGlobe />
                 <div>
                   <div className="text-xs font-black uppercase tracking-[0.3em] retro-mono text-gray-600">Countries</div>
                   <div className="text-2xl font-black retro-title text-blue-600">{dashboardData.uniqueCountries}</div>
@@ -239,7 +279,7 @@ export default function DashboardPage() {
             </div>
             <div className="retro-card-static bg-white p-4">
               <div className="flex items-center gap-3">
-                <Activity className="h-5 w-5 text-green-600" />
+                <RetroActivity />
                 <div>
                   <div className="text-xs font-black uppercase tracking-[0.3em] retro-mono text-gray-600">Unique IPs</div>
                   <div className="text-2xl font-black retro-title text-green-600">{dashboardData.uniqueIPs}</div>
@@ -248,7 +288,7 @@ export default function DashboardPage() {
             </div>
             <div className="retro-card-static bg-white p-4">
               <div className="flex items-center gap-3">
-                <Clock className="h-5 w-5 text-purple-600" />
+                <RetroClock />
                 <div>
                   <div className="text-xs font-black uppercase tracking-[0.3em] retro-mono text-gray-600">Last 24h</div>
                   <div className="text-2xl font-black retro-title text-purple-600">
@@ -263,7 +303,7 @@ export default function DashboardPage() {
             </div>
             <div className="retro-card-static bg-white p-4">
               <div className="flex items-center gap-3">
-                <Zap className="h-5 w-5 text-yellow-600" />
+                <RetroZap />
                 <div>
                   <div className="text-xs font-black uppercase tracking-[0.3em] retro-mono text-gray-600">Status</div>
                   <div className="text-lg font-black retro-title text-yellow-600">
@@ -288,78 +328,71 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Charts and Recent Activity */}
-      <div className="grid gap-4 md:grid-cols-7">
-        {isLoading ? (
-          <>
-            <div className="col-span-4">
-              <ChartCardSkeleton />
-            </div>
-            <div className="col-span-3">
-              <ChartCardSkeleton />
-            </div>
-          </>
-        ) : (
-          <>
-            <SecurityOverview 
-              data={dashboardData ? {
-                totalThreats: dashboardData.totalThreats,
-                blockedAttacks: dashboardData.blockedAttacks,
-                uniqueCountries: dashboardData.uniqueCountries,
-                uniqueIPs: dashboardData.uniqueIPs,
-                recentActivity: dashboardData.recentActivity,
-                topRiskFactors: dashboardData.topRiskFactors,
-                systemStatus: dashboardData.systemStatus as 'active' | 'monitoring' | 'offline'
-              } : undefined}
-              loading={isLoading}
-            />
-            <RecentThreats 
-              threats={dashboardData?.recentThreats || []}
-              loading={isLoading}
-            />
-          </>
-        )}
+      {/* Charts and Recent Activity - Smooth opacity transition */}
+      <div className={`grid gap-4 md:grid-cols-7 transition-opacity duration-300 ${isLoading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+        <SecurityOverview 
+          data={dashboardData ? {
+            totalThreats: dashboardData.totalThreats,
+            blockedAttacks: dashboardData.blockedAttacks,
+            uniqueCountries: dashboardData.uniqueCountries,
+            uniqueIPs: dashboardData.uniqueIPs,
+            recentActivity: dashboardData.recentActivity,
+            topRiskFactors: dashboardData.topRiskFactors,
+            systemStatus: dashboardData.systemStatus as 'active' | 'monitoring' | 'offline'
+          } : undefined}
+          loading={false}
+        />
+        <RecentThreats 
+          threats={dashboardData?.recentThreats || []}
+          loading={false}
+        />
       </div>
 
       {/* Quick Actions */}
-      {!isLoading && (
-        <div className="retro-card-static bg-white p-6">
-          <div className="absolute inset-0 halftone-subtle"></div>
-          <div className="relative z-10">
-            <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">Quick Actions</h3>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <a 
-                href="/projects" 
-                className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
-              >
-                <Shield className="h-6 w-6 mx-auto mb-2" />
-                <div className="text-sm font-black retro-mono">Manage Projects</div>
-              </a>
-              <a 
-                href="/threats" 
-                className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
-              >
-                <AlertTriangle className="h-6 w-6 mx-auto mb-2" />
-                <div className="text-sm font-black retro-mono">View Threats</div>
-              </a>
-              <a 
-                href="/analytics" 
-                className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
-              >
-                <TrendingUp className="h-6 w-6 mx-auto mb-2" />
-                <div className="text-sm font-black retro-mono">Analytics</div>
-              </a>
-              <a 
-                href="/sdk-guide" 
-                className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
-              >
-                <Zap className="h-6 w-6 mx-auto mb-2" />
-                <div className="text-sm font-black retro-mono">SDK Guide</div>
-              </a>
-            </div>
+      <div className="retro-card-static bg-white p-6">
+        <div className="absolute inset-0 halftone-subtle"></div>
+        <div className="relative z-10">
+          <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">Quick Actions</h3>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <a 
+              href="/projects" 
+              className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
+            >
+              <div className="flex justify-center mb-2">
+                <RetroShield />
+              </div>
+              <div className="text-sm font-black retro-mono">Manage Projects</div>
+            </a>
+            <a 
+              href="/threats" 
+              className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
+            >
+              <div className="flex justify-center mb-2">
+                <RetroAlert />
+              </div>
+              <div className="text-sm font-black retro-mono">View Threats</div>
+            </a>
+            <a 
+              href="/analytics" 
+              className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
+            >
+              <div className="flex justify-center mb-2">
+                <RetroTrend />
+              </div>
+              <div className="text-sm font-black retro-mono">Analytics</div>
+            </a>
+            <a 
+              href="/sdk-guide" 
+              className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
+            >
+              <div className="flex justify-center mb-2">
+                <RetroZap />
+              </div>
+              <div className="text-sm font-black retro-mono">SDK Guide</div>
+            </a>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

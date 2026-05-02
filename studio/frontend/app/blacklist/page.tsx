@@ -72,13 +72,13 @@ export default function BlacklistPage() {
 
   return (
     <ProtectedDashboardPage>
-      <div className="relative min-h-full overflow-hidden bg-white p-8 text-black">
+      <div className="relative min-h-full overflow-hidden bg-white p-4 text-black sm:p-6 lg:p-8">
         <div className="absolute inset-0 halftone-bg"></div>
         <div className="absolute inset-0 retro-grid"></div>
 
         <div className="relative z-10 space-y-8">
           {/* Header */}
-          <header className="retro-card-static p-6 bg-white">
+          <header className="retro-card-static bg-white p-4 sm:p-6">
             <div className="absolute inset-0 halftone-accent"></div>
             <div className="relative z-10">
               <p className="mb-2 inline-block retro-card-static bg-black text-white px-3 py-1 text-xs font-black uppercase tracking-[0.35em] retro-mono">
@@ -131,7 +131,7 @@ export default function BlacklistPage() {
             <h2 className="text-xl font-black uppercase tracking-[0.08em] retro-title">Blocked DNA Fingerprints</h2>
             
             {mockBlacklistEntries.map((entry) => (
-              <div key={entry.id} className="retro-card-static bg-white p-5">
+              <div key={entry.id} className="retro-card-static bg-white p-4 sm:p-5">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   <div className="space-y-3 flex-1">
                     <div className="flex flex-wrap items-center gap-3">
@@ -175,7 +175,7 @@ export default function BlacklistPage() {
                       </div>
                     </div>
                     
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <button
                         onClick={() => setSelectedEntry(entry)}
                         className="retro-button bg-white px-3 py-2 text-xs font-black uppercase tracking-[0.2em] retro-mono flex items-center gap-2"
@@ -198,16 +198,16 @@ export default function BlacklistPage() {
         {/* Detail Modal */}
         {selectedEntry && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-black/50 p-2 backdrop-blur-sm sm:items-center sm:p-4"
             onClick={() => setSelectedEntry(null)}
           >
             <div
-              className="relative max-w-2xl w-full retro-card-static bg-white p-6 text-black max-h-[80vh] overflow-y-auto"
+              className="relative max-h-[calc(100vh-1rem)] w-full max-w-2xl overflow-y-auto retro-card-static bg-white p-4 text-black sm:max-h-[85vh] sm:p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="absolute inset-0 halftone-subtle"></div>
               <div className="relative z-10">
-                <div className="flex items-center justify-between mb-6">
+                <div className="sticky top-0 z-10 mb-6 flex items-start justify-between gap-3 border-b-2 border-black bg-white pb-4 sm:items-center">
                   <h3 className="text-xl font-black uppercase tracking-[0.08em] retro-title">
                     Blacklist Entry Details
                   </h3>

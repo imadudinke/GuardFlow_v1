@@ -47,7 +47,7 @@ function getTimeAgo(dateString: string) {
 
 export function RecentThreats({ threats = [], loading = false }: RecentThreatsProps) {
   return (
-    <div className="col-span-3 retro-card-static p-6 bg-white relative overflow-hidden">
+    <div className="retro-card-static bg-white p-4 relative overflow-hidden sm:p-6 md:col-span-3">
       <div className="absolute inset-0 halftone-subtle"></div>
       
       <div className="relative z-10">
@@ -94,7 +94,7 @@ export function RecentThreats({ threats = [], loading = false }: RecentThreatsPr
                     isRecent ? 'bg-yellow-50 border-yellow-200' : 'bg-gray-50'
                   }`}
                 >
-                  <div className="flex items-start gap-4">
+                <div className="flex items-start gap-3 sm:gap-4">
                     {/* Icon and severity */}
                     <div className={`retro-card-static p-2 shrink-0 ${
                       riskConfig.level === 'critical' ? 'bg-red-100' :
@@ -110,7 +110,7 @@ export function RecentThreats({ threats = [], loading = false }: RecentThreatsPr
                     
                     {/* Main content */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
+                      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:gap-2">
                         <div className="flex-1 min-w-0">
                           <p className="font-bold retro-mono text-sm truncate">
                             {formatRiskFactor(primaryFactor)}
@@ -134,7 +134,7 @@ export function RecentThreats({ threats = [], loading = false }: RecentThreatsPr
                         </div>
                         
                         {/* Risk score and time */}
-                        <div className="text-right shrink-0">
+                        <div className="shrink-0 text-left sm:text-right">
                           <Badge 
                             variant={riskConfig.color as any}
                             className="text-xs font-bold"

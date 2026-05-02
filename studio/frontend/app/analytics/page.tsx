@@ -135,13 +135,13 @@ export default function AnalyticsPage() {
 
   return (
     <ProtectedDashboardPage>
-      <div className="relative min-h-full overflow-hidden bg-white p-8 text-black">
+      <div className="relative min-h-full overflow-hidden bg-white p-4 text-black sm:p-6 lg:p-8">
         <div className="absolute inset-0 halftone-bg"></div>
         <div className="absolute inset-0 retro-grid"></div>
 
         <div className="relative z-10 space-y-8">
           {/* Header */}
-          <header className="retro-card-static p-6 bg-white">
+          <header className="retro-card-static bg-white p-4 sm:p-6">
             <div className="absolute inset-0 halftone-accent"></div>
             <div className="relative z-10">
               <p className="mb-2 inline-block retro-card-static bg-black text-white px-3 py-1 text-xs font-black uppercase tracking-[0.35em] retro-mono">
@@ -157,7 +157,7 @@ export default function AnalyticsPage() {
           </header>
 
           {/* Project Selector */}
-          <div className="flex items-center gap-4 relative z-30">
+          <div className="relative z-30 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
             <label className="text-xs font-black uppercase tracking-[0.35em] retro-mono text-gray-600">
               Project Channel
             </label>
@@ -169,11 +169,11 @@ export default function AnalyticsPage() {
                 </div>
               </div>
             ) : (
-              <div className="relative">
+              <div className="relative w-full sm:w-auto">
                 <select
                   value={activeProjectId || ""}
                   onChange={(e) => setSelectedProjectId(e.target.value || null)}
-                  className="min-w-[220px] retro-card-static bg-white px-4 py-3 text-sm font-bold text-black retro-mono outline-none cursor-pointer relative z-20 appearance-none"
+                  className="w-full min-w-[220px] retro-card-static bg-white px-4 py-3 text-sm font-bold text-black retro-mono outline-none cursor-pointer relative z-20 appearance-none"
                   disabled={projects.length === 0}
                   style={{ pointerEvents: 'auto' }}
                 >

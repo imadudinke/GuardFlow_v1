@@ -125,13 +125,13 @@ export default function SDKGuidePage() {
 
   return (
     <ProtectedDashboardPage>
-      <div className="relative min-h-full overflow-hidden bg-white p-8 text-black">
+      <div className="relative min-h-full overflow-hidden bg-white p-4 text-black sm:p-6 lg:p-8">
         <div className="absolute inset-0 halftone-bg"></div>
         <div className="absolute inset-0 retro-grid"></div>
 
         <div className="relative z-10 space-y-8">
           {/* Header */}
-          <header className="retro-card-static p-6 bg-white">
+          <header className="retro-card-static bg-white p-4 sm:p-6">
             <div className="absolute inset-0 halftone-accent"></div>
             <div className="relative z-10">
               <p className="mb-2 inline-block retro-card-static bg-black text-white px-3 py-1 text-xs font-black uppercase tracking-[0.35em] retro-mono">
@@ -209,7 +209,7 @@ export default function SDKGuidePage() {
           </div>
 
           {/* Language Selector */}
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedLanguage("python")}
               className={`retro-button px-4 py-2 text-sm font-black uppercase tracking-[0.2em] retro-mono ${
@@ -233,7 +233,7 @@ export default function SDKGuidePage() {
           </div>
 
           {/* Installation */}
-          <div className="retro-card-static bg-white p-6">
+          <div className="retro-card-static bg-white p-4 sm:p-6">
             <div className="absolute inset-0 halftone-subtle"></div>
             <div className="relative z-10">
               <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
@@ -257,7 +257,7 @@ export default function SDKGuidePage() {
           </div>
 
           {/* Basic Usage */}
-          <div className="retro-card-static bg-white p-6">
+          <div className="retro-card-static bg-white p-4 sm:p-6">
             <div className="absolute inset-0 halftone-subtle"></div>
             <div className="relative z-10">
               <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
@@ -281,7 +281,7 @@ export default function SDKGuidePage() {
           </div>
 
           {/* Advanced Configuration */}
-          <div className="retro-card-static bg-white p-6">
+          <div className="retro-card-static bg-white p-4 sm:p-6">
             <div className="absolute inset-0 halftone-subtle"></div>
             <div className="relative z-10">
               <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
@@ -305,7 +305,7 @@ export default function SDKGuidePage() {
           </div>
 
           {/* API Endpoints */}
-          <div className="retro-card-static bg-white p-6">
+          <div className="retro-card-static bg-white p-4 sm:p-6">
             <div className="absolute inset-0 halftone-subtle"></div>
             <div className="relative z-10">
               <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">

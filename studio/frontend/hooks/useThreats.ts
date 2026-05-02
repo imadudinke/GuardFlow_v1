@@ -20,6 +20,7 @@ interface UseThreatsReturn {
     hasPrev: boolean;
   } | null;
   loading: boolean;
+  refreshing: boolean;
   error: string | null;
   refetch: () => Promise<void>;
 }
@@ -33,27 +34,34 @@ export function useThreats({
   const [threats, setThreats] = useState<ThreatLog[]>([]);
   const [pagination, setPagination] = useState<UseThreatsReturn['pagination']>(null);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
 
   const fetchThreats = useCallback(async () => {
     if (!projectId) {
       setThreats([]);
       setPagination(null);
+      setLoading(false);
+      setRefreshing(false);
+      setError(null);
+      setHasLoadedOnce(false);
       return;
     }
 
+    const isInitialLoad = !hasLoadedOnce;
+
     try {
-      setLoading(true);
+      if (isInitialLoad) {
+        setLoading(true);
+      } else {
+        setRefreshing(true);
+      }
       setError(null);
-      
-      console.log('Fetching threats with params:', { projectId, limit, skip });
       const response = await ThreatsAPI.getThreatsForProject(projectId, limit, skip);
-      console.log('Received threats response:', response);
-      
+
       // Handle both old array format and new paginated format
       if (Array.isArray(response)) {
-        // Old format - just an array of threats
-        console.log('Received old format (array)');
         setThreats(response);
         setPagination({
           total: response.length,
@@ -64,8 +72,6 @@ export function useThreats({
           hasPrev: false,
         });
       } else {
-        // New paginated format
-        console.log('Received new paginated format');
         const data = response as PaginatedThreatsResponse;
         setThreats(data.threats);
         setPagination({
@@ -77,13 +83,15 @@ export function useThreats({
           hasPrev: data.has_prev,
         });
       }
+      setHasLoadedOnce(true);
     } catch (err) {
       console.error('Failed to fetch threats:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch threats');
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
-  }, [projectId, limit, skip]);
+  }, [projectId, limit, skip, hasLoadedOnce]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -103,6 +111,7 @@ export function useThreats({
     threats,
     pagination,
     loading,
+    refreshing,
     error,
     refetch: fetchThreats,
   };

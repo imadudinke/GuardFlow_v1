@@ -45,7 +45,7 @@ export default function DocsPage() {
       {/* Retro Header */}
       <header className="bg-white dark:bg-gray-800 border-b-4 border-black dark:border-gray-700 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex h-20 items-center justify-between gap-3">
             <Link href="/" className="flex items-center gap-3">
               <div className="retro-card bg-black dark:bg-white p-2">
                 <Shield className="w-6 h-6 text-white dark:text-black" />
@@ -55,8 +55,8 @@ export default function DocsPage() {
                 <p className="text-xs font-mono text-gray-600 dark:text-gray-400">DOCUMENTATION</p>
               </div>
             </Link>
-            <div className="flex items-center gap-4">
-              <Link href="/login" className="retro-button bg-white dark:bg-gray-700 text-black dark:text-white border-black dark:border-gray-600 px-6 py-2 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <Link href="/login" className="hidden retro-button bg-white dark:bg-gray-700 text-black dark:text-white border-black dark:border-gray-600 px-6 py-2 hover:bg-gray-50 dark:hover:bg-gray-600 sm:block">
                 <span className="font-black retro-mono text-sm">LOGIN</span>
               </Link>
               <Link href="/register" className="retro-button bg-black dark:bg-white text-white dark:text-black border-black dark:border-white px-6 py-2 hover:bg-gray-900 dark:hover:bg-gray-100">
@@ -84,9 +84,9 @@ export default function DocsPage() {
             <div className="inline-block retro-card bg-blue-100 dark:bg-blue-900 border-black dark:border-blue-700 px-6 py-2 mb-6">
               <span className="font-black retro-mono text-sm text-black dark:text-white">DNA-BASED THREAT DETECTION</span>
             </div>
-            <h1 className="text-6xl font-black retro-title text-black dark:text-white mb-6">
+            <h1 className="mb-6 text-4xl font-black retro-title text-black dark:text-white sm:text-5xl lg:text-6xl">
               GUARDFLOW<br/>
-              <span className="text-4xl">DEVELOPER DOCS</span>
+              <span className="text-2xl sm:text-3xl lg:text-4xl">DEVELOPER DOCS</span>
             </h1>
             <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-3xl mx-auto font-mono">
               Protect your FastAPI applications with zero-latency security.<br/>
@@ -95,9 +95,9 @@ export default function DocsPage() {
             
             {/* Install command */}
             <div className="max-w-2xl mx-auto">
-              <div className="retro-card bg-black dark:bg-gray-950 text-green-400 dark:text-green-300 p-6">
-                <div className="flex items-center justify-between">
-                  <code className="font-mono text-lg">$ pip install guardflow-fastapi</code>
+              <div className="retro-card bg-black dark:bg-gray-950 text-green-400 dark:text-green-300 p-4 sm:p-6">
+                <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+                  <code className="font-mono text-sm sm:text-lg">$ pip install guardflow-fastapi</code>
                   <button 
                     onClick={() => copyToClipboard('pip install guardflow-fastapi', 'hero-install')}
                     className="retro-button bg-green-600 dark:bg-green-700 text-white border-green-800 dark:border-green-900 px-4 py-2 hover:bg-green-700 dark:hover:bg-green-600"
@@ -128,9 +128,9 @@ export default function DocsPage() {
         </div>
       </section>
       {/* Navigation Tabs */}
-      <section className="bg-gray-100 dark:bg-gray-800 border-y-4 border-black dark:border-gray-700 sticky top-20 z-40">
+      <section className="sticky top-16 z-40 border-y-4 border-black bg-gray-100 dark:border-gray-700 dark:bg-gray-800 sm:top-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 py-4 overflow-x-auto">
+          <div className="flex items-center gap-2 overflow-x-auto py-4">
             {sections.map((section) => {
               const Icon = section.icon
               return (
@@ -513,7 +513,7 @@ spec:
                 'Test in staging before production'
               ].map((practice, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="retro-card bg-black dark:bg-white border-black dark:border-white w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <div className="retro-card bg-black dark:bg-white border-black dark:border-white w-10 h-10 flex items-center justify-center shrink-0">
                     <span className="text-green-400 dark:text-green-600 font-black text-2xl leading-none">✓</span>
                   </div>
                   <span className="font-mono text-sm text-gray-700 dark:text-gray-300 pt-2">{practice}</span>
@@ -524,8 +524,8 @@ spec:
         </section>
 
         {/* CTA Section */}
-        <section className="retro-card bg-gradient-to-br from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800 border-black dark:border-purple-700 p-12 text-center">
-          <h2 className="text-4xl font-black retro-title text-white mb-4">READY TO PROTECT YOUR APP?</h2>
+        <section className="retro-card border-black bg-linear-to-br from-blue-600 to-purple-600 p-6 text-center dark:border-purple-700 dark:from-blue-800 dark:to-purple-800 sm:p-12">
+          <h2 className="mb-4 text-2xl font-black retro-title text-white sm:text-4xl">READY TO PROTECT YOUR APP?</h2>
           <p className="text-lg text-blue-100 dark:text-blue-200 mb-8 max-w-2xl mx-auto font-mono">
             Join thousands of developers using GuardFlow to secure their FastAPI applications.
           </p>

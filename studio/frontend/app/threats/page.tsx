@@ -110,7 +110,7 @@ function ThreatFeed() {
     return projects[0]?.id ?? null;
   }, [projects, selectedProjectId]);
 
-  const { threats, pagination, loading: threatsLoading, error: threatsError } = useThreats({
+  const { threats, pagination, loading: threatsLoading, refreshing: threatsRefreshing, error: threatsError } = useThreats({
     projectId: activeProjectId,
     limit: pageSize,
     skip: (currentPage - 1) * pageSize,
@@ -122,11 +122,6 @@ function ThreatFeed() {
     () => threats.filter((threat) => isKnownAttackerThreat(threat)).length,
     [threats],
   );
-
-  // Reset to page 1 when project or page size changes
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [activeProjectId, pageSize]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -160,12 +155,12 @@ function ThreatFeed() {
 
   return (
     <ProtectedDashboardPage>
-      <div className="relative min-h-full overflow-hidden bg-white p-8 text-black">
+      <div className="relative min-h-full overflow-x-hidden bg-white p-4 text-black sm:p-6 lg:p-8">
         <div className="absolute inset-0 halftone-bg"></div>
         <div className="absolute inset-0 retro-grid"></div>
 
         <div className="relative z-10">
-          <header className="mb-10 retro-card-static p-6 bg-white">
+          <header className="mb-8 retro-card-static bg-white p-4 sm:mb-10 sm:p-6">
             <div className="absolute inset-0 halftone-accent"></div>
             <div className="relative z-10">
               <div className="mb-6 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -182,7 +177,7 @@ function ThreatFeed() {
                   </p>
                 </div>
 
-              <div className="grid gap-3 sm:grid-cols-4">
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <div className="retro-card-static bg-white px-4 py-3 text-black">
                   <div className="text-[10px] font-black uppercase tracking-[0.3em] retro-mono text-gray-600">Intercepted</div>
                   <div className="mt-1 text-2xl font-black retro-title">{pagination?.total ?? threats.length}</div>
@@ -200,13 +195,13 @@ function ThreatFeed() {
                 </div>
                 <div className="retro-card-static bg-white px-4 py-3 text-black">
                   <div className="text-[10px] font-black uppercase tracking-[0.3em] retro-mono text-gray-600">Mode</div>
-                  <div className="mt-1 text-2xl font-black retro-title">{threatsLoading ? "SYNC" : "LIVE"}</div>
+                  <div className="mt-1 text-2xl font-black retro-title">{threatsRefreshing ? "SYNC" : "LIVE"}</div>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap items-center gap-4 overflow-visible">
                 <label className="text-xs font-black uppercase tracking-[0.35em] retro-mono text-gray-600">
                   Project Channel
                 </label>
@@ -225,8 +220,11 @@ function ThreatFeed() {
                 ) : (
                   <select
                     value={activeProjectId || ""}
-                    onChange={(event) => setSelectedProjectId(event.target.value || null)}
-                    className="min-w-[220px] retro-card-static bg-white px-4 py-3 text-sm font-bold text-black retro-mono outline-none"
+                    onChange={(event) => {
+                      setSelectedProjectId(event.target.value || null);
+                      setCurrentPage(1);
+                    }}
+                    className="relative z-40 w-full min-w-[220px] retro-card-static bg-white px-4 py-3 text-sm font-bold text-black retro-mono outline-none sm:w-auto"
                     disabled={projects.length === 0}
                   >
                     {projects.length === 0 && <option value="">No projects available</option>}
@@ -239,7 +237,7 @@ function ThreatFeed() {
                 )}
               </div>
 
-              {threatsLoading && activeProjectId && (
+              {threatsRefreshing && activeProjectId && (
                 <div className="inline-flex items-center gap-3 retro-card bg-gray-50 px-4 py-2 text-sm retro-mono text-gray-700">
                   <div className="h-3 w-3 animate-pulse rounded-full bg-black" />
                   Syncing telemetry pulse...
@@ -290,49 +288,49 @@ function ThreatFeed() {
               return (
                 <article
                   key={threat.id}
-                  className="group relative overflow-hidden retro-card bg-white p-5 hover:-translate-y-1 transition-all duration-200"
+                  className="group relative overflow-hidden retro-card bg-white p-4 sm:p-5 hover:-translate-y-1 transition-all duration-200"
                 >
                   <div className="absolute inset-0 halftone-subtle"></div>
                   <div
-                    className={`absolute right-4 top-4 -rotate-6 retro-card px-3 py-1 text-[10px] font-black uppercase tracking-[0.25em] retro-mono bg-gray-100 text-gray-700`}
+                    className={`absolute right-3 top-3 -rotate-6 retro-card px-2 py-1 text-[10px] font-black uppercase tracking-[0.2em] retro-mono bg-gray-100 text-gray-700 sm:right-4 sm:top-4 sm:px-3 sm:tracking-[0.25em]`}
                   >
                     Case #{String(index + 1).padStart(2, "0")}
                   </div>
 
-                  <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="relative z-10 flex flex-col gap-4 sm:gap-5 lg:flex-row lg:items-start lg:justify-between">
                     <div className="space-y-4">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="retro-card-static bg-white text-black px-3 py-1 text-sm font-black retro-mono border-2 border-black">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <span className="max-w-full break-all retro-card-static border-2 border-black bg-white px-3 py-1 text-xs font-black text-black retro-mono sm:text-sm">
                           {threat.ip_address}
                         </span>
-                        <span className="retro-card-static bg-gray-100 px-3 py-1 text-[10px] font-black uppercase tracking-[0.3em] text-gray-700 retro-mono">
+                        <span className="retro-card-static bg-gray-100 px-2 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-gray-700 retro-mono sm:px-3 sm:tracking-[0.3em]">
                           {threat.country || "Unknown Origin"}
                         </span>
-                        <span className={`text-xs retro-mono uppercase tracking-[0.25em] ${tone.accent}`}>
+                        <span className={`hidden text-xs uppercase tracking-[0.25em] retro-mono sm:inline ${tone.accent}`}>
                           {factorCount} trigger{factorCount === 1 ? "" : "s"}
                         </span>
                         {knownAttacker && (
-                          <span className="retro-card-static bg-red-100 text-red-800 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] retro-mono">
+                          <span className="retro-card-static bg-red-100 text-red-800 px-2 py-1 text-[10px] font-black uppercase tracking-[0.15em] retro-mono sm:px-3 sm:tracking-[0.2em]">
                             Known Attacker
                           </span>
                         )}
                       </div>
 
-                      <p className="max-w-2xl border-l-4 border-black pl-4 retro-mono text-sm text-gray-700">
+                      <p className="max-w-2xl break-all border-l-4 border-black pl-3 text-xs text-gray-700 retro-mono sm:pl-4 sm:text-sm">
                         {threat.path}
                       </p>
 
                       <button
                         type="button"
                         onClick={() => setSelectedThreat(threat)}
-                        className="inline-flex items-center gap-3 retro-button bg-white px-4 py-2 retro-mono text-xs font-black uppercase tracking-[0.25em] text-black"
+                        className="inline-flex w-full items-center justify-center gap-2 retro-button bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.15em] text-black retro-mono sm:w-auto sm:justify-start sm:gap-3 sm:px-4 sm:text-xs sm:tracking-[0.25em]"
                       >
-                        <span>DNA</span>
-                        <span>{threat.dna_id.slice(0, 16)}...</span>
-                        <span className="border-l-2 border-black pl-3">Open Intel</span>
+                        <span className="hidden sm:inline">DNA</span>
+                        <span className="hidden sm:inline">{threat.dna_id.slice(0, 16)}...</span>
+                        <span className="sm:border-l-2 sm:border-black sm:pl-3">Open Intel</span>
                       </button>
 
-                      <div className="flex flex-wrap gap-2">
+                      <div className="hidden flex-wrap gap-2 sm:flex">
                         {(threat.risk_factors && threat.risk_factors.length > 0 ? threat.risk_factors : ["signal_pending"]).map(
                           (factor) => (
                             <span
@@ -346,13 +344,14 @@ function ThreatFeed() {
                       </div>
                     </div>
 
-                    <div className="flex flex-col items-start gap-3 text-left lg:items-end lg:text-right">
+                    <div className="flex flex-row items-center justify-between gap-3 text-left lg:flex-col lg:items-end lg:text-right">
                       <div className={`retro-card-static px-4 py-3 text-center ${tone.badge}`}>
                         <div className="text-[10px] font-black uppercase tracking-[0.3em] retro-mono">Threat Score</div>
                         <div className="text-3xl font-black retro-title">{threat.risk_score}%</div>
                       </div>
-                      <p className="retro-mono text-[11px] uppercase tracking-[0.25em] text-gray-500">
-                        {new Date(threat.created_at).toLocaleString()}
+                      <p className="retro-mono text-[10px] uppercase tracking-[0.2em] text-gray-500 sm:text-[11px] sm:tracking-[0.25em]">
+                        <span className="sm:hidden">{new Date(threat.created_at).toLocaleDateString()}</span>
+                        <span className="hidden sm:inline">{new Date(threat.created_at).toLocaleString()}</span>
                       </p>
                     </div>
                   </div>
@@ -373,14 +372,14 @@ function ThreatFeed() {
                     total={pagination.total}
                   />
                   {pagination.total > 5 && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 overflow-visible">
                       <label className="text-xs font-black uppercase tracking-[0.2em] retro-mono text-gray-600">
                         Per page:
                       </label>
                       <select
                         value={pageSize}
                         onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-                        className="retro-card-static bg-white px-3 py-1 text-sm retro-mono outline-none"
+                        className="relative z-40 retro-card-static bg-white px-3 py-1 text-sm retro-mono outline-none"
                       >
                         <option value={5}>5</option>
                         <option value={10}>10</option>
@@ -407,7 +406,7 @@ function ThreatFeed() {
 
         {selectedThreat && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-black/50 p-2 backdrop-blur-sm sm:items-center sm:p-4"
             onClick={() => setSelectedThreat(null)}
             role="presentation"
           >
@@ -415,15 +414,15 @@ function ThreatFeed() {
               role="dialog"
               aria-modal="true"
               aria-labelledby="threat-detail-title"
-              className="relative max-h-[90vh] w-full max-w-5xl overflow-hidden retro-card bg-white text-black"
+              className="relative max-h-[calc(100vh-1rem)] w-full max-w-5xl overflow-hidden retro-card bg-white text-black sm:max-h-[90vh]"
               onClick={(event) => event.stopPropagation()}
             >
               <div className="absolute inset-0 halftone-subtle"></div>
 
-              <div className="relative z-10 flex items-center justify-between border-b-2 border-black bg-gray-100 px-6 py-4">
+              <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b-2 border-black bg-gray-100 px-4 py-4 sm:items-center sm:px-6">
                 <div>
                   <p className="text-[11px] font-black uppercase tracking-[0.35em] retro-mono text-gray-600">Threat Breakdown</p>
-                  <h2 id="threat-detail-title" className="text-2xl font-black uppercase tracking-[0.08em] retro-title">
+                  <h2 id="threat-detail-title" className="text-lg font-black uppercase tracking-[0.08em] retro-title sm:text-2xl">
                     DNA {selectedThreat.dna_id.slice(0, 16)}...
                   </h2>
                       {isKnownAttackerThreat(selectedThreat) && (
@@ -435,13 +434,13 @@ function ThreatFeed() {
                 <button
                   type="button"
                   onClick={() => setSelectedThreat(null)}
-                  className="retro-button bg-white px-4 py-2 text-sm font-black uppercase tracking-[0.2em] retro-mono"
+                  className="shrink-0 retro-button bg-white px-3 py-2 text-xs font-black uppercase tracking-[0.2em] retro-mono sm:px-4 sm:text-sm"
                 >
                   Close
                 </button>
               </div>
 
-              <div className="relative z-10 grid max-h-[calc(90vh-88px)] gap-6 overflow-y-auto p-6 lg:grid-cols-[1.15fr_0.85fr]">
+              <div className="relative z-10 grid max-h-[calc(90vh-88px)] gap-6 overflow-y-auto p-4 sm:p-6 lg:grid-cols-[1.15fr_0.85fr]">
                 <section className="space-y-4">
                   <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                     <div className="retro-card bg-white p-3">
@@ -577,7 +576,7 @@ export default function ThreatsPage() {
     <Suspense
       fallback={
         <ProtectedDashboardPage>
-          <div className="relative min-h-full overflow-hidden bg-white p-8 text-black">
+          <div className="relative min-h-full overflow-hidden bg-white p-4 text-black sm:p-6 lg:p-8">
             <div className="absolute inset-0 halftone-bg"></div>
             <div className="absolute inset-0 retro-grid"></div>
             <div className="relative z-10 retro-card bg-white px-6 py-12 text-center">

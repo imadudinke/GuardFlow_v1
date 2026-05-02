@@ -17,7 +17,7 @@
   --color-accent-foreground: 20 20 20;
   --color-destructive: 220 38 38;
   --color-destructive-foreground: 255 255 255;
-  --color-border: 229 229 229;
+  --color-border: 20 20 20;
   --color-input: 245 245 245;
   --color-ring: 20 20 20;
   --radius: 0.5rem;
@@ -57,19 +57,31 @@
 }
 
 .dark .halftone-bg {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 1px,
+    transparent 1px
+  );
 }
 
 .dark .halftone-subtle {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px
+  );
 }
 
 .dark .halftone-accent {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15) 1px,
+    transparent 1px
+  );
 }
 
 .dark .retro-grid {
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
@@ -113,18 +125,25 @@
 }
 
 .abstract-grain {
-  background-image: 
-    radial-gradient(circle at 25% 25%, rgba(0,0,0,0.02) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(0,0,0,0.015) 0%, transparent 50%),
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(0, 0, 0, 0.02) 0%, transparent 50%),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba(0, 0, 0, 0.015) 0%,
+      transparent 50%
+    ),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.03'/%3E%3C/svg%3E");
-  background-size: 150px 150px, 200px 200px, 80px 80px;
+  background-size:
+    150px 150px,
+    200px 200px,
+    80px 80px;
 }
 
 /* Retro Grid Pattern */
 .retro-grid {
-  background-image: 
-    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
   background-size: 30px 30px;
 }
 
@@ -210,14 +229,14 @@
 
 /* Typography */
 .retro-title {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-weight: bold;
   letter-spacing: -0.02em;
   color: rgb(var(--color-foreground));
 }
 
 .retro-mono {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   color: rgb(var(--color-foreground));
 }
 
@@ -264,8 +283,13 @@ select.retro-card-static:disabled {
 
 /* Animations */
 @keyframes halftone-pulse {
-  0%, 100% { opacity: 0.02; }
-  50% { opacity: 0.05; }
+  0%,
+  100% {
+    opacity: 0.02;
+  }
+  50% {
+    opacity: 0.05;
+  }
 }
 
 .halftone-animated {
@@ -274,7 +298,8 @@ select.retro-card-static:disabled {
 
 /* Skeleton Loading Animation */
 @keyframes skeleton-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -293,11 +318,14 @@ select.retro-card-static:disabled {
 
 .from-red-500 {
   --tw-gradient-from: #ef4444;
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(239, 68, 68, 0));
+  --tw-gradient-stops:
+    var(--tw-gradient-from), var(--tw-gradient-to, rgba(239, 68, 68, 0));
 }
 
 .via-yellow-500 {
-  --tw-gradient-stops: var(--tw-gradient-from), #eab308, var(--tw-gradient-to, rgba(234, 179, 8, 0));
+  --tw-gradient-stops:
+    var(--tw-gradient-from), #eab308,
+    var(--tw-gradient-to, rgba(234, 179, 8, 0));
 }
 
 .to-blue-500 {
@@ -305,14 +333,36 @@ select.retro-card-static:disabled {
 }
 
 /* Dark theme compatibility for pages using fixed light classes */
-.dark .bg-white { background-color: rgb(17 24 39) !important; }
-.dark .bg-gray-50 { background-color: rgb(31 41 55) !important; }
-.dark .bg-gray-100 { background-color: rgb(55 65 81) !important; }
-.dark .bg-gray-200 { background-color: rgb(75 85 99) !important; }
-.dark .text-black { color: rgb(243 244 246) !important; }
-.dark .text-gray-900 { color: rgb(229 231 235) !important; }
-.dark .text-gray-800 { color: rgb(229 231 235) !important; }
-.dark .text-gray-700 { color: rgb(209 213 219) !important; }
-.dark .text-gray-600 { color: rgb(156 163 175) !important; }
-.dark .text-gray-500 { color: rgb(156 163 175) !important; }
-.dark .border-black { border-color: rgb(75 85 99) !important; }
+.dark .bg-white {
+  background-color: rgb(17 24 39) !important;
+}
+.dark .bg-gray-50 {
+  background-color: rgb(31 41 55) !important;
+}
+.dark .bg-gray-100 {
+  background-color: rgb(55 65 81) !important;
+}
+.dark .bg-gray-200 {
+  background-color: rgb(75 85 99) !important;
+}
+.dark .text-black {
+  color: rgb(243 244 246) !important;
+}
+.dark .text-gray-900 {
+  color: rgb(229 231 235) !important;
+}
+.dark .text-gray-800 {
+  color: rgb(229 231 235) !important;
+}
+.dark .text-gray-700 {
+  color: rgb(209 213 219) !important;
+}
+.dark .text-gray-600 {
+  color: rgb(156 163 175) !important;
+}
+.dark .text-gray-500 {
+  color: rgb(156 163 175) !important;
+}
+.dark .border-black {
+  border-color: rgb(75 85 99) !important;
+}
