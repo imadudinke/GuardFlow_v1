@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 import { ProtectedDashboardPage } from "@/components/dashboard/protected-dashboard-page";
-import { Code, Copy, CheckCircle, ExternalLink, Terminal, Shield, Zap } from "lucide-react";
+import {
+  Code,
+  Copy,
+  CheckCircle,
+  ExternalLink,
+  Terminal,
+  Shield,
+  Zap,
+} from "lucide-react";
 
 const codeExamples = {
   python: {
@@ -55,7 +63,7 @@ async def root():
 @app.get("/api/data")
 async def get_data():
     # This endpoint is automatically protected
-    return {"data": [1, 2, 3, 4, 5]}`
+    return {"data": [1, 2, 3, 4, 5]}`,
   },
   nodejs: {
     install: `# Node.js SDK coming soon!
@@ -75,12 +83,14 @@ async def get_data():
 // - Real-time telemetry
 
 // For now, use Python SDK with FastAPI
-// Visit: https://pypi.org/project/guardflow-fastapi/`
-  }
+// Visit: https://pypi.org/project/guardflow-fastapi/`,
+  },
 };
 
 export default function SDKGuidePage() {
-  const [selectedLanguage, setSelectedLanguage] = useState<'python' | 'nodejs'>('python');
+  const [selectedLanguage, setSelectedLanguage] = useState<"python" | "nodejs">(
+    "python",
+  );
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   const copyToClipboard = async (code: string, id: string) => {
@@ -89,9 +99,29 @@ export default function SDKGuidePage() {
       setCopiedCode(id);
       setTimeout(() => setCopiedCode(null), 2000);
     } catch (err) {
-      console.error('Failed to copy code:', err);
+      console.error("Failed to copy code:", err);
     }
   };
+
+  const CopyCodeButton = ({ id, code }: { id: string; code: string }) => (
+    <button
+      onClick={() => copyToClipboard(code, id)}
+      className={`retro-button px-3 py-1.5 text-xs inline-flex items-center gap-2 shrink-0 transition-colors ${
+        copiedCode === id
+          ? "bg-emerald-600 hover:bg-emerald-500 text-black border-emerald-700"
+          : "bg-blue-600 hover:bg-blue-500 text-black border-blue-700"
+      }`}
+      aria-label={`Copy ${id} code`}
+      type="button"
+    >
+      {copiedCode === id ? (
+        <CheckCircle className="h-3 w-3" />
+      ) : (
+        <Copy className="h-3 w-3" />
+      )}
+      {copiedCode === id ? "Copied!" : "Copy"}
+    </button>
+  );
 
   return (
     <ProtectedDashboardPage>
@@ -111,7 +141,9 @@ export default function SDKGuidePage() {
                 SDK Guide
               </h1>
               <p className="mt-3 max-w-2xl retro-mono text-sm text-gray-600">
-                Integrate GuardFlow into your applications with our lightweight SDKs. Real-time threat detection with minimal performance impact.
+                Integrate GuardFlow into your applications with our lightweight
+                SDKs. Real-time threat detection with minimal performance
+                impact.
               </p>
             </div>
           </header>
@@ -121,7 +153,9 @@ export default function SDKGuidePage() {
             <div className="retro-card-static bg-white p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Zap className="h-6 w-6 text-yellow-600" />
-                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title">Quick Start</h3>
+                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title">
+                  Quick Start
+                </h3>
               </div>
               <div className="space-y-3 text-sm retro-mono">
                 <div>1. Get your API key from Projects</div>
@@ -134,7 +168,9 @@ export default function SDKGuidePage() {
             <div className="retro-card-static bg-white p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Shield className="h-6 w-6 text-green-600" />
-                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title">Features</h3>
+                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title">
+                  Features
+                </h3>
               </div>
               <div className="space-y-3 text-sm retro-mono">
                 <div>• Real-time threat detection</div>
@@ -147,13 +183,27 @@ export default function SDKGuidePage() {
             <div className="retro-card-static bg-white p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Terminal className="h-6 w-6 text-blue-600" />
-                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title">Supported</h3>
+                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title">
+                  Supported
+                </h3>
               </div>
               <div className="space-y-3 text-sm retro-mono">
-                <div>✅ Python (FastAPI)</div>
-                <div>🚧 Node.js (coming soon)</div>
-                <div>🚧 Go (planned)</div>
-                <div>🚧 Rust (planned)</div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-emerald-600" />
+                  <span>Python (FastAPI)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Code className="h-4 w-4 text-amber-600" />
+                  <span>Node.js (coming soon)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Terminal className="h-4 w-4 text-amber-600" />
+                  <span>Go (planned)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-amber-600" />
+                  <span>Rust (planned)</span>
+                </div>
               </div>
             </div>
           </div>
@@ -161,21 +211,21 @@ export default function SDKGuidePage() {
           {/* Language Selector */}
           <div className="flex gap-2">
             <button
-              onClick={() => setSelectedLanguage('python')}
+              onClick={() => setSelectedLanguage("python")}
               className={`retro-button px-4 py-2 text-sm font-black uppercase tracking-[0.2em] retro-mono ${
-                selectedLanguage === 'python' 
-                  ? 'bg-black text-white border-black' 
-                  : 'bg-white text-black hover:bg-gray-100'
+                selectedLanguage === "python"
+                  ? "bg-black text-white border-black"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
             >
               Python
             </button>
             <button
-              onClick={() => setSelectedLanguage('nodejs')}
+              onClick={() => setSelectedLanguage("nodejs")}
               className={`retro-button px-4 py-2 text-sm font-black uppercase tracking-[0.2em] retro-mono ${
-                selectedLanguage === 'nodejs' 
-                  ? 'bg-black text-white border-black' 
-                  : 'bg-white text-black hover:bg-gray-100'
+                selectedLanguage === "nodejs"
+                  ? "bg-black text-white border-black"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
             >
               Node.js
@@ -186,16 +236,22 @@ export default function SDKGuidePage() {
           <div className="retro-card-static bg-white p-6">
             <div className="absolute inset-0 halftone-subtle"></div>
             <div className="relative z-10">
-              <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">Installation</h3>
-              <div className="retro-card-static bg-gray-900 p-4 text-white relative">
-                <button
-                  onClick={() => copyToClipboard(codeExamples[selectedLanguage].install, 'install')}
-                  className="absolute top-3 right-3 retro-button bg-gray-700 text-white border-gray-600 px-3 py-1 text-xs flex items-center gap-2"
-                >
-                  {copiedCode === 'install' ? <CheckCircle className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                  {copiedCode === 'install' ? 'Copied!' : 'Copy'}
-                </button>
-                <code className="text-sm retro-mono">{codeExamples[selectedLanguage].install}</code>
+              <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
+                Installation
+              </h3>
+              <div className="retro-card-static bg-gray-900 p-4 text-white overflow-hidden">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-gray-300 retro-mono">
+                    Command
+                  </span>
+                  <CopyCodeButton
+                    id="install"
+                    code={codeExamples[selectedLanguage].install}
+                  />
+                </div>
+                <code className="text-sm retro-mono block whitespace-pre-wrap break-all">
+                  {codeExamples[selectedLanguage].install}
+                </code>
               </div>
             </div>
           </div>
@@ -204,15 +260,19 @@ export default function SDKGuidePage() {
           <div className="retro-card-static bg-white p-6">
             <div className="absolute inset-0 halftone-subtle"></div>
             <div className="relative z-10">
-              <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">Basic Usage</h3>
-              <div className="retro-card-static bg-gray-900 p-4 text-white relative">
-                <button
-                  onClick={() => copyToClipboard(codeExamples[selectedLanguage].basic, 'basic')}
-                  className="absolute top-3 right-3 retro-button bg-gray-700 text-white border-gray-600 px-3 py-1 text-xs flex items-center gap-2"
-                >
-                  {copiedCode === 'basic' ? <CheckCircle className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                  {copiedCode === 'basic' ? 'Copied!' : 'Copy'}
-                </button>
+              <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
+                Basic Usage
+              </h3>
+              <div className="retro-card-static bg-gray-900 p-4 text-white overflow-hidden">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-gray-300 retro-mono">
+                    Snippet
+                  </span>
+                  <CopyCodeButton
+                    id="basic"
+                    code={codeExamples[selectedLanguage].basic}
+                  />
+                </div>
                 <pre className="text-sm retro-mono whitespace-pre-wrap overflow-x-auto">
                   {codeExamples[selectedLanguage].basic}
                 </pre>
@@ -224,15 +284,19 @@ export default function SDKGuidePage() {
           <div className="retro-card-static bg-white p-6">
             <div className="absolute inset-0 halftone-subtle"></div>
             <div className="relative z-10">
-              <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">Advanced Configuration</h3>
-              <div className="retro-card-static bg-gray-900 p-4 text-white relative">
-                <button
-                  onClick={() => copyToClipboard(codeExamples[selectedLanguage].advanced, 'advanced')}
-                  className="absolute top-3 right-3 retro-button bg-gray-700 text-white border-gray-600 px-3 py-1 text-xs flex items-center gap-2"
-                >
-                  {copiedCode === 'advanced' ? <CheckCircle className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                  {copiedCode === 'advanced' ? 'Copied!' : 'Copy'}
-                </button>
+              <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
+                Advanced Configuration
+              </h3>
+              <div className="retro-card-static bg-gray-900 p-4 text-white overflow-hidden">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-gray-300 retro-mono">
+                    Snippet
+                  </span>
+                  <CopyCodeButton
+                    id="advanced"
+                    code={codeExamples[selectedLanguage].advanced}
+                  />
+                </div>
                 <pre className="text-sm retro-mono whitespace-pre-wrap overflow-x-auto">
                   {codeExamples[selectedLanguage].advanced}
                 </pre>
@@ -244,30 +308,50 @@ export default function SDKGuidePage() {
           <div className="retro-card-static bg-white p-6">
             <div className="absolute inset-0 halftone-subtle"></div>
             <div className="relative z-10">
-              <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">API Endpoints</h3>
+              <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
+                API Endpoints
+              </h3>
               <div className="space-y-4">
                 <div className="retro-card-static bg-gray-50 p-4">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="retro-card-static bg-green-100 text-green-800 px-2 py-1 text-xs font-black retro-mono">POST</span>
-                    <code className="text-sm retro-mono">/api/v1/telemetry</code>
+                    <span className="retro-card-static bg-green-100 text-green-800 px-2 py-1 text-xs font-black retro-mono">
+                      POST
+                    </span>
+                    <code className="text-sm retro-mono text-black">
+                      /api/v1/telemetry
+                    </code>
                   </div>
-                  <p className="text-sm retro-mono text-gray-600">Send threat telemetry data</p>
+                  <p className="text-sm retro-mono text-gray-600">
+                    Send threat telemetry data
+                  </p>
                 </div>
 
                 <div className="retro-card-static bg-gray-50 p-4">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="retro-card-static bg-blue-100 text-blue-800 px-2 py-1 text-xs font-black retro-mono">POST</span>
-                    <code className="text-sm retro-mono">/api/v1/telemetry/blacklist-check</code>
+                    <span className="retro-card-static bg-blue-100 text-blue-800 px-2 py-1 text-xs font-black retro-mono">
+                      POST
+                    </span>
+                    <code className="text-sm retro-mono text-black">
+                      /api/v1/telemetry/blacklist-check
+                    </code>
                   </div>
-                  <p className="text-sm retro-mono text-gray-600">Check if DNA fingerprint is blacklisted</p>
+                  <p className="text-sm retro-mono text-gray-600">
+                    Check if DNA fingerprint is blacklisted
+                  </p>
                 </div>
 
                 <div className="retro-card-static bg-gray-50 p-4">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="retro-card-static bg-purple-100 text-purple-800 px-2 py-1 text-xs font-black retro-mono">GET</span>
-                    <code className="text-sm retro-mono">/api/v1/telemetry/runtime-config</code>
+                    <span className="retro-card-static bg-purple-100 text-purple-800 px-2 py-1 text-xs font-black retro-mono">
+                      GET
+                    </span>
+                    <code className="text-sm retro-mono text-black">
+                      /api/v1/telemetry/runtime-config
+                    </code>
                   </div>
-                  <p className="text-sm retro-mono text-gray-600">Get project configuration settings</p>
+                  <p className="text-sm retro-mono text-gray-600">
+                    Get project configuration settings
+                  </p>
                 </div>
               </div>
             </div>
@@ -278,21 +362,41 @@ export default function SDKGuidePage() {
             <div className="retro-card-static bg-white p-6">
               <div className="absolute inset-0 halftone-subtle"></div>
               <div className="relative z-10">
-                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">Resources</h3>
+                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
+                  Resources
+                </h3>
                 <div className="space-y-3">
-                  <a href="https://pypi.org/project/guardflow-fastapi/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
+                  <a
+                    href="https://pypi.org/project/guardflow-fastapi/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-sm retro-mono text-black hover:text-blue-600"
+                  >
                     <ExternalLink className="h-4 w-4" />
                     PyPI Package
                   </a>
-                  <a href="https://github.com/imadudinke/GuardFlow_v1" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
+                  <a
+                    href="https://github.com/imadudinke/GuardFlow_v1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-sm retro-mono text-black hover:text-blue-600"
+                  >
                     <ExternalLink className="h-4 w-4" />
                     GitHub Repository
                   </a>
-                  <a href="/docs" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
+                  <a
+                    href="/docs"
+                    className="flex items-center gap-3 text-sm retro-mono text-black hover:text-blue-600"
+                  >
                     <ExternalLink className="h-4 w-4" />
                     Full Documentation
                   </a>
-                  <a href="https://guardflow-v1.onrender.com/docs" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
+                  <a
+                    href="https://guardflow-v1.onrender.com/docs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-sm retro-mono text-black hover:text-blue-600"
+                  >
                     <ExternalLink className="h-4 w-4" />
                     API Reference
                   </a>
@@ -303,8 +407,10 @@ export default function SDKGuidePage() {
             <div className="retro-card-static bg-white p-6">
               <div className="absolute inset-0 halftone-subtle"></div>
               <div className="relative z-10">
-                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">Need Help?</h3>
-                <div className="space-y-3 text-sm retro-mono">
+                <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">
+                  Need Help?
+                </h3>
+                <div className="space-y-3 text-sm retro-mono text-black">
                   <div>• Check the Analytics page for integration status</div>
                   <div>• View threat logs in the Threats section</div>
                   <div>• Monitor blocked requests in real-time</div>
