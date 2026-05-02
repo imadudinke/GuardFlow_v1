@@ -20,6 +20,28 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, isLoading, router]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const oauthError = new URLSearchParams(window.location.search).get("error");
+    if (!oauthError) {
+      return;
+    }
+
+    const oauthErrors: Record<string, string> = {
+      google_auth_failed: "Google sign in failed. Please try again.",
+      invalid_oauth_state: "Google sign in session expired. Please try again.",
+      email_not_verified: "Google account email is not verified.",
+      inactive_user: "Account is inactive.",
+    };
+    setError(oauthErrors[oauthError] ?? "Google sign in failed.");
+  }, []);
+
+  const handleGoogleSignIn = () => {
+    window.location.href = getApiUrl("/api/v1/auth/google/login?next=/dashboard");
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
@@ -158,6 +180,18 @@ export default function LoginPage() {
                     {error}
                   </div>
                 )}
+
+                <button
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  className="retro-button w-full bg-white px-4 py-3 text-sm font-black uppercase tracking-[0.12em] text-black transition-transform hover:-translate-y-0.5"
+                >
+                  Continue With Google
+                </button>
+
+                <div className="text-center text-xs font-black uppercase tracking-[0.2em] text-zinc-500">
+                  or
+                </div>
 
                 <div>
                   <label

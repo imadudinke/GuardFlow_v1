@@ -35,3 +35,5 @@ class UserInDB(BaseDBSchema, UserBase):
 
 class User(BaseDBSchema, UserBase):
     plan_tier: str
+    google_sub: Optional[str] = None
+    email_verified: bool = False

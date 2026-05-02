@@ -61,6 +61,10 @@ export default function RegisterPage() {
     }
   };
 
+  const handleGoogleSignUp = () => {
+    window.location.href = getApiUrl("/api/v1/auth/google/login?next=/dashboard");
+  };
+
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center p-6">
@@ -171,6 +175,18 @@ export default function RegisterPage() {
                     {error}
                   </div>
                 )}
+
+                <button
+                  type="button"
+                  onClick={handleGoogleSignUp}
+                  className="retro-button w-full bg-white px-4 py-3 text-sm font-black uppercase tracking-[0.12em] text-black transition-transform hover:-translate-y-0.5"
+                >
+                  Continue With Google
+                </button>
+
+                <div className="text-center text-xs font-black uppercase tracking-[0.2em] text-zinc-500">
+                  or
+                </div>
 
                 <div>
                   <label

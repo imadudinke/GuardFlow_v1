@@ -12,7 +12,7 @@ import {
   Zap,
 } from "lucide-react";
 
-const STUDIO_BASE_URL = "https://guard-flow-v1.vercel.app";
+const STUDIO_BASE_URL = "https://guardflow-v1.onrender.com";
 const STUDIO_DOCS_URL = `${STUDIO_BASE_URL}/docs`;
 const PYPI_URL = "https://pypi.org/project/guardflow-fastapi/";
 const GITHUB_URL = "https://github.com/imadudinke/GuardFlow_v1";
@@ -30,7 +30,7 @@ app.add_middleware(
     GuardFlowMiddleware,
     api_key="gf_live_your_api_key_here",
     redis_url="redis://localhost:6379",
-    studio_url="https://guard-flow-v1.vercel.app"
+    studio_url="https://guardflow-v1.onrender.com"
 )
 
 @app.get("/")
@@ -46,7 +46,7 @@ app.add_middleware(
     GuardFlowMiddleware,
     api_key="gf_live_your_api_key_here",
     redis_url="redis://localhost:6379",
-    studio_url="https://guard-flow-v1.vercel.app",
+    studio_url="https://guardflow-v1.onrender.com",
     # Honeypot traps - paths that should never be accessed
     bait_paths=["/admin", "/wp-admin", "/.env", "/config"],
     # Protected paths - require authentication

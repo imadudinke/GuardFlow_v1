@@ -57,6 +57,52 @@ def create_user(db: Session, user: UserCreate) -> User:
     return db_user
 
 
+def get_user_by_google_sub(db: Session, google_sub: str) -> Optional[User]:
+    return db.query(User).filter(User.google_sub == google_sub).first()
+
+
+def create_google_user(
+    db: Session,
+    *,
+    email: str,
+    full_name: Optional[str],
+    google_sub: str,
+    email_verified: bool,
+) -> User:
+    db_user = User(
+        email=email,
+        full_name=full_name,
+        plan_tier="Free",
+        hashed_password=None,
+        google_sub=google_sub,
+        email_verified=email_verified,
+        is_active=True,
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def link_google_account(
+    db: Session,
+    *,
+    user: User,
+    google_sub: str,
+    email_verified: bool,
+    full_name: Optional[str],
+) -> User:
+    user.google_sub = google_sub
+    if email_verified:
+        user.email_verified = True
+    if not user.full_name and full_name:
+        user.full_name = full_name
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
 def update_user(db: Session, user_id: UUID, user: UserUpdate) -> Optional[User]:
     db_user = get_user(db, user_id)
     if not db_user:

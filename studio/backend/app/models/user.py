@@ -9,5 +9,7 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     full_name = Column(String, nullable=True)
     plan_tier = Column(String, nullable=False, default="Free", server_default="Free")
-    hashed_password = Column(String)
+    hashed_password = Column(String, nullable=True)
+    google_sub = Column(String, unique=True, index=True, nullable=True)
+    email_verified = Column(Boolean, nullable=False, default=False, server_default="false")
     is_active = Column(Boolean, default=True)
