@@ -6,127 +6,76 @@ import { Code, Copy, CheckCircle, ExternalLink, Terminal, Shield, Zap } from "lu
 
 const codeExamples = {
   python: {
-    install: `pip install guardflow-sdk`,
-    basic: `from guardflow import GuardFlow
+    install: `pip install guardflow-fastapi`,
+    basic: `from fastapi import FastAPI
+from guardflow.middleware import GuardFlowMiddleware
 
-# Initialize with your project API key
-gf = GuardFlow(api_key="gf_live_your_api_key_here")
+app = FastAPI()
 
-# Basic middleware integration
-@app.middleware("http")
-async def guardflow_middleware(request: Request, call_next):
-    # Check if request should be blocked
-    result = await gf.check_request(request)
-    
-    if result.blocked:
-        return JSONResponse(
-            status_code=403,
-            content={"error": "Request blocked by GuardFlow"}
-        )
-    
-    response = await call_next(request)
-    
-    # Log the request for analysis
-    await gf.log_request(request, response)
-    
-    return response`,
-    advanced: `# Advanced configuration
-gf = GuardFlow(
+# Add GuardFlow protection
+app.add_middleware(
+    GuardFlowMiddleware,
     api_key="gf_live_your_api_key_here",
-    hard_ban_enabled=True,  # Block high-risk requests
-    rate_limit_window=60,   # Rate limiting window in seconds
-    max_requests_per_window=100,
-    custom_rules=[
-        {"path": "/admin/*", "block_anonymous": True},
-        {"path": "/api/sensitive", "require_auth": True}
-    ]
+    redis_url="redis://localhost:6379",
+    studio_url="https://guardflow-v1.onrender.com"
 )
 
-# Custom threat detection
-@gf.custom_detector
-def detect_sql_injection(request):
-    suspicious_patterns = ["'", "UNION", "SELECT", "--"]
-    query_params = str(request.query_params)
-    
-    for pattern in suspicious_patterns:
-        if pattern.lower() in query_params.lower():
-            return {
-                "threat_detected": True,
-                "risk_factor": "sql_injection_attempt",
-                "confidence": 0.8
-            }
-    
-    return {"threat_detected": False}`
+@app.get("/")
+async def root():
+    return {"status": "Protected by GuardFlow"}`,
+    advanced: `from fastapi import FastAPI
+from guardflow.middleware import GuardFlowMiddleware
+
+app = FastAPI()
+
+# Advanced configuration with custom settings
+app.add_middleware(
+    GuardFlowMiddleware,
+    api_key="gf_live_your_api_key_here",
+    redis_url="redis://localhost:6379",
+    studio_url="https://guardflow-v1.onrender.com",
+    # Honeypot traps - paths that should never be accessed
+    bait_paths=["/admin", "/wp-admin", "/.env", "/config"],
+    # Protected paths - require authentication
+    protected_paths=["/api/admin", "/dashboard"]
+)
+
+# The middleware automatically:
+# - Generates DNA fingerprints for each request
+# - Checks global blacklist (shared across projects)
+# - Enforces rate limiting (10 req/min, ban after 50)
+# - Blocks honeypot path access
+# - Reports threats to Studio in real-time
+# - Scrubs PII from telemetry data
+
+@app.get("/")
+async def root():
+    return {"status": "Protected"}
+
+@app.get("/api/data")
+async def get_data():
+    # This endpoint is automatically protected
+    return {"data": [1, 2, 3, 4, 5]}`
   },
   nodejs: {
-    install: `npm install @guardflow/sdk`,
-    basic: `const { GuardFlow } = require('@guardflow/sdk');
+    install: `# Node.js SDK coming soon!
+# For now, use the Python SDK with FastAPI`,
+    basic: `// Node.js SDK is under development
+// Currently available: Python SDK for FastAPI
 
-// Initialize GuardFlow
-const gf = new GuardFlow({
-  apiKey: 'gf_live_your_api_key_here'
-});
+// Stay tuned for:
+// - Express.js middleware
+// - Koa middleware  
+// - NestJS integration`,
+    advanced: `// Advanced features coming to Node.js SDK:
+// - DNA fingerprinting
+// - Rate limiting
+// - Global blacklist
+// - Honeypot traps
+// - Real-time telemetry
 
-// Express.js middleware
-app.use(async (req, res, next) => {
-  try {
-    // Check request against GuardFlow
-    const result = await gf.checkRequest(req);
-    
-    if (result.blocked) {
-      return res.status(403).json({
-        error: 'Request blocked by GuardFlow'
-      });
-    }
-    
-    // Continue to next middleware
-    next();
-    
-    // Log request after processing
-    res.on('finish', () => {
-      gf.logRequest(req, res);
-    });
-    
-  } catch (error) {
-    console.error('GuardFlow error:', error);
-    next(); // Continue on error
-  }
-});`,
-    advanced: `// Advanced configuration with custom rules
-const gf = new GuardFlow({
-  apiKey: 'gf_live_your_api_key_here',
-  hardBanEnabled: true,
-  rateLimitWindow: 60,
-  maxRequestsPerWindow: 100,
-  customRules: [
-    {
-      path: '/admin/*',
-      blockAnonymous: true
-    },
-    {
-      path: '/api/sensitive',
-      requireAuth: true
-    }
-  ]
-});
-
-// Custom threat detection
-gf.addCustomDetector('xss-detection', (req) => {
-  const suspiciousPatterns = ['<script', 'javascript:', 'onerror='];
-  const userInput = JSON.stringify(req.body) + req.url;
-  
-  for (const pattern of suspiciousPatterns) {
-    if (userInput.toLowerCase().includes(pattern)) {
-      return {
-        threatDetected: true,
-        riskFactor: 'xss_attempt',
-        confidence: 0.9
-      };
-    }
-  }
-  
-  return { threatDetected: false };
-});`
+// For now, use Python SDK with FastAPI
+// Visit: https://pypi.org/project/guardflow-fastapi/`
   }
 };
 
@@ -201,10 +150,10 @@ export default function SDKGuidePage() {
                 <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title">Supported</h3>
               </div>
               <div className="space-y-3 text-sm retro-mono">
-                <div>• Python (FastAPI, Django)</div>
-                <div>• Node.js (Express, Koa)</div>
-                <div>• Go (coming soon)</div>
-                <div>• Rust (coming soon)</div>
+                <div>✅ Python (FastAPI)</div>
+                <div>🚧 Node.js (coming soon)</div>
+                <div>🚧 Go (planned)</div>
+                <div>🚧 Rust (planned)</div>
               </div>
             </div>
           </div>
@@ -331,21 +280,21 @@ export default function SDKGuidePage() {
               <div className="relative z-10">
                 <h3 className="text-lg font-black uppercase tracking-[0.08em] retro-title mb-4">Resources</h3>
                 <div className="space-y-3">
-                  <a href="#" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
+                  <a href="https://pypi.org/project/guardflow-fastapi/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
                     <ExternalLink className="h-4 w-4" />
-                    Python SDK Documentation
+                    PyPI Package
                   </a>
-                  <a href="#" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
+                  <a href="https://github.com/imadudinke/GuardFlow_v1" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
                     <ExternalLink className="h-4 w-4" />
-                    Node.js SDK Documentation
+                    GitHub Repository
                   </a>
-                  <a href="#" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
+                  <a href="/docs" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
+                    <ExternalLink className="h-4 w-4" />
+                    Full Documentation
+                  </a>
+                  <a href="https://guardflow-v1.onrender.com/docs" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
                     <ExternalLink className="h-4 w-4" />
                     API Reference
-                  </a>
-                  <a href="#" className="flex items-center gap-3 text-sm retro-mono hover:text-blue-600">
-                    <ExternalLink className="h-4 w-4" />
-                    Example Projects
                   </a>
                 </div>
               </div>

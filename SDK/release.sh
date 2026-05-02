@@ -11,8 +11,27 @@ if [ ! -f "pyproject.toml" ]; then
     exit 1
 fi
 
+# Check for required tools
+echo ""
+echo "Checking dependencies..."
+
+# Check if build is installed
+if ! python -m build --version &> /dev/null; then
+    echo "⚠️  'build' package not found. Installing..."
+    pip install --upgrade build
+fi
+
+# Check if twine is installed
+if ! python -m twine --version &> /dev/null; then
+    echo "⚠️  'twine' package not found. Installing..."
+    pip install --upgrade twine
+fi
+
+echo "✅ All dependencies installed"
+
 # Get version from pyproject.toml
 VERSION=$(grep "^version" pyproject.toml | cut -d'"' -f2)
+echo ""
 echo "📦 Preparing to release version: $VERSION"
 
 # Confirm
@@ -39,7 +58,7 @@ echo "✅ Built"
 
 echo ""
 echo "Step 3: Checking package..."
-twine check dist/*
+python -m twine check dist/*
 if [ $? -ne 0 ]; then
     echo "❌ Package check failed"
     exit 1
@@ -61,7 +80,7 @@ echo
 if [[ $REPLY == "1" ]]; then
     echo ""
     echo "📤 Uploading to Test PyPI..."
-    twine upload --repository testpypi dist/*
+    python -m twine upload --repository testpypi dist/*
     
     if [ $? -eq 0 ]; then
         echo ""
@@ -82,7 +101,7 @@ elif [[ $REPLY == "2" ]]; then
     if [[ $CONFIRM == "yes" ]]; then
         echo ""
         echo "📤 Uploading to Production PyPI..."
-        twine upload dist/*
+        python -m twine upload dist/*
         
         if [ $? -eq 0 ]; then
             echo ""
