@@ -148,14 +148,9 @@ def upsert_global_blacklist(
 
 
 async def get_country_from_ip(ip: str) -> str:
-    """
-    Looks up the country of an IP address using ipinfo.io (reliable, production-ready service)
-    """
-    # Check if it's a private/local IP
     if ip.startswith(("127.", "10.", "192.168.", "172.")) or ip in ["localhost", "::1"]:
         return "Local"
-    
-    # Try ipinfo.io - most reliable service (50k requests/month free)
+
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(
@@ -165,9 +160,8 @@ async def get_country_from_ip(ip: str) -> str:
             )
             if response.status_code == 200:
                 data = response.json()
-                country = data.get("country")  # Returns country code like "US"
-                
-                # Convert country code to full name
+                country = data.get("country")
+
                 country_names = {
                     "US": "United States", "GB": "United Kingdom", "CA": "Canada",
                     "AU": "Australia", "DE": "Germany", "FR": "France", "IT": "Italy",
@@ -184,11 +178,10 @@ async def get_country_from_ip(ip: str) -> str:
                 }
                 
                 if country:
-                    return country_names.get(country, country)  # Return full name or code
-    except Exception as e:
-        print(f"⚠️  [GuardFlow] ipinfo.io failed: {e}")
-    
-    # Fallback to ip-api.com
+                    return country_names.get(country, country)
+    except Exception:
+        pass
+
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(
@@ -201,9 +194,9 @@ async def get_country_from_ip(ip: str) -> str:
                     country = data.get("country")
                     if country:
                         return country
-    except Exception as e:
-        print(f"⚠️  [GuardFlow] ip-api.com failed: {e}")
-    
+    except Exception:
+        pass
+
     return "Unknown"
 
 @router.post("/telemetry", status_code=status.HTTP_201_CREATED)
@@ -212,28 +205,18 @@ async def receive_telemetry(
     db: Session = Depends(get_db),
     x_guardflow_key: str = Header(None, alias="X-GuardFlow-Key")
 ):
-    """
-    Receive telemetry data from GuardFlow SDK
-    
-    Validates API key and stores threat logs in database
-    """
-    
-    # 1. Verify API key exists in projects table
     project = get_sdk_project_or_401(db, x_guardflow_key)
-    
-    # 2. Calculate risk score from the factors the SDK observed.
+
     factors = list(dict.fromkeys(payload.factors))
     if payload.reason and payload.reason not in factors:
         factors.append(LEGACY_REASON_FACTORS.get(payload.reason, payload.reason))
 
     risk_score = calculate_risk_score(payload.status, factors)
-    
-    # 3. Get country from payload or IP lookup
+
     country = payload.country
     if not country:
         country = await get_country_from_ip(payload.ip)
-    
-    # 4. Create threat log entry
+
     new_log = ThreatLog(
         project_id=project.id,
         ip_address=payload.ip,
@@ -244,8 +227,7 @@ async def receive_telemetry(
         risk_factors=factors,
         request_metadata=payload.metadata or payload.headers or {},
     )
-    
-    # 5. Save to database
+
     db.add(new_log)
     db.commit()
     db.refresh(new_log)
