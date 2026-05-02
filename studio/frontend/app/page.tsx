@@ -25,56 +25,72 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Main artistic noise background - enhanced for full screen */}
-      <div className="absolute inset-0 opacity-[0.18]" style={{
-        background: `
+      <div
+        className="absolute inset-0 opacity-[0.18]"
+        style={{
+          background: `
           radial-gradient(ellipse 1200px 800px at 15% 5%, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 25%, rgba(0,0,0,0.2) 50%, transparent 80%),
           radial-gradient(ellipse 800px 600px at 85% 95%, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 35%, rgba(0,0,0,0.1) 60%, transparent 85%),
           radial-gradient(ellipse 600px 400px at 50% 50%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 40%, transparent 70%),
           radial-gradient(ellipse 400px 300px at 25% 75%, rgba(0,0,0,0.3) 0%, transparent 60%)
         `,
-        backgroundImage: `
+          backgroundImage: `
           url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='organicNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23organicNoise)' opacity='0.9'/%3E%3C/svg%3E"),
           url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fineGrain'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fineGrain)' opacity='0.7'/%3E%3C/svg%3E"),
           url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='microGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.2' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23microGrain)' opacity='0.5'/%3E%3C/svg%3E")
         `,
-        backgroundSize: '100% 100%, 180px 180px, 90px 90px, 45px 45px',
-        backgroundPosition: '0 0, 0 0, 60px 60px, 30px 30px'
-      }}></div>
-      
+          backgroundSize: "100% 100%, 180px 180px, 90px 90px, 45px 45px",
+          backgroundPosition: "0 0, 0 0, 60px 60px, 30px 30px",
+        }}
+      ></div>
+
       {/* Enhanced halftone texture layer */}
-      <div className="absolute inset-0 opacity-[0.12]" style={{
-        backgroundImage: `
+      <div
+        className="absolute inset-0 opacity-[0.12]"
+        style={{
+          backgroundImage: `
           radial-gradient(circle 1.5px at 1.5px 1.5px, rgba(0,0,0,0.9) 0%, transparent 50%),
           radial-gradient(circle 1px at 1px 1px, rgba(0,0,0,0.7) 0%, transparent 50%),
           radial-gradient(circle 0.8px at 0.8px 0.8px, rgba(0,0,0,0.5) 0%, transparent 50%),
           radial-gradient(circle 1.2px at 1.2px 1.2px, rgba(0,0,0,0.6) 0%, transparent 50%)
         `,
-        backgroundSize: '6px 6px, 10px 10px, 14px 14px, 18px 18px',
-        backgroundPosition: '0 0, 3px 3px, 7px 7px, 9px 9px'
-      }}></div>
-      
+          backgroundSize: "6px 6px, 10px 10px, 14px 14px, 18px 18px",
+          backgroundPosition: "0 0, 3px 3px, 7px 7px, 9px 9px",
+        }}
+      ></div>
+
       {/* Flowing organic shapes for depth */}
-      <div className="absolute inset-0 opacity-[0.06]" style={{
-        background: `
+      <div
+        className="absolute inset-0 opacity-[0.06]"
+        style={{
+          background: `
           radial-gradient(ellipse 300px 200px at 70% 20%, rgba(0,0,0,0.4) 0%, transparent 70%),
           radial-gradient(ellipse 250px 150px at 30% 80%, rgba(0,0,0,0.3) 0%, transparent 60%),
           radial-gradient(ellipse 200px 300px at 90% 60%, rgba(0,0,0,0.2) 0%, transparent 50%)
-        `
-      }}></div>
-      
+        `,
+        }}
+      ></div>
+
       {/* Subtle colorful accents - very minimal */}
-      <div className="absolute top-1/4 left-1/6 w-40 h-40 opacity-6" style={{
-        background: 'linear-gradient(135deg, #ff6b6b20, #4ecdc420)',
-        clipPath: 'circle(50% at 50% 50%)',
-        filter: 'blur(4px)'
-      }}></div>
-      
-      <div className="absolute bottom-1/3 right-1/5 w-48 h-48 opacity-5" style={{
-        background: 'linear-gradient(45deg, #a8edea15, #fed6e315)',
-        clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-        filter: 'blur(5px)'
-      }}></div>
-      
+      <div
+        className="absolute top-1/4 left-1/6 w-40 h-40 opacity-6"
+        style={{
+          background: "linear-gradient(135deg, #ff6b6b20, #4ecdc420)",
+          clipPath: "circle(50% at 50% 50%)",
+          filter: "blur(4px)",
+        }}
+      ></div>
+
+      <div
+        className="absolute bottom-1/3 right-1/5 w-48 h-48 opacity-5"
+        style={{
+          background: "linear-gradient(45deg, #a8edea15, #fed6e315)",
+          clipPath:
+            "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
+          filter: "blur(5px)",
+        }}
+      ></div>
+
       <div className="relative z-10">
         {/* Header */}
         <header className="p-6 md:p-8 lg:p-12">
@@ -83,15 +99,29 @@ export default function Home() {
               <div className="retro-card-static p-3 bg-black">
                 {/* Custom shield visual */}
                 <div className="w-8 h-8 relative">
-                  <div className="absolute inset-0 bg-white" style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}}></div>
-                  <div className="absolute inset-1 bg-black" style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}}></div>
+                  <div
+                    className="absolute inset-0 bg-white"
+                    style={{
+                      clipPath:
+                        "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                    }}
+                  ></div>
+                  <div
+                    className="absolute inset-1 bg-black"
+                    style={{
+                      clipPath:
+                        "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                    }}
+                  ></div>
                   <div className="absolute top-1/2 left-1/2 w-4 h-0.5 bg-white transform -translate-x-1/2 -translate-y-1/2"></div>
                   <div className="absolute top-1/2 left-1/2 w-0.5 h-4 bg-white transform -translate-x-1/2 -translate-y-1/2"></div>
                 </div>
               </div>
-              <span className="text-2xl font-black retro-title text-black sm:text-3xl lg:text-4xl">GuardFlow</span>
+              <span className="text-2xl font-black retro-title text-black sm:text-3xl lg:text-4xl">
+                GuardFlow
+              </span>
             </div>
-            
+
             <div className="flex items-center gap-2 sm:gap-4">
               <Link
                 href="/docs"
@@ -105,9 +135,7 @@ export default function Home() {
                 href="/login"
                 className="retro-button bg-white text-black border-black px-6 py-3 hover:bg-gray-50 hidden sm:block"
               >
-                <span className="font-black retro-mono text-sm">
-                  Login
-                </span>
+                <span className="font-black retro-mono text-sm">Login</span>
               </Link>
               <Link
                 href={isAuthenticated ? "/dashboard" : "/register"}
@@ -160,15 +188,17 @@ export default function Home() {
                   Python SDK for FastAPI with DNA fingerprinting technology.
                 </p>
                 <p className="text-xl lg:text-2xl retro-mono text-gray-600">
-                  Integrate advanced threat detection into your FastAPI applications with intelligent rate limiting, 
-                  real-time monitoring, and automated threat response. Includes Studio dashboard for management.
+                  Integrate advanced threat detection into your FastAPI
+                  applications with intelligent rate limiting, real-time
+                  monitoring, and automated threat response. Includes Studio
+                  dashboard for management.
                 </p>
               </div>
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
-              <Link 
+              <Link
                 href={isAuthenticated ? "/dashboard" : "/register"}
                 className="retro-button bg-blue-100 text-blue-800 border-blue-800 px-10 py-5 hover:bg-blue-200 flex items-center gap-4 group text-lg"
               >
@@ -186,8 +216,8 @@ export default function Home() {
                   <div className="absolute top-1/2 right-0 w-2 h-2 border-r-2 border-t-2 border-blue-800 transform -translate-y-1/2 rotate-45"></div>
                 </div>
               </Link>
-              
-              <Link 
+
+              <Link
                 href="/sdk-guide"
                 className="retro-button bg-green-100 text-green-800 border-green-800 px-10 py-5 hover:bg-green-200 flex items-center gap-4 text-lg"
               >
@@ -230,7 +260,8 @@ export default function Home() {
                   FastAPI Middleware
                 </h4>
                 <p className="retro-mono text-red-700 text-base lg:text-lg">
-                  Easy integration with FastAPI applications using simple middleware decorators and configuration.
+                  Easy integration with FastAPI applications using simple
+                  middleware decorators and configuration.
                 </p>
               </div>
 
@@ -250,7 +281,8 @@ export default function Home() {
                   Studio Dashboard
                 </h4>
                 <p className="retro-mono text-blue-700 text-base lg:text-lg">
-                  Web-based management interface for monitoring threats, managing projects, and configuring rules.
+                  Web-based management interface for monitoring threats,
+                  managing projects, and configuring rules.
                 </p>
               </div>
 
@@ -269,7 +301,8 @@ export default function Home() {
                   Rate Limiting
                 </h4>
                 <p className="retro-mono text-green-700 text-base lg:text-lg">
-                  Built-in rate limiting with configurable thresholds, sliding windows, and automatic scaling.
+                  Built-in rate limiting with configurable thresholds, sliding
+                  windows, and automatic scaling.
                 </p>
               </div>
 
@@ -288,7 +321,8 @@ export default function Home() {
                   Real-Time Analytics
                 </h4>
                 <p className="retro-mono text-purple-700 text-base lg:text-lg">
-                  Live metrics and analytics streamed to Studio dashboard with detailed request insights.
+                  Live metrics and analytics streamed to Studio dashboard with
+                  detailed request insights.
                 </p>
               </div>
 
@@ -320,7 +354,8 @@ export default function Home() {
                   DNA Fingerprinting
                 </h4>
                 <p className="retro-mono text-orange-700 text-base lg:text-lg">
-                  Unique threat signatures automatically shared across all your FastAPI projects.
+                  Unique threat signatures automatically shared across all your
+                  FastAPI projects.
                 </p>
               </div>
 
@@ -339,7 +374,8 @@ export default function Home() {
                   Python Package
                 </h4>
                 <p className="retro-mono text-cyan-700 text-base lg:text-lg">
-                  Install via pip and integrate with just a few lines of code. Full Python 3.8+ support.
+                  Install via pip and integrate with just a few lines of code.
+                  Full Python 3.8+ support.
                 </p>
               </div>
             </div>
@@ -353,26 +389,40 @@ export default function Home() {
               <h3 className="text-4xl md:text-5xl lg:text-6xl font-black retro-title text-white mb-12 lg:mb-16">
                 Security by the Numbers
               </h3>
-              
+
               <div className="grid gap-8 lg:gap-12 md:grid-cols-2 lg:grid-cols-4">
                 <div className="retro-card-static bg-white/20 backdrop-blur-sm p-8 lg:p-10">
-                  <div className="text-5xl lg:text-6xl font-black retro-title text-white mb-4">99.9%</div>
+                  <div className="text-5xl lg:text-6xl font-black retro-title text-white mb-4">
+                    99.9%
+                  </div>
                   <div className="text-lg retro-mono text-white/90">Uptime</div>
                 </div>
-                
+
                 <div className="retro-card-static bg-white/20 backdrop-blur-sm p-8 lg:p-10">
-                  <div className="text-5xl lg:text-6xl font-black retro-title text-white mb-4">&lt;10ms</div>
-                  <div className="text-lg retro-mono text-white/90">Response Time</div>
+                  <div className="text-5xl lg:text-6xl font-black retro-title text-white mb-4">
+                    &lt;10ms
+                  </div>
+                  <div className="text-lg retro-mono text-white/90">
+                    Response Time
+                  </div>
                 </div>
-                
+
                 <div className="retro-card-static bg-white/20 backdrop-blur-sm p-8 lg:p-10">
-                  <div className="text-5xl lg:text-6xl font-black retro-title text-white mb-4">1M+</div>
-                  <div className="text-lg retro-mono text-white/90">Threats Blocked</div>
+                  <div className="text-5xl lg:text-6xl font-black retro-title text-white mb-4">
+                    1M+
+                  </div>
+                  <div className="text-lg retro-mono text-white/90">
+                    Threats Blocked
+                  </div>
                 </div>
-                
+
                 <div className="retro-card-static bg-white/20 backdrop-blur-sm p-8 lg:p-10">
-                  <div className="text-5xl lg:text-6xl font-black retro-title text-white mb-4">24/7</div>
-                  <div className="text-lg retro-mono text-white/90">Protection</div>
+                  <div className="text-5xl lg:text-6xl font-black retro-title text-white mb-4">
+                    24/7
+                  </div>
+                  <div className="text-lg retro-mono text-white/90">
+                    Protection
+                  </div>
                 </div>
               </div>
             </div>
@@ -392,7 +442,7 @@ export default function Home() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Link 
+              <Link
                 href="/dashboard"
                 className="retro-button bg-blue-100 text-blue-800 border-blue-800 p-6 text-center hover:bg-blue-200 block group"
               >
@@ -404,11 +454,15 @@ export default function Home() {
                   <div className="absolute top-3 right-1 w-1 h-1 bg-blue-800"></div>
                   <div className="absolute bottom-1 left-1 right-1 h-2 bg-blue-800"></div>
                 </div>
-                <div className="text-lg font-black retro-mono mb-2">Dashboard</div>
-                <div className="text-xs retro-mono opacity-75">Security Overview</div>
+                <div className="text-lg font-black retro-mono mb-2">
+                  Dashboard
+                </div>
+                <div className="text-xs retro-mono opacity-75">
+                  Security Overview
+                </div>
               </Link>
-              
-              <Link 
+
+              <Link
                 href="/projects"
                 className="retro-button bg-green-100 text-green-800 border-green-800 p-6 text-center hover:bg-green-200 block group"
               >
@@ -419,11 +473,15 @@ export default function Home() {
                   <div className="absolute top-1/2 left-1/2 w-4 h-0.5 bg-green-100 transform -translate-x-1/2 -translate-y-1/2"></div>
                   <div className="absolute top-1/2 left-1/2 w-0.5 h-4 bg-green-100 transform -translate-x-1/2 -translate-y-1/2"></div>
                 </div>
-                <div className="text-lg font-black retro-mono mb-2">Projects</div>
-                <div className="text-xs retro-mono opacity-75">Manage Protection</div>
+                <div className="text-lg font-black retro-mono mb-2">
+                  Projects
+                </div>
+                <div className="text-xs retro-mono opacity-75">
+                  Manage Protection
+                </div>
               </Link>
-              
-              <Link 
+
+              <Link
                 href="/threats"
                 className="retro-button bg-red-100 text-red-800 border-red-800 p-6 text-center hover:bg-red-200 block group"
               >
@@ -434,11 +492,15 @@ export default function Home() {
                   <div className="absolute inset-2 bg-red-800 transform rotate-45"></div>
                   <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-red-100 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></div>
                 </div>
-                <div className="text-lg font-black retro-mono mb-2">Threats</div>
-                <div className="text-xs retro-mono opacity-75">Live Monitoring</div>
+                <div className="text-lg font-black retro-mono mb-2">
+                  Threats
+                </div>
+                <div className="text-xs retro-mono opacity-75">
+                  Live Monitoring
+                </div>
               </Link>
-              
-              <Link 
+
+              <Link
                 href="/analytics"
                 className="retro-button bg-purple-100 text-purple-800 border-purple-800 p-6 text-center hover:bg-purple-200 block group"
               >
@@ -449,8 +511,12 @@ export default function Home() {
                   <div className="absolute bottom-0 left-5 w-1 h-4 bg-purple-800"></div>
                   <div className="absolute top-0 right-0 w-2 h-2 border-2 border-purple-800 rounded-full"></div>
                 </div>
-                <div className="text-lg font-black retro-mono mb-2">Analytics</div>
-                <div className="text-xs retro-mono opacity-75">Deep Insights</div>
+                <div className="text-lg font-black retro-mono mb-2">
+                  Analytics
+                </div>
+                <div className="text-xs retro-mono opacity-75">
+                  Deep Insights
+                </div>
               </Link>
             </div>
           </div>
@@ -464,13 +530,20 @@ export default function Home() {
               <div className="relative z-10">
                 {/* Custom lightning visual */}
                 <div className="w-12 h-12 text-yellow-600 mx-auto mb-4 relative">
-                  <div className="absolute inset-0 bg-yellow-600 transform rotate-12" style={{clipPath: 'polygon(30% 0%, 60% 0%, 40% 50%, 70% 50%, 40% 100%, 10% 100%, 30% 50%, 0% 50%)'}}></div>
+                  <div
+                    className="absolute inset-0 bg-yellow-600 transform rotate-12"
+                    style={{
+                      clipPath:
+                        "polygon(30% 0%, 60% 0%, 40% 50%, 70% 50%, 40% 100%, 10% 100%, 30% 50%, 0% 50%)",
+                    }}
+                  ></div>
                 </div>
                 <h4 className="text-2xl font-black retro-title text-yellow-800 mb-3">
                   Ready to Secure Your Apps?
                 </h4>
                 <p className="retro-mono text-yellow-700 mb-6">
-                  Join thousands of Python developers securing their FastAPI applications with GuardFlow SDK
+                  Join thousands of Python developers securing their FastAPI
+                  applications with GuardFlow SDK
                 </p>
                 <Link
                   href={isAuthenticated ? "/dashboard" : "/register"}
@@ -478,8 +551,20 @@ export default function Home() {
                 >
                   {/* Custom shield visual */}
                   <div className="w-5 h-5 relative">
-                    <div className="absolute inset-0 bg-white" style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}}></div>
-                    <div className="absolute inset-1 bg-black" style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}}></div>
+                    <div
+                      className="absolute inset-0 bg-white"
+                      style={{
+                        clipPath:
+                          "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                      }}
+                    ></div>
+                    <div
+                      className="absolute inset-1 bg-black"
+                      style={{
+                        clipPath:
+                          "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                      }}
+                    ></div>
                   </div>
                   <span className="font-black retro-mono">
                     {isAuthenticated ? "Go to Dashboard" : "Install SDK"}
@@ -492,10 +577,11 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            
+
             <div className="text-center">
               <p className="text-xs retro-mono text-gray-500">
-                © 2026 GuardFlow Python SDK • Built with ❤️ for FastAPI developers
+                © 2026 GuardFlow Python SDK • Built with ❤️ for FastAPI
+                developers
               </p>
             </div>
           </div>

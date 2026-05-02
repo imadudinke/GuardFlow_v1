@@ -12,6 +12,11 @@ import {
   Zap,
 } from "lucide-react";
 
+const STUDIO_BASE_URL = "https://guard-flow-v1.vercel.app";
+const STUDIO_DOCS_URL = `${STUDIO_BASE_URL}/docs`;
+const PYPI_URL = "https://pypi.org/project/guardflow-fastapi/";
+const GITHUB_URL = "https://github.com/imadudinke/GuardFlow_v1";
+
 const codeExamples = {
   python: {
     install: `pip install guardflow-fastapi`,
@@ -25,7 +30,7 @@ app.add_middleware(
     GuardFlowMiddleware,
     api_key="gf_live_your_api_key_here",
     redis_url="redis://localhost:6379",
-    studio_url="https://guardflow-v1.onrender.com"
+    studio_url="https://guard-flow-v1.vercel.app"
 )
 
 @app.get("/")
@@ -41,7 +46,7 @@ app.add_middleware(
     GuardFlowMiddleware,
     api_key="gf_live_your_api_key_here",
     redis_url="redis://localhost:6379",
-    studio_url="https://guardflow-v1.onrender.com",
+    studio_url="https://guard-flow-v1.vercel.app",
     # Honeypot traps - paths that should never be accessed
     bait_paths=["/admin", "/wp-admin", "/.env", "/config"],
     # Protected paths - require authentication
@@ -358,6 +363,46 @@ export default function SDKGuidePage() {
           </div>
 
           {/* Resources */}
+          <div className="retro-card-static bg-white p-6">
+            <div className="absolute inset-0 halftone-subtle"></div>
+            <div className="relative z-10">
+              <h3 className="mb-4 text-lg font-black uppercase tracking-[0.08em] retro-title">
+                PyPI Package Health
+              </h3>
+              <p className="mb-4 text-sm text-gray-600 retro-mono">
+                Live package stats for `guardflow-fastapi`.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <img
+                  src="https://img.shields.io/pypi/v/guardflow-fastapi?label=PyPI%20Version"
+                  alt="PyPI version badge"
+                />
+                <img
+                  src="https://img.shields.io/pypi/pyversions/guardflow-fastapi?label=Python"
+                  alt="Python version support badge"
+                />
+                <img
+                  src="https://static.pepy.tech/badge/guardflow-fastapi"
+                  alt="PyPI total downloads badge"
+                />
+                <img
+                  src="https://static.pepy.tech/badge/guardflow-fastapi/month"
+                  alt="PyPI monthly downloads badge"
+                />
+              </div>
+              <a
+                href={PYPI_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 text-sm retro-mono text-black hover:text-blue-600"
+              >
+                <ExternalLink className="h-4 w-4" />
+                Open PyPI Package
+              </a>
+            </div>
+          </div>
+
+          {/* Resources */}
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="retro-card-static bg-white p-6">
               <div className="absolute inset-0 halftone-subtle"></div>
@@ -367,7 +412,7 @@ export default function SDKGuidePage() {
                 </h3>
                 <div className="space-y-3">
                   <a
-                    href="https://pypi.org/project/guardflow-fastapi/"
+                    href={PYPI_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 text-sm retro-mono text-black hover:text-blue-600"
@@ -376,7 +421,7 @@ export default function SDKGuidePage() {
                     PyPI Package
                   </a>
                   <a
-                    href="https://github.com/imadudinke/GuardFlow_v1"
+                    href={GITHUB_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 text-sm retro-mono text-black hover:text-blue-600"
@@ -385,20 +430,20 @@ export default function SDKGuidePage() {
                     GitHub Repository
                   </a>
                   <a
-                    href="/docs"
+                    href={STUDIO_DOCS_URL}
                     className="flex items-center gap-3 text-sm retro-mono text-black hover:text-blue-600"
                   >
                     <ExternalLink className="h-4 w-4" />
                     Full Documentation
                   </a>
                   <a
-                    href="https://guardflow-v1.onrender.com/docs"
+                    href={STUDIO_DOCS_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 text-sm retro-mono text-black hover:text-blue-600"
                   >
                     <ExternalLink className="h-4 w-4" />
-                    API Reference
+                    Studio Docs
                   </a>
                 </div>
               </div>

@@ -1,11 +1,11 @@
 [project]
 name = "guardflow-fastapi"
-version = "0.1.2"
+version = "0.1.3"
 description = "Distributed Anti-Bot & Identity Fingerprinting for FastAPI"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "GuardFlow Team", email = "team@guardflow.dev"}
+    {name = "GuardFlow Team", email = "imadudinkeremu@gmail.com"}
 ]
 classifiers = [
     "Development Status :: 4 - Beta",

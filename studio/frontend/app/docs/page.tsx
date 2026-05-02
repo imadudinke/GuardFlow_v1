@@ -209,7 +209,7 @@ app = FastAPI()
 app.add_middleware(
     GuardFlowMiddleware,
     api_key="gf_live_your_api_key",
-    studio_url="https://guardflow-v1.onrender.com",
+    studio_url="https://guard-flow-v1.vercel.app",
     redis_url="redis://localhost:6379"
 )
 
@@ -386,7 +386,7 @@ app.add_middleware(
     GuardFlowMiddleware,
     # Required Settings
     api_key="gf_live_your_api_key",
-    studio_url="https://guardflow-v1.onrender.com",
+    studio_url="https://guard-flow-v1.vercel.app",
     redis_url="redis://localhost:6379",
     
     # Security Configuration
@@ -413,7 +413,7 @@ app.add_middleware(
             <h3 className="text-xl font-black retro-title text-black dark:text-white mb-4">ENVIRONMENT VARIABLES</h3>
             <CodeBlock language="bash" id="config-env">{`# .env file
 GUARDFLOW_API_KEY=gf_live_your_api_key
-GUARDFLOW_STUDIO_URL=https://guardflow-v1.onrender.com
+GUARDFLOW_STUDIO_URL=https://guard-flow-v1.vercel.app
 GUARDFLOW_REDIS_URL=redis://localhost:6379
 GUARDFLOW_BLOCK_THRESHOLD=80
 GUARDFLOW_ENABLE_FINGERPRINTING=true
@@ -434,7 +434,7 @@ fingerprinter.add_pattern_rule(r"bot|crawler", threat_boost=0.3)
 app.add_middleware(
     GuardFlowMiddleware,
     api_key="gf_live_your_api_key",
-    studio_url="https://guardflow-v1.onrender.com",
+    studio_url="https://guard-flow-v1.vercel.app",
     redis_url="redis://localhost:6379",
     
     # Custom fingerprinter
@@ -581,7 +581,7 @@ spec:
               <ul className="space-y-2 text-sm font-mono">
                 <li><a href="#guides" className="text-gray-400 hover:text-white transition-colors">Guides</a></li>
                 <li><a href="#api" className="text-gray-400 hover:text-white transition-colors">API Reference</a></li>
-                <li><a href="https://github.com/guardflow" className="text-gray-400 hover:text-white transition-colors">GitHub</a></li>
+                <li><a href="https://github.com/imadudinke/GuardFlow_v1" className="text-gray-400 hover:text-white transition-colors">GitHub</a></li>
               </ul>
             </div>
             
