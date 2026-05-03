@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="GuardFlow Studio">
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect x="40" y="40" width="1120" height="550" fill="#ffffff" stroke="#111111" stroke-width="6"/>
+
+  <rect x="90" y="90" width="320" height="56" fill="#111111"/>
+  <text x="110" y="126" font-family="Courier New, monospace" font-size="30" font-weight="700" fill="#ffffff">GUARDFLOW STUDIO</text>
+
+  <text x="90" y="220" font-family="Courier New, monospace" font-size="62" font-weight="800" fill="#111111">
+    Threat Intelligence
+  </text>
+  <text x="90" y="280" font-family="Courier New, monospace" font-size="62" font-weight="800" fill="#111111">
+    For FastAPI Teams
+  </text>
+
+  <text x="90" y="352" font-family="Courier New, monospace" font-size="28" fill="#333333">
+    Real-time telemetry " Fingerprint insights " Security operations control plane
+  </text>
+
+  <rect x="90" y="420" width="250" height="130" fill="#ffffff" stroke="#111111" stroke-width="4"/>
+  <text x="112" y="460" font-family="Courier New, monospace" font-size="22" font-weight="700" fill="#111111">SDK + Studio</text>
+  <text x="112" y="500" font-family="Courier New, monospace" font-size="18" fill="#333333">Live monitoring</text>
+  <text x="112" y="530" font-family="Courier New, monospace" font-size="18" fill="#333333">Threat response</text>
+
+  <path d="M925 135 825 170v84c0 76 50 139 100 158 50-19 100-82 100-158v-84l-100-35Z" fill="#ffffff" stroke="#111111" stroke-width="7"/>
+  <path d="M925 195v120M870 255h110" stroke="#111111" stroke-width="7" stroke-linecap="square"/>
+</svg>

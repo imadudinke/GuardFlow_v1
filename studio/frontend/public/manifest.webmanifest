@@ -1,0 +1,16 @@
+{
+  "name": "GuardFlow Studio",
+  "short_name": "GuardFlow",
+  "description": "Real-time threat intelligence and security operations platform for FastAPI workloads.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
