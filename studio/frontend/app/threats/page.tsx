@@ -323,7 +323,7 @@ function ThreatFeed() {
                       <button
                         type="button"
                         onClick={() => setSelectedThreat(threat)}
-                        className="inline-flex w-full items-center justify-center gap-2 retro-button bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.15em] text-black retro-mono sm:w-auto sm:justify-start sm:gap-3 sm:px-4 sm:text-xs sm:tracking-[0.25em]"
+                        className="inline-flex w-full items-center justify-center gap-2 retro-card-static bg-white px-3 py-2 text-[11px] font-black uppercase tracking-[0.15em] text-black retro-mono sm:w-auto sm:justify-start sm:gap-3 sm:px-4 sm:text-xs sm:tracking-[0.25em] hover:bg-gray-50"
                       >
                         <span className="hidden sm:inline">DNA</span>
                         <span className="hidden sm:inline">{threat.dna_id.slice(0, 16)}...</span>

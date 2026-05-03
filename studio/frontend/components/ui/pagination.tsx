@@ -12,6 +12,8 @@ interface PaginationProps {
   className?: string;
 }
 
+type VisiblePage = number | "...";
+
 export function Pagination({
   currentPage,
   totalPages,
@@ -20,12 +22,11 @@ export function Pagination({
   hasPrev,
   className,
 }: PaginationProps) {
-  const getVisiblePages = () => {
-    const delta = 2; // Number of pages to show on each side of current page
-    const range = [];
-    const rangeWithDots = [];
+  const getVisiblePages = (): VisiblePage[] => {
+    const delta = 2;
+    const range: number[] = [];
+    const rangeWithDots: VisiblePage[] = [];
 
-    // Calculate the range of pages to show
     const start = Math.max(1, currentPage - delta);
     const end = Math.min(totalPages, currentPage + delta);
 
@@ -33,7 +34,6 @@ export function Pagination({
       range.push(i);
     }
 
-    // Add first page and dots if needed
     if (start > 1) {
       rangeWithDots.push(1);
       if (start > 2) {
@@ -41,10 +41,8 @@ export function Pagination({
       }
     }
 
-    // Add the main range
     rangeWithDots.push(...range);
 
-    // Add last page and dots if needed
     if (end < totalPages) {
       if (end < totalPages - 1) {
         rangeWithDots.push("...");
@@ -61,12 +59,11 @@ export function Pagination({
 
   return (
     <div className={cn("relative z-20 flex flex-wrap items-center justify-center gap-2", className)}>
-      {/* Previous button */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={!hasPrev}
         className={cn(
-          "retro-button p-2 bg-white transition-colors relative z-10",
+          "retro-card-static p-2 bg-white transition-colors relative z-10",
           !hasPrev
             ? "opacity-50 cursor-not-allowed"
             : "hover:bg-gray-100 cursor-pointer"
@@ -76,8 +73,7 @@ export function Pagination({
         <ChevronLeft className="h-4 w-4 text-gray-600" />
       </button>
 
-      {/* Page numbers */}
-      <div className="relative z-10 flex max-w-full items-center gap-1 overflow-x-auto pb-1">
+      <div className="relative z-10 flex max-w-full flex-wrap items-center justify-center gap-1">
         {visiblePages.map((page, index) => {
           if (page === "...") {
             return (
@@ -98,11 +94,12 @@ export function Pagination({
               key={pageNumber}
               onClick={() => onPageChange(pageNumber)}
               className={cn(
-                "retro-button px-3 py-2 text-sm retro-mono transition-colors cursor-pointer relative z-10",
+                "retro-card-static min-w-10 px-3 py-2 text-sm retro-mono transition-colors cursor-pointer relative z-10",
                 isActive
-                  ? "bg-black text-white border-black"
+                  ? "bg-black text-white border-black shadow-[0_0_0_2px_#fff,0_0_0_4px_#000]"
                   : "bg-white text-gray-700 hover:bg-gray-100"
               )}
+              aria-current={isActive ? "page" : undefined}
             >
               {pageNumber}
             </button>
@@ -110,12 +107,11 @@ export function Pagination({
         })}
       </div>
 
-      {/* Next button */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={!hasNext}
         className={cn(
-          "retro-button p-2 bg-white transition-colors relative z-10",
+          "retro-card-static p-2 bg-white transition-colors relative z-10",
           !hasNext
             ? "opacity-50 cursor-not-allowed"
             : "hover:bg-gray-100 cursor-pointer"

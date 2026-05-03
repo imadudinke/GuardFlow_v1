@@ -117,28 +117,17 @@ export function useProjects({ userId }: UseProjectsOptions): UseProjectsReturn {
   };
 
   const deleteProject = async (projectId: string) => {
-    try {
-      const url = getApiUrl(`/api/v1/projects/${projectId}`);
-      console.log('Attempting to delete project at URL:', url);
-      
-      const response = await fetch(url, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+    const response = await fetch(getApiUrl(`/api/v1/projects/${projectId}`), {
+      method: 'DELETE',
+      credentials: 'include',
+    });
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.detail || `Failed to delete project: ${response.status} ${response.statusText}`);
-      }
-
-      // Remove project from local state
-      setProjects((currentProjects) =>
-        currentProjects.filter((project) => project.id !== projectId)
-      );
-    } catch (error) {
-      console.error('Delete project error:', error);
-      throw error;
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.detail || `Failed to delete project: ${response.status} ${response.statusText}`);
     }
+
+    setProjects((currentProjects) => currentProjects.filter((project) => project.id !== projectId));
   };
 
   useEffect(() => {

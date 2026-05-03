@@ -15,12 +15,12 @@ export default function DocsPage() {
   }
 
   const CodeBlock = ({ children, language = 'bash', id }: { children: string, language?: string, id: string }) => (
-    <div className="relative retro-card-static bg-black dark:bg-gray-950 text-green-400 dark:text-green-300 p-4 my-4 font-mono text-sm overflow-x-auto">
-      <div className="flex items-center justify-between mb-2 pb-2 border-b border-green-800 dark:border-green-900">
-        <span className="text-xs text-green-600 dark:text-green-500 uppercase tracking-wide">{language}</span>
+    <div className="relative retro-card-static bg-white p-4 my-4 font-mono text-sm overflow-x-auto">
+      <div className="flex items-center justify-between mb-2 pb-2 border-b border-black/15">
+        <span className="text-xs text-gray-600 uppercase tracking-wide">{language}</span>
         <button
           onClick={() => copyToClipboard(children, id)}
-          className="flex items-center gap-1 text-xs text-green-600 dark:text-green-500 hover:text-green-400 dark:hover:text-green-300 transition-colors"
+          className="flex items-center gap-1 text-xs text-gray-600 hover:text-black transition-colors"
         >
           {copiedCode === id ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
           {copiedCode === id ? 'COPIED' : 'COPY'}
@@ -41,25 +41,25 @@ export default function DocsPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white text-black">
       {/* Retro Header */}
-      <header className="bg-white dark:bg-gray-800 border-b-4 border-black dark:border-gray-700 sticky top-0 z-50">
+      <header className="bg-white border-b-4 border-black sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between gap-3">
             <Link href="/" className="flex items-center gap-3">
-              <div className="retro-card bg-black dark:bg-white p-2">
-                <Shield className="w-6 h-6 text-white dark:text-black" />
+              <div className="retro-card bg-white p-2">
+                <Shield className="w-6 h-6 text-black" />
               </div>
               <div>
-                <h1 className="text-2xl font-black retro-title text-black dark:text-white">GuardFlow</h1>
-                <p className="text-xs font-mono text-gray-600 dark:text-gray-400">DOCUMENTATION</p>
+                <h1 className="text-2xl font-black retro-title text-black">GuardFlow</h1>
+                <p className="text-xs font-mono text-gray-600">DOCUMENTATION</p>
               </div>
             </Link>
             <div className="flex items-center gap-2 sm:gap-4">
-              <Link href="/login" className="hidden retro-button bg-white dark:bg-gray-700 text-black dark:text-white border-black dark:border-gray-600 px-6 py-2 hover:bg-gray-50 dark:hover:bg-gray-600 sm:block">
+              <Link href="/login" className="hidden retro-button bg-white text-black border-black px-6 py-2 hover:bg-gray-50 sm:block">
                 <span className="font-black retro-mono text-sm">LOGIN</span>
               </Link>
-              <Link href="/register" className="retro-button bg-black dark:bg-white text-white dark:text-black border-black dark:border-white px-6 py-2 hover:bg-gray-900 dark:hover:bg-gray-100">
+              <Link href="/register" className="retro-button bg-white text-black border-black px-6 py-2 hover:bg-gray-50">
                 <span className="font-black retro-mono text-sm">GET STARTED</span>
               </Link>
             </div>
@@ -81,26 +81,26 @@ export default function DocsPage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-12">
-            <div className="inline-block retro-card bg-blue-100 dark:bg-blue-900 border-black dark:border-blue-700 px-6 py-2 mb-6">
-              <span className="font-black retro-mono text-sm text-black dark:text-white">DNA-BASED THREAT DETECTION</span>
+            <div className="inline-block retro-card bg-white border-black px-6 py-2 mb-6">
+              <span className="font-black retro-mono text-sm text-black">DNA-BASED THREAT DETECTION</span>
             </div>
-            <h1 className="mb-6 text-4xl font-black retro-title text-black dark:text-white sm:text-5xl lg:text-6xl">
+            <h1 className="mb-6 text-4xl font-black retro-title text-black sm:text-5xl lg:text-6xl">
               GUARDFLOW<br/>
               <span className="text-2xl sm:text-3xl lg:text-4xl">DEVELOPER DOCS</span>
             </h1>
-            <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-3xl mx-auto font-mono">
+            <p className="text-xl text-gray-700 mb-8 max-w-3xl mx-auto font-mono">
               Protect your FastAPI applications with zero-latency security.<br/>
               Install in under 5 minutes.
             </p>
             
             {/* Install command */}
             <div className="max-w-2xl mx-auto">
-              <div className="retro-card bg-black dark:bg-gray-950 text-green-400 dark:text-green-300 p-4 sm:p-6">
+              <div className="retro-card bg-white text-black p-4 sm:p-6">
                 <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
                   <code className="font-mono text-sm sm:text-lg">$ pip install guardflow-fastapi</code>
                   <button 
                     onClick={() => copyToClipboard('pip install guardflow-fastapi', 'hero-install')}
-                    className="retro-button bg-green-600 dark:bg-green-700 text-white border-green-800 dark:border-green-900 px-4 py-2 hover:bg-green-700 dark:hover:bg-green-600"
+                    className="retro-button bg-white text-black border-black px-4 py-2 hover:bg-gray-50"
                   >
                     <span className="font-black retro-mono text-xs flex items-center gap-2">
                       {copiedCode === 'hero-install' ? <><Check className="w-4 h-4" /> COPIED</> : <><Copy className="w-4 h-4" /> COPY</>}
@@ -120,15 +120,15 @@ export default function DocsPage() {
               { label: 'Setup Time', value: '5 min' },
             ].map((stat, i) => (
               <div key={i} className="retro-card bg-white dark:bg-gray-800 border-black dark:border-gray-700 p-4 text-center">
-                <div className="text-3xl font-black retro-title text-black dark:text-white mb-1">{stat.value}</div>
-                <div className="text-xs font-mono text-gray-600 dark:text-gray-400 uppercase">{stat.label}</div>
+                <div className="text-3xl font-black retro-title text-black mb-1">{stat.value}</div>
+                <div className="text-xs font-mono text-gray-600 uppercase">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
       {/* Navigation Tabs */}
-      <section className="sticky top-16 z-40 border-y-4 border-black bg-gray-100 dark:border-gray-700 dark:bg-gray-800 sm:top-20">
+      <section className="sticky top-16 z-40 border-y-4 border-black bg-gray-100 sm:top-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-x-auto py-4">
             {sections.map((section) => {
@@ -142,8 +142,8 @@ export default function DocsPage() {
                   }}
                   className={`retro-button px-4 py-2 whitespace-nowrap ${
                     activeSection === section.id 
-                      ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white' 
-                      : 'bg-white dark:bg-gray-700 text-black dark:text-white border-black dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+                      ? 'bg-black text-white border-black'
+                      : 'bg-white text-black border-black hover:bg-gray-50'
                   }`}
                 >
                   <span className="font-black retro-mono text-xs flex items-center gap-2">
@@ -161,7 +161,7 @@ export default function DocsPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Quick Start */}
         <section id="quick-start" className="mb-20">
-          <div className="retro-card bg-blue-50 dark:bg-blue-900 border-black dark:border-blue-700 p-2 inline-block mb-6">
+          <div className="retro-card bg-white border-black p-2 inline-block mb-6">
             <h2 className="text-4xl font-black retro-title text-black dark:text-white flex items-center gap-3">
               <Rocket className="w-8 h-8" />
               QUICK START
@@ -173,24 +173,24 @@ export default function DocsPage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="retro-card bg-blue-50 dark:bg-blue-900 border-black dark:border-blue-700 p-6">
-              <div className="retro-card bg-blue-600 dark:bg-blue-700 text-white border-black dark:border-blue-800 w-16 h-16 flex items-center justify-center mb-4">
+            <div className="retro-card bg-white border-black p-6">
+              <div className="retro-card bg-white text-black border-black w-16 h-16 flex items-center justify-center mb-4">
                 <span className="text-4xl font-black retro-title">1</span>
               </div>
               <h3 className="text-xl font-black retro-title text-black dark:text-white mb-3">INSTALL SDK</h3>
               <CodeBlock language="bash" id="step1">pip install guardflow-fastapi</CodeBlock>
             </div>
 
-            <div className="retro-card bg-green-50 dark:bg-green-900 border-black dark:border-green-700 p-6">
-              <div className="retro-card bg-green-600 dark:bg-green-700 text-white border-black dark:border-green-800 w-16 h-16 flex items-center justify-center mb-4">
+            <div className="retro-card bg-white border-black p-6">
+              <div className="retro-card bg-white text-black border-black w-16 h-16 flex items-center justify-center mb-4">
                 <span className="text-4xl font-black retro-title">2</span>
               </div>
               <h3 className="text-xl font-black retro-title text-black dark:text-white mb-3">START REDIS</h3>
               <CodeBlock language="bash" id="step2">docker run -d -p 6379:6379 redis:alpine</CodeBlock>
             </div>
 
-            <div className="retro-card bg-purple-50 dark:bg-purple-900 border-black dark:border-purple-700 p-6">
-              <div className="retro-card bg-purple-600 dark:bg-purple-700 text-white border-black dark:border-purple-800 w-16 h-16 flex items-center justify-center mb-4">
+            <div className="retro-card bg-white border-black p-6">
+              <div className="retro-card bg-white text-black border-black w-16 h-16 flex items-center justify-center mb-4">
                 <span className="text-4xl font-black retro-title">3</span>
               </div>
               <h3 className="text-xl font-black retro-title text-black dark:text-white mb-3">ADD MIDDLEWARE</h3>
@@ -221,7 +221,7 @@ async def protected_endpoint():
 
         {/* Installation */}
         <section id="installation" className="mb-20">
-          <div className="retro-card bg-green-50 dark:bg-green-900 border-black dark:border-green-700 p-2 inline-block mb-6">
+          <div className="retro-card bg-white border-black p-2 inline-block mb-6">
             <h2 className="text-4xl font-black retro-title text-black dark:text-white flex items-center gap-3">
               <Terminal className="w-8 h-8" />
               INSTALLATION
@@ -233,15 +233,15 @@ async def protected_endpoint():
               <h3 className="text-xl font-black retro-title text-black dark:text-white mb-4">SYSTEM REQUIREMENTS</h3>
               <div className="space-y-3 font-mono text-sm">
                 <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 bg-green-600 dark:bg-green-500 border-2 border-black dark:border-green-700"></div>
+                  <div className="w-4 h-4 bg-white border-2 border-black"></div>
                   <span className="text-gray-700 dark:text-gray-300">Python 3.8+</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 bg-green-600 dark:bg-green-500 border-2 border-black dark:border-green-700"></div>
+                  <div className="w-4 h-4 bg-white border-2 border-black"></div>
                   <span className="text-gray-700 dark:text-gray-300">FastAPI 0.95+</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 bg-green-600 dark:bg-green-500 border-2 border-black dark:border-green-700"></div>
+                  <div className="w-4 h-4 bg-white border-2 border-black"></div>
                   <span className="text-gray-700 dark:text-gray-300">Redis 4.5+</span>
                 </div>
               </div>
@@ -285,7 +285,7 @@ volumes:
         </section>
         {/* Features */}
         <section id="features" className="mb-20">
-          <div className="retro-card bg-purple-50 dark:bg-purple-900 border-black dark:border-purple-700 p-2 inline-block mb-6">
+          <div className="retro-card bg-white border-black p-2 inline-block mb-6">
             <h2 className="text-4xl font-black retro-title text-black dark:text-white flex items-center gap-3">
               <Shield className="w-8 h-8" />
               SECURITY FEATURES
@@ -293,8 +293,8 @@ volumes:
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="retro-card bg-blue-50 dark:bg-blue-900 border-black dark:border-blue-700 p-6">
-              <div className="retro-card bg-blue-600 dark:bg-blue-700 text-white border-black dark:border-blue-800 w-16 h-16 flex items-center justify-center mb-4">
+            <div className="retro-card bg-white border-black p-6">
+              <div className="retro-card bg-white text-black border-black w-16 h-16 flex items-center justify-center mb-4">
                 <span className="text-3xl font-black retro-title">🧬</span>
               </div>
               <h3 className="text-2xl font-black retro-title text-black dark:text-white mb-3">DNA FINGERPRINTING</h3>
@@ -302,13 +302,13 @@ volumes:
                 Identifies attackers by their unique request patterns. Analyzes header sequences, 
                 presence vectors, and protocol behaviors.
               </p>
-              <div className="retro-card-static bg-green-50 dark:bg-green-900 border-2 border-green-600 dark:border-green-700 p-3">
+              <div className="retro-card-static bg-white border-2 border-black p-3">
                 <div className="font-black retro-mono text-xs text-green-800 dark:text-green-200">DETECTION RATE: 99.7%</div>
               </div>
             </div>
 
-            <div className="retro-card bg-green-50 dark:bg-green-900 border-black dark:border-green-700 p-6">
-              <div className="retro-card bg-green-600 dark:bg-green-700 text-white border-black dark:border-green-800 w-16 h-16 flex items-center justify-center mb-4">
+            <div className="retro-card bg-white border-black p-6">
+              <div className="retro-card bg-white text-black border-black w-16 h-16 flex items-center justify-center mb-4">
                 <span className="text-3xl font-black retro-title">⚡</span>
               </div>
               <h3 className="text-2xl font-black retro-title text-black dark:text-white mb-3">ZERO-LATENCY</h3>
@@ -316,13 +316,13 @@ volumes:
                 Async "fire & forget" telemetry ensures your application performance 
                 is never impacted by security processing.
               </p>
-              <div className="retro-card-static bg-blue-50 dark:bg-blue-900 border-2 border-blue-600 dark:border-blue-700 p-3">
+              <div className="retro-card-static bg-white border-2 border-black p-3">
                 <div className="font-black retro-mono text-xs text-blue-800 dark:text-blue-200">PROCESSING: &lt;1ms</div>
               </div>
             </div>
 
-            <div className="retro-card bg-purple-50 dark:bg-purple-900 border-black dark:border-purple-700 p-6">
-              <div className="retro-card bg-purple-600 dark:bg-purple-700 text-white border-black dark:border-purple-800 w-16 h-16 flex items-center justify-center mb-4">
+            <div className="retro-card bg-white border-black p-6">
+              <div className="retro-card bg-white text-black border-black w-16 h-16 flex items-center justify-center mb-4">
                 <span className="text-3xl font-black retro-title">🔒</span>
               </div>
               <h3 className="text-2xl font-black retro-title text-black dark:text-white mb-3">PII REDACTION</h3>
@@ -330,13 +330,13 @@ volumes:
                 Automatically detects and redacts sensitive data before telemetry 
                 leaves your infrastructure. GDPR compliant.
               </p>
-              <div className="retro-card-static bg-purple-50 dark:bg-purple-900 border-2 border-purple-600 dark:border-purple-700 p-3">
+              <div className="retro-card-static bg-white border-2 border-black p-3">
                 <div className="font-black retro-mono text-xs text-purple-800 dark:text-purple-200">PRIVACY: ZERO LEAKAGE</div>
               </div>
             </div>
 
-            <div className="retro-card bg-red-50 dark:bg-red-900 border-black dark:border-red-700 p-6">
-              <div className="retro-card bg-red-600 dark:bg-red-700 text-white border-black dark:border-red-800 w-16 h-16 flex items-center justify-center mb-4">
+            <div className="retro-card bg-white border-black p-6">
+              <div className="retro-card bg-white text-black border-black w-16 h-16 flex items-center justify-center mb-4">
                 <span className="text-3xl font-black retro-title">🍯</span>
               </div>
               <h3 className="text-2xl font-black retro-title text-black dark:text-white mb-3">HONEYPOT TRAPS</h3>
@@ -344,13 +344,13 @@ volumes:
                 Invisible endpoints that trigger instant global bans when accessed. 
                 Catches reconnaissance and automated attacks.
               </p>
-              <div className="retro-card-static bg-red-50 dark:bg-red-900 border-2 border-red-600 dark:border-red-700 p-3">
+              <div className="retro-card-static bg-white border-2 border-black p-3">
                 <div className="font-black retro-mono text-xs text-red-800 dark:text-red-200">RESPONSE: INSTANT BAN</div>
               </div>
             </div>
           </div>
 
-          <div className="retro-card bg-yellow-50 dark:bg-yellow-900 border-black dark:border-yellow-700 p-6 mt-6">
+          <div className="retro-card bg-white border-black p-6 mt-6">
             <h3 className="text-xl font-black retro-title text-black dark:text-white mb-4">HOW DNA FINGERPRINTING WORKS</h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4 font-mono text-sm">
               Traditional security looks at <strong>what</strong> attackers send. 
@@ -368,7 +368,7 @@ Fingerprint B: sha256("AC|UA|CN|AL") = "x9y8z7..."`}</CodeBlock>
 
         {/* Configuration */}
         <section id="configuration" className="mb-20">
-          <div className="retro-card bg-orange-50 dark:bg-orange-900 border-black dark:border-orange-700 p-2 inline-block mb-6">
+          <div className="retro-card bg-white border-black p-2 inline-block mb-6">
             <h2 className="text-4xl font-black retro-title text-black dark:text-white flex items-center gap-3">
               <Code className="w-8 h-8" />
               CONFIGURATION
@@ -452,7 +452,7 @@ app.add_middleware(
         </section>
         {/* Deployment */}
         <section id="deployment" className="mb-20">
-          <div className="retro-card bg-red-50 dark:bg-red-900 border-black dark:border-red-700 p-2 inline-block mb-6">
+          <div className="retro-card bg-white border-black p-2 inline-block mb-6">
             <h2 className="text-4xl font-black retro-title text-black dark:text-white flex items-center gap-3">
               <Cloud className="w-8 h-8" />
               DEPLOYMENT
@@ -500,7 +500,7 @@ spec:
             </div>
           </div>
 
-          <div className="retro-card bg-blue-50 dark:bg-blue-900 border-black dark:border-blue-700 p-6">
+          <div className="retro-card bg-white border-black p-6">
             <h3 className="text-xl font-black retro-title text-black dark:text-white mb-4">BEST PRACTICES</h3>
             <div className="space-y-3">
               {[
@@ -513,7 +513,7 @@ spec:
                 'Test in staging before production'
               ].map((practice, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="retro-card bg-black dark:bg-white border-black dark:border-white w-10 h-10 flex items-center justify-center shrink-0">
+                  <div className="retro-card bg-white border-black w-10 h-10 flex items-center justify-center shrink-0">
                     <span className="text-green-400 dark:text-green-600 font-black text-2xl leading-none">✓</span>
                   </div>
                   <span className="font-mono text-sm text-gray-700 dark:text-gray-300 pt-2">{practice}</span>
@@ -524,9 +524,9 @@ spec:
         </section>
 
         {/* CTA Section */}
-        <section className="retro-card border-black bg-linear-to-br from-blue-600 to-purple-600 p-6 text-center dark:border-purple-700 dark:from-blue-800 dark:to-purple-800 sm:p-12">
-          <h2 className="mb-4 text-2xl font-black retro-title text-white sm:text-4xl">READY TO PROTECT YOUR APP?</h2>
-          <p className="text-lg text-blue-100 dark:text-blue-200 mb-8 max-w-2xl mx-auto font-mono">
+        <section className="retro-card border-black bg-white p-6 text-center sm:p-12">
+          <h2 className="mb-4 text-2xl font-black retro-title text-black sm:text-4xl">READY TO PROTECT YOUR APP?</h2>
+          <p className="text-lg text-gray-700 mb-8 max-w-2xl mx-auto font-mono">
             Join thousands of developers using GuardFlow to secure their FastAPI applications.
           </p>
           <div className="flex items-center justify-center gap-4 flex-wrap">
@@ -540,63 +540,63 @@ spec:
             </Link>
             <Link 
               href="/login" 
-              className="retro-button bg-black dark:bg-gray-900 text-white border-white dark:border-gray-300 px-8 py-4 hover:bg-gray-900 dark:hover:bg-gray-800"
+              className="retro-button bg-white text-black border-black px-8 py-4 hover:bg-gray-50"
             >
               <span className="font-black retro-mono text-sm">VIEW DASHBOARD</span>
             </Link>
           </div>
-          <p className="text-sm text-blue-200 dark:text-blue-300 mt-6 font-mono">
+          <p className="text-sm text-gray-600 mt-6 font-mono">
             NO CREDIT CARD • 100K REQUESTS/MONTH FREE • CANCEL ANYTIME
           </p>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="bg-black dark:bg-gray-950 text-white py-12 mt-20 border-t-4 border-black dark:border-gray-800">
+      <footer className="bg-white py-12 mt-20 border-t-4 border-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="retro-card bg-white border-white p-2">
-                  <div className="w-6 h-6 bg-black"></div>
+                <div className="retro-card bg-white border-black p-2">
+                  <div className="w-6 h-6 bg-white border-2 border-black"></div>
                 </div>
-                <span className="font-black retro-title text-xl">GuardFlow</span>
+                <span className="font-black retro-title text-xl text-black">GuardFlow</span>
               </div>
-              <p className="text-sm font-mono text-gray-400">
+              <p className="text-sm font-mono text-gray-600">
                 Distributed application-layer security for modern APIs
               </p>
             </div>
             
             <div>
-              <h4 className="font-black retro-title text-white mb-4">PRODUCT</h4>
+              <h4 className="font-black retro-title text-black mb-4">PRODUCT</h4>
               <ul className="space-y-2 text-sm font-mono">
-                <li><a href="#features" className="text-gray-400 hover:text-white transition-colors">Features</a></li>
-                <li><a href="/docs" className="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
-                <li><a href="/dashboard" className="text-gray-400 hover:text-white transition-colors">Dashboard</a></li>
+                <li><a href="#features" className="text-gray-600 hover:text-black transition-colors">Features</a></li>
+                <li><a href="/docs" className="text-gray-600 hover:text-black transition-colors">Documentation</a></li>
+                <li><a href="/dashboard" className="text-gray-600 hover:text-black transition-colors">Dashboard</a></li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-black retro-title text-white mb-4">RESOURCES</h4>
+              <h4 className="font-black retro-title text-black mb-4">RESOURCES</h4>
               <ul className="space-y-2 text-sm font-mono">
-                <li><a href="#guides" className="text-gray-400 hover:text-white transition-colors">Guides</a></li>
-                <li><a href="#api" className="text-gray-400 hover:text-white transition-colors">API Reference</a></li>
-                <li><a href="https://github.com/imadudinke/GuardFlow_v1" className="text-gray-400 hover:text-white transition-colors">GitHub</a></li>
+                <li><a href="#guides" className="text-gray-600 hover:text-black transition-colors">Guides</a></li>
+                <li><a href="#api" className="text-gray-600 hover:text-black transition-colors">API Reference</a></li>
+                <li><a href="https://github.com/imadudinke/GuardFlow_v1" className="text-gray-600 hover:text-black transition-colors">GitHub</a></li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-black retro-title text-white mb-4">COMPANY</h4>
+              <h4 className="font-black retro-title text-black mb-4">COMPANY</h4>
               <ul className="space-y-2 text-sm font-mono">
-                <li><a href="#about" className="text-gray-400 hover:text-white transition-colors">About</a></li>
-                <li><a href="#contact" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
-                <li><a href="#privacy" className="text-gray-400 hover:text-white transition-colors">Privacy</a></li>
+                <li><a href="#about" className="text-gray-600 hover:text-black transition-colors">About</a></li>
+                <li><a href="#contact" className="text-gray-600 hover:text-black transition-colors">Contact</a></li>
+                <li><a href="#privacy" className="text-gray-600 hover:text-black transition-colors">Privacy</a></li>
               </ul>
             </div>
           </div>
           
           <div className="border-t-2 border-gray-800 pt-8 text-center">
-            <p className="text-sm font-mono text-gray-400">
+            <p className="text-sm font-mono text-gray-600">
               © 2026 GuardFlow. All rights reserved.
             </p>
           </div>

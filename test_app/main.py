@@ -10,9 +10,9 @@ app = FastAPI()
 
 app.add_middleware(
     GuardFlowMiddleware, 
-    api_key="gf_live_Y8YdIkMfhxD4PD2ZQ6431YPUp6_OQvDnLmUlqd92yFc",
+    api_key="gf_live_GOCWPA4TK_WE2WAi9HZ4rH7vdTjeDLcbHkt6_-jb4_M",
     redis_url="redis://localhost:6379",
-    studio_url="https://guardflow-v1.onrender.com"
+    studio_url="http://localhost:8001"
 )
 
 @app.get("/")

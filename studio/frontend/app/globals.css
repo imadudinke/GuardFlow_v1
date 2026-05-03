@@ -27,6 +27,20 @@
   color-scheme: light;
 }
 
+/* Hide browser window scrollbar, keep scrolling enabled */
+html,
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge legacy */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none; /* Chrome/Safari/Opera */
+}
+
 /* Dark Mode Colors */
 .dark {
   --color-background: 20 20 20;

@@ -175,7 +175,6 @@ export default function AnalyticsPage() {
                   onChange={(e) => setSelectedProjectId(e.target.value || null)}
                   className="w-full min-w-[220px] retro-card-static bg-white px-4 py-3 text-sm font-bold text-black retro-mono outline-none cursor-pointer relative z-20 appearance-none"
                   disabled={projects.length === 0}
-                  style={{ pointerEvents: 'auto' }}
                 >
                   {projects.length === 0 && <option value="">No projects available</option>}
                   {projects.map((project) => (
