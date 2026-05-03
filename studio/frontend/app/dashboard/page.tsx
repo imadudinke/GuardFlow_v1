@@ -356,7 +356,7 @@ export default function DashboardPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <a 
               href="/projects" 
-              className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
+              className="retro-card-static bg-white p-4 text-center hover:bg-gray-50 block transition-colors"
             >
               <div className="flex justify-center mb-2">
                 <RetroShield />
@@ -365,7 +365,7 @@ export default function DashboardPage() {
             </a>
             <a 
               href="/threats" 
-              className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
+              className="retro-card-static bg-white p-4 text-center hover:bg-gray-50 block transition-colors"
             >
               <div className="flex justify-center mb-2">
                 <RetroAlert />
@@ -374,7 +374,7 @@ export default function DashboardPage() {
             </a>
             <a 
               href="/analytics" 
-              className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
+              className="retro-card-static bg-white p-4 text-center hover:bg-gray-50 block transition-colors"
             >
               <div className="flex justify-center mb-2">
                 <RetroTrend />
@@ -383,7 +383,7 @@ export default function DashboardPage() {
             </a>
             <a 
               href="/sdk-guide" 
-              className="retro-button bg-white p-4 text-center hover:bg-gray-50 block"
+              className="retro-card-static bg-white p-4 text-center hover:bg-gray-50 block transition-colors"
             >
               <div className="flex justify-center mb-2">
                 <RetroZap />

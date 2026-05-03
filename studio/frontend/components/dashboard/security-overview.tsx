@@ -196,14 +196,14 @@ export function SecurityOverview({
             <div className="grid grid-cols-2 gap-3">
               <a 
                 href="/threats" 
-                className="retro-button bg-white p-3 text-center hover:bg-gray-50 block"
+                className="retro-card-static bg-white p-3 text-center hover:bg-gray-50 block transition-colors"
               >
                 <AlertTriangle className="h-5 w-5 mx-auto mb-1 text-red-600" />
                 <div className="text-xs font-black retro-mono">View All Threats</div>
               </a>
               <a 
                 href="/blacklist" 
-                className="retro-button bg-white p-3 text-center hover:bg-gray-50 block"
+                className="retro-card-static bg-white p-3 text-center hover:bg-gray-50 block transition-colors"
               >
                 <Ban className="h-5 w-5 mx-auto mb-1 text-gray-600" />
                 <div className="text-xs font-black retro-mono">Manage Blacklist</div>
